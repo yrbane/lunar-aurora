@@ -1,0 +1,43 @@
+{
+  "name": "lunar-aurora",
+  "version": "1.0.0",
+  "description": "A disruptive CSS framework using avant-garde techniques: OKLCH, @property, CSS nesting, container queries, and more.",
+  "main": "src/aurora.css",
+  "style": "src/aurora.css",
+  "files": [
+    "src/**/*.css",
+    "dist/**/*.css"
+  ],
+  "scripts": {
+    "build": "postcss src/aurora.css -o dist/aurora.min.css",
+    "watch": "postcss src/aurora.css -o dist/aurora.min.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yrbane/lunar-aurora.git"
+  },
+  "keywords": [
+    "css",
+    "framework",
+    "oklch",
+    "css-nesting",
+    "container-queries",
+    "design-system",
+    "lunar",
+    "aurora",
+    "modern-css"
+  ],
+  "author": "yrbane",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yrbane/lunar-aurora/issues"
+  },
+  "homepage": "https://github.com/yrbane/lunar-aurora#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "cssnano": "^6.0.1",
+    "postcss": "^8.4.31",
+    "postcss-cli": "^10.1.0",
+    "postcss-import": "^15.1.0"
+  }
+}
