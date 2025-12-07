@@ -9,7 +9,8 @@ export default defineConfig({
   root: 'examples', // Racine du serveur de dev
   server: {
     port: 3001,
-    open: true
+    open: true,
+    host: true
   },
   resolve: {
     alias: {
