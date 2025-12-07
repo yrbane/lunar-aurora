@@ -285,9 +285,13 @@
 .la-inset-y-0 { inset-block: 0; }
 
 .la-top-0 { top: 0; }
-.la-right-0 { right: 0; }
+.la-right-0 { inset-inline-end: 0; }
 .la-bottom-0 { bottom: 0; }
-.la-left-0 { left: 0; }
+.la-left-0 { inset-inline-start: 0; }
+
+/* Logical aliases */
+.la-start-0 { inset-inline-start: 0; }
+.la-end-0 { inset-inline-end: 0; }
 
 /* Z-index */
 .la-z-base { z-index: var(--la-z-base); }
