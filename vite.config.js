@@ -18,12 +18,17 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'examples/index.html'),
-        aurora: path.resolve(__dirname, 'src/aurora.css')
+        aurora: path.resolve(__dirname, 'src/aurora.css'),
+        'aurora-js': path.resolve(__dirname, 'src/aurora.js')
       },
       output: {
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === 'aurora.css') return 'aurora.min.css';
           return '[name][extname]';
+        },
+        entryFileNames: (chunkInfo) => {
+            if (chunkInfo.name === 'aurora-js') return 'aurora.js';
+            return '[name].js';
         }
       }
     }

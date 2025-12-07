@@ -57,6 +57,7 @@
 
 /* Components - buttons, cards, forms, etc. */
 @import url('./components.css') layer(components);
+@import url('./modal.css') layer(components);
 
 /* Icons - SVG mask icons */
 @import url('./icons.css') layer(icons);

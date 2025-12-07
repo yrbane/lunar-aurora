@@ -1,0 +1,24 @@
+dialog.la-modal {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: auto;
+    color: inherit;
+    
+    /* Native dialog backdrop */
+    &::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        animation: la-fade-in var(--la-duration-fast) var(--la-ease-out);
+    }
+
+    /* Open animation */
+    &.is-open {
+        animation: la-scale-in var(--la-duration-fast) var(--la-ease-out);
+    }
+}
+
+/* Prevent body scroll when modal is open */
+body.la-modal-open {
+    overflow: hidden;
+}

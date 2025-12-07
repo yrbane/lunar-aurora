@@ -813,6 +813,87 @@
         </div>
     </section>
 
+    <!-- Interactive Components Section -->
+    <section class="section">
+        <div class="la-container">
+            <h2 class="section-title">Composants Interactifs</h2>
+            <p class="section-description">Composants JavaScript légers et accessibles inclus (Tabs, Accordéons, Modales).</p>
+
+            <div class="component-grid">
+                <!-- Tabs -->
+                <div class="component-box">
+                    <h3>Tabs</h3>
+                    <div class="la-tabs">
+                        <div role="tablist" class="la-flex la-gap-2 la-mb-4 la-border-b la-border-subtle">
+                            <button role="tab" aria-selected="true" aria-controls="tab-1" id="tab-1-trigger" class="la-btn ghost sm">Onglet 1</button>
+                            <button role="tab" aria-selected="false" aria-controls="tab-2" id="tab-2-trigger" class="la-btn ghost sm" tabindex="-1">Onglet 2</button>
+                            <button role="tab" aria-selected="false" aria-controls="tab-3" id="tab-3-trigger" class="la-btn ghost sm" tabindex="-1">Onglet 3</button>
+                        </div>
+                        <div role="tabpanel" id="tab-1" aria-labelledby="tab-1-trigger">
+                            <p>Contenu du premier onglet. Accessible au clavier avec les flèches gauche/droite.</p>
+                        </div>
+                        <div role="tabpanel" id="tab-2" aria-labelledby="tab-2-trigger" hidden>
+                            <p>Deuxième panneau avec un contenu différent.</p>
+                        </div>
+                        <div role="tabpanel" id="tab-3" aria-labelledby="tab-3-trigger" hidden>
+                            <p>Troisième panneau. Tout est géré par <code>src/js/tabs.js</code>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion -->
+                <div class="component-box">
+                    <h3>Accordéon</h3>
+                    <div class="la-accordion la-stack gap-2">
+                        <div class="la-card flat la-p-0">
+                            <button class="la-accordion-trigger la-btn ghost full la-justify-between" aria-expanded="false" aria-controls="acc-1">
+                                <span>Section 1</span>
+                                <span class="la-icon la-icon-chevron-down sm"></span>
+                            </button>
+                            <div id="acc-1" hidden class="la-p-4 la-text-sm la-border-t la-border-subtle">
+                                Contenu dépliable. Cliquez pour afficher/masquer.
+                            </div>
+                        </div>
+                        <div class="la-card flat la-p-0">
+                            <button class="la-accordion-trigger la-btn ghost full la-justify-between" aria-expanded="false" aria-controls="acc-2">
+                                <span>Section 2</span>
+                                <span class="la-icon la-icon-chevron-down sm"></span>
+                            </button>
+                            <div id="acc-2" hidden class="la-p-4 la-text-sm la-border-t la-border-subtle">
+                                Un autre contenu dépliable.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modals -->
+                <div class="component-box">
+                    <h3>Modales</h3>
+                    <p class="la-mb-4">Utilise l'élément natif <code>&lt;dialog&gt;</code>.</p>
+                    <button class="la-btn primary" data-open-modal="demo-modal">
+                        Ouvrir la modale
+                    </button>
+
+                    <dialog id="demo-modal" class="la-modal la-card la-p-0" style="max-width: 500px; width: 90%;">
+                        <div class="la-card-header la-flex la-justify-between la-items-center">
+                            <h3 class="la-card-title la-m-0">Titre de la modale</h3>
+                            <button class="la-btn ghost icon-only sm" data-close-modal aria-label="Fermer">
+                                <span class="la-icon la-icon-close"></span>
+                            </button>
+                        </div>
+                        <div class="la-card-body">
+                            <p>Ceci est une fenêtre modale accessible. Elle capture le focus et se ferme avec Echap ou en cliquant en dehors.</p>
+                        </div>
+                        <div class="la-card-footer la-flex la-justify-end la-gap-2">
+                            <button class="la-btn ghost" data-close-modal>Annuler</button>
+                            <button class="la-btn primary" data-close-modal>Confirmer</button>
+                        </div>
+                    </dialog>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer>
         <p class="la-mb-4">
@@ -825,12 +906,12 @@
         </p>
     </footer>
 
-    <script type="module" src="/src/theme-switcher.js"></script>
+    <script type="module" src="/src/aurora.js"></script>
     <script>
-        // Init theme switcher from the module
+        // Init code handled by aurora.js, just need to sync theme grid UI here
         document.addEventListener('DOMContentLoaded', () => {
-            if (typeof LunarThemes !== 'undefined') {
-                LunarThemes.autoInject();
+            if (typeof LunarAurora !== 'undefined') {
+                LunarAurora.Themes.autoInject();
 
                 // Sync theme grid with actual theme changes
                 document.querySelectorAll('.theme-card').forEach(card => {
@@ -844,7 +925,7 @@
 
                     card.addEventListener('click', () => {
                         const theme = card.dataset.theme;
-                        LunarThemes.setTheme(theme);
+                        LunarAurora.Themes.setTheme(theme);
                     });
                 });
 
@@ -856,7 +937,7 @@
                 });
 
                 // Initial active state
-                const currentTheme = LunarThemes.getTheme();
+                const currentTheme = LunarAurora.Themes.getTheme();
                 const activeCard = document.querySelector(`.theme-card[data-theme="${currentTheme}"]`);
                 if (activeCard) activeCard.classList.add('active');
             }
