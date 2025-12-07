@@ -39,6 +39,10 @@
 - **Proprietes logiques** - Support RTL integre
 - **Accessibilite** - Respecte `prefers-reduced-motion`, `prefers-contrast`
 
+## Demo
+
+Ouvrez `examples/index.html` dans votre navigateur pour voir tous les composants en action avec le switcher de themes interactif.
+
 ## Installation
 
 ```bash
@@ -65,21 +69,25 @@ Copiez le dossier `src/` dans votre projet et importez les fichiers CSS :
 ## Structure
 
 ```
-src/
-├── aurora.css          # Bundle principal (importe tout)
-├── aurora-blog.css     # Bundle blog optimise
-├── aurora-admin.css    # Bundle admin optimise
-├── tokens.css          # Design tokens (20 KB)
-├── themes.css          # 30+ themes (52 KB)
-├── reset.css           # Reset CSS moderne (12 KB)
-├── typography.css      # Typographie (14 KB)
-├── layout.css          # Grilles, flexbox (20 KB)
-├── components.css      # Boutons, cartes, formulaires (34 KB)
-├── animations.css      # Animations (13 KB)
-├── utilities.css       # Classes utilitaires (25 KB)
-├── blog.css            # Composants blog (50 KB)
-├── admin.css           # Composants admin (39 KB)
-└── theme-switcher.js   # Switcher de theme JS
+lunar-aurora/
+├── examples/
+│   └── index.html          # Page de demonstration complete
+├── src/
+│   ├── aurora.css          # Bundle principal (importe tout)
+│   ├── aurora-blog.css     # Bundle blog optimise
+│   ├── aurora-admin.css    # Bundle admin optimise
+│   ├── tokens.css          # Design tokens (20 KB)
+│   ├── themes.css          # 30+ themes (52 KB)
+│   ├── reset.css           # Reset CSS moderne (12 KB)
+│   ├── typography.css      # Typographie (14 KB)
+│   ├── layout.css          # Grilles, flexbox (20 KB)
+│   ├── components.css      # Boutons, cartes, formulaires (34 KB)
+│   ├── animations.css      # Animations (13 KB)
+│   ├── utilities.css       # Classes utilitaires (25 KB)
+│   ├── blog.css            # Composants blog (50 KB)
+│   ├── admin.css           # Composants admin (39 KB)
+│   └── theme-switcher.js   # Switcher de theme JS
+└── README.md
 ```
 
 ## Themes
