@@ -693,14 +693,14 @@
     border: var(--_border) solid var(--la-border);
     border-top-color: var(--la-primary);
     border-radius: var(--la-radius-full);
-    animation: q-spin 0.8s linear infinite;
+    animation: la-spin 0.8s linear infinite;
 
     &.sm { --_size: 16px; --_border: 2px; }
     &.lg { --_size: 32px; --_border: 4px; }
     &.xl { --_size: 48px; --_border: 5px; }
 }
 
-@keyframes q-spin {
+@keyframes la-spin {
     to { transform: rotate(360deg); }
 }
 
@@ -752,7 +752,7 @@
         var(--la-surface-2) 75%
     );
     background-size: 200% 100%;
-    animation: q-shimmer 1.5s infinite;
+    animation: la-shimmer 1.5s infinite;
     border-radius: var(--la-radius-md);
 
     &.text {
@@ -775,7 +775,7 @@
     }
 }
 
-@keyframes q-shimmer {
+@keyframes la-shimmer {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }

@@ -11,17 +11,17 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* Fade animations */
-@keyframes q-fade-in {
+@keyframes la-fade-in {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
-@keyframes q-fade-out {
+@keyframes la-fade-out {
     from { opacity: 1; }
     to { opacity: 0; }
 }
 
-@keyframes q-fade-in-up {
+@keyframes la-fade-in-up {
     from {
         opacity: 0;
         transform: translateY(20px);
@@ -32,7 +32,7 @@
     }
 }
 
-@keyframes q-fade-in-down {
+@keyframes la-fade-in-down {
     from {
         opacity: 0;
         transform: translateY(-20px);
@@ -43,7 +43,7 @@
     }
 }
 
-@keyframes q-fade-in-left {
+@keyframes la-fade-in-left {
     from {
         opacity: 0;
         transform: translateX(-20px);
@@ -54,7 +54,7 @@
     }
 }
 
-@keyframes q-fade-in-right {
+@keyframes la-fade-in-right {
     from {
         opacity: 0;
         transform: translateX(20px);
@@ -66,7 +66,7 @@
 }
 
 /* Scale animations */
-@keyframes q-scale-in {
+@keyframes la-scale-in {
     from {
         opacity: 0;
         transform: scale(0.9);
@@ -77,7 +77,7 @@
     }
 }
 
-@keyframes q-scale-out {
+@keyframes la-scale-out {
     from {
         opacity: 1;
         transform: scale(1);
@@ -88,13 +88,13 @@
     }
 }
 
-@keyframes q-pop {
+@keyframes la-pop {
     0% { transform: scale(1); }
     50% { transform: scale(1.05); }
     100% { transform: scale(1); }
 }
 
-@keyframes q-bounce {
+@keyframes la-bounce {
     0%, 100% {
         transform: translateY(0);
         animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
@@ -106,23 +106,23 @@
 }
 
 /* Spin animation */
-@keyframes q-spin {
+@keyframes la-spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
 
 /* Pulse animations */
-@keyframes q-pulse {
+@keyframes la-pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.5; }
 }
 
-@keyframes q-pulse-scale {
+@keyframes la-pulse-scale {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.02); }
 }
 
-@keyframes q-heartbeat {
+@keyframes la-heartbeat {
     0%, 100% { transform: scale(1); }
     14% { transform: scale(1.1); }
     28% { transform: scale(1); }
@@ -131,42 +131,42 @@
 }
 
 /* Shake animation */
-@keyframes q-shake {
+@keyframes la-shake {
     0%, 100% { transform: translateX(0); }
     10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
     20%, 40%, 60%, 80% { transform: translateX(4px); }
 }
 
 /* Wiggle animation */
-@keyframes q-wiggle {
+@keyframes la-wiggle {
     0%, 100% { transform: rotate(0deg); }
     25% { transform: rotate(-3deg); }
     75% { transform: rotate(3deg); }
 }
 
 /* Slide animations */
-@keyframes q-slide-in-up {
+@keyframes la-slide-in-up {
     from { transform: translateY(100%); }
     to { transform: translateY(0); }
 }
 
-@keyframes q-slide-in-down {
+@keyframes la-slide-in-down {
     from { transform: translateY(-100%); }
     to { transform: translateY(0); }
 }
 
-@keyframes q-slide-in-left {
+@keyframes la-slide-in-left {
     from { transform: translateX(-100%); }
     to { transform: translateX(0); }
 }
 
-@keyframes q-slide-in-right {
+@keyframes la-slide-in-right {
     from { transform: translateX(100%); }
     to { transform: translateX(0); }
 }
 
 /* Glow animation */
-@keyframes q-glow {
+@keyframes la-glow {
     0%, 100% {
         box-shadow: 0 0 5px oklch(from var(--la-primary) l c h / 30%);
     }
@@ -176,7 +176,7 @@
 }
 
 /* Float animation */
-@keyframes q-float {
+@keyframes la-float {
     0%, 100% {
         transform: translateY(0);
     }
@@ -186,19 +186,19 @@
 }
 
 /* Shimmer (for loading) */
-@keyframes q-shimmer {
+@keyframes la-shimmer {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
 
 /* Progress bar */
-@keyframes q-progress {
+@keyframes la-progress {
     0% { width: 0; }
     100% { width: 100%; }
 }
 
 /* Rotate in */
-@keyframes q-rotate-in {
+@keyframes la-rotate-in {
     from {
         opacity: 0;
         transform: rotate(-180deg);
@@ -210,13 +210,13 @@
 }
 
 /* Flip */
-@keyframes q-flip {
+@keyframes la-flip {
     from { transform: perspective(400px) rotateY(-90deg); }
     to { transform: perspective(400px) rotateY(0); }
 }
 
 /* Blob morph */
-@keyframes q-blob {
+@keyframes la-blob {
     0%, 100% {
         border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
     }
@@ -226,7 +226,7 @@
 }
 
 /* Gradient animation */
-@keyframes q-gradient-shift {
+@keyframes la-gradient-shift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
@@ -237,32 +237,32 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* Basic animations */
-.la-animate-fade-in { animation: q-fade-in var(--la-duration-base) var(--la-ease-out) forwards; }
-.la-animate-fade-out { animation: q-fade-out var(--la-duration-base) var(--la-ease-out) forwards; }
-.la-animate-fade-in-up { animation: q-fade-in-up var(--la-duration-slow) var(--la-ease-out) forwards; }
-.la-animate-fade-in-down { animation: q-fade-in-down var(--la-duration-slow) var(--la-ease-out) forwards; }
-.la-animate-fade-in-left { animation: q-fade-in-left var(--la-duration-slow) var(--la-ease-out) forwards; }
-.la-animate-fade-in-right { animation: q-fade-in-right var(--la-duration-slow) var(--la-ease-out) forwards; }
+.la-animate-fade-in { animation: la-fade-in var(--la-duration-base) var(--la-ease-out) forwards; }
+.la-animate-fade-out { animation: la-fade-out var(--la-duration-base) var(--la-ease-out) forwards; }
+.la-animate-fade-in-up { animation: la-fade-in-up var(--la-duration-slow) var(--la-ease-out) forwards; }
+.la-animate-fade-in-down { animation: la-fade-in-down var(--la-duration-slow) var(--la-ease-out) forwards; }
+.la-animate-fade-in-left { animation: la-fade-in-left var(--la-duration-slow) var(--la-ease-out) forwards; }
+.la-animate-fade-in-right { animation: la-fade-in-right var(--la-duration-slow) var(--la-ease-out) forwards; }
 
-.la-animate-scale-in { animation: q-scale-in var(--la-duration-base) var(--la-ease-out) forwards; }
-.la-animate-scale-out { animation: q-scale-out var(--la-duration-base) var(--la-ease-out) forwards; }
-.la-animate-pop { animation: q-pop var(--la-duration-slow) var(--la-ease-bounce); }
-.la-animate-bounce { animation: q-bounce 1s infinite; }
+.la-animate-scale-in { animation: la-scale-in var(--la-duration-base) var(--la-ease-out) forwards; }
+.la-animate-scale-out { animation: la-scale-out var(--la-duration-base) var(--la-ease-out) forwards; }
+.la-animate-pop { animation: la-pop var(--la-duration-slow) var(--la-ease-bounce); }
+.la-animate-bounce { animation: la-bounce 1s infinite; }
 
-.la-animate-spin { animation: q-spin 1s linear infinite; }
-.la-animate-pulse { animation: q-pulse 2s ease-in-out infinite; }
-.la-animate-heartbeat { animation: q-heartbeat 1.5s ease-in-out infinite; }
-.la-animate-shake { animation: q-shake 0.5s ease-in-out; }
-.la-animate-wiggle { animation: q-wiggle 0.3s ease-in-out infinite; }
-.la-animate-float { animation: q-float 3s ease-in-out infinite; }
-.la-animate-glow { animation: q-glow 2s ease-in-out infinite; }
-.la-animate-blob { animation: q-blob 8s ease-in-out infinite; }
+.la-animate-spin { animation: la-spin 1s linear infinite; }
+.la-animate-pulse { animation: la-pulse 2s ease-in-out infinite; }
+.la-animate-heartbeat { animation: la-heartbeat 1.5s ease-in-out infinite; }
+.la-animate-shake { animation: la-shake 0.5s ease-in-out; }
+.la-animate-wiggle { animation: la-wiggle 0.3s ease-in-out infinite; }
+.la-animate-float { animation: la-float 3s ease-in-out infinite; }
+.la-animate-glow { animation: la-glow 2s ease-in-out infinite; }
+.la-animate-blob { animation: la-blob 8s ease-in-out infinite; }
 
 /* Slide animations */
-.la-animate-slide-in-up { animation: q-slide-in-up var(--la-duration-slow) var(--la-ease-out) forwards; }
-.la-animate-slide-in-down { animation: q-slide-in-down var(--la-duration-slow) var(--la-ease-out) forwards; }
-.la-animate-slide-in-left { animation: q-slide-in-left var(--la-duration-slow) var(--la-ease-out) forwards; }
-.la-animate-slide-in-right { animation: q-slide-in-right var(--la-duration-slow) var(--la-ease-out) forwards; }
+.la-animate-slide-in-up { animation: la-slide-in-up var(--la-duration-slow) var(--la-ease-out) forwards; }
+.la-animate-slide-in-down { animation: la-slide-in-down var(--la-duration-slow) var(--la-ease-out) forwards; }
+.la-animate-slide-in-left { animation: la-slide-in-left var(--la-duration-slow) var(--la-ease-out) forwards; }
+.la-animate-slide-in-right { animation: la-slide-in-right var(--la-duration-slow) var(--la-ease-out) forwards; }
 
 /* Animation delays */
 .la-delay-75 { animation-delay: 75ms; }
