@@ -473,52 +473,89 @@
             <h2 class="section-title">Boutons</h2>
             <p class="section-description">Boutons avec variantes de couleurs, tailles, états et animations au survol.</p>
 
-            <div class="component-grid">
+            <div class="la-stack la-gap-8">
+                <!-- Variants -->
                 <div class="component-box">
                     <h3>Variantes</h3>
                     <div class="la-flex la-flex-wrap la-gap-3">
                         <button class="la-btn">Default</button>
-                        <button class="la-btn primary la-hover-lift">Primary</button>
-                        <button class="la-btn secondary la-hover-lift">Secondary</button>
-                        <button class="la-btn success la-hover-lift">Success</button>
-                        <button class="la-btn warning la-hover-lift">Warning</button>
-                        <button class="la-btn danger la-hover-lift">Danger</button>
+                        <button class="la-btn primary">Primary</button>
+                        <button class="la-btn secondary">Secondary</button>
+                        <button class="la-btn accent">Accent</button>
+                        <button class="la-btn success">Success</button>
+                        <button class="la-btn warning">Warning</button>
+                        <button class="la-btn error">Error</button>
                         <button class="la-btn ghost">Ghost</button>
+                        <button class="la-btn link">Link</button>
                     </div>
                 </div>
+
+                <!-- Advanced Variants -->
+                <div class="component-box">
+                    <h3>Variantes Avancées</h3>
+                    <div class="la-flex la-flex-wrap la-gap-3">
+                        <button class="la-btn outline primary">Outline</button>
+                        <button class="la-btn outline secondary">Outline</button>
+                        <button class="la-btn soft primary">Soft</button>
+                        <button class="la-btn soft secondary">Soft</button>
+                        <button class="la-btn soft success">Soft Success</button>
+                        <button class="la-btn soft error">Soft Error</button>
+                        <button class="la-btn pill primary">Rounded</button>
+                    </div>
+                </div>
+
+                <!-- Sizes -->
                 <div class="component-box">
                     <h3>Tailles</h3>
                     <div class="la-flex la-items-center la-flex-wrap la-gap-3">
+                        <button class="la-btn primary xs">XS</button>
                         <button class="la-btn primary sm">Small</button>
                         <button class="la-btn primary">Medium</button>
                         <button class="la-btn primary lg">Large</button>
+                        <button class="la-btn primary xl">XL</button>
                     </div>
                 </div>
+
+                <!-- With Icons -->
                 <div class="component-box">
                     <h3>Avec icônes</h3>
                     <div class="la-flex la-flex-wrap la-gap-3">
-                        <button class="la-btn primary la-hover-lift">
-                            <span class="la-icon la-icon-plus sm"></span>
+                        <button class="la-btn primary">
+                            <span class="la-icon la-icon-add sm"></span>
                             Créer
                         </button>
-                        <button class="la-btn success la-hover-lift">
+                        <button class="la-btn success">
                             <span class="la-icon la-icon-check sm"></span>
                             Valider
                         </button>
-                        <button class="la-btn danger la-hover-lift">
+                        <button class="la-btn error">
                             <span class="la-icon la-icon-trash sm"></span>
                             Supprimer
                         </button>
-                        <button class="la-btn ghost" aria-label="Paramètres">
+                        <button class="la-btn ghost icon-only" aria-label="Paramètres">
                             <span class="la-icon la-icon-settings sm"></span>
+                        </button>
+                        <button class="la-btn primary icon-only lg" aria-label="Ajouter">
+                            <span class="la-icon la-icon-add"></span>
+                        </button>
+                        <button class="la-btn primary icon-only xl pill" aria-label="Ajouter">
+                            <span class="la-icon la-icon-add lg"></span>
                         </button>
                     </div>
                 </div>
+
+                <!-- States -->
                 <div class="component-box">
                     <h3>États</h3>
                     <div class="la-flex la-flex-wrap la-gap-3">
+                        <button class="la-btn primary">Normal</button>
+                        <button class="la-btn primary active">Active</button>
                         <button class="la-btn primary" disabled>Disabled</button>
-                        <button class="la-btn primary loading">Loading...</button>
+                        <button class="la-btn outline" disabled>Disabled Outline</button>
+                        <button class="la-btn primary loading">
+                            <div class="la-spinner sm"></div>
+                            Loading
+                        </button>
                     </div>
                 </div>
             </div>
@@ -622,39 +659,69 @@
             <h2 class="section-title">Badges</h2>
             <p class="section-description">Étiquettes pour afficher des statuts ou des catégories.</p>
 
-            <div class="component-box" style="max-width: 800px;">
-                <h3>Variantes</h3>
-                <div class="la-flex la-flex-wrap la-gap-3 la-mb-6">
-                    <span class="la-badge">Default</span>
-                    <span class="la-badge primary">Primary</span>
-                    <span class="la-badge secondary">Secondary</span>
-                    <span class="la-badge success">Success</span>
-                    <span class="la-badge warning">Warning</span>
-                    <span class="la-badge danger">Danger</span>
-                    <span class="la-badge info">Info</span>
+            <div class="la-stack la-gap-8">
+                <div class="component-box">
+                    <h3>Solides</h3>
+                    <div class="la-flex la-flex-wrap la-gap-3">
+                        <span class="la-badge solid">Default</span>
+                        <span class="la-badge solid primary">Primary</span>
+                        <span class="la-badge solid secondary">Secondary</span>
+                        <span class="la-badge solid success">Success</span>
+                        <span class="la-badge solid warning">Warning</span>
+                        <span class="la-badge solid error">Danger</span>
+                    </div>
                 </div>
 
-                <h3>Tailles</h3>
-                <div class="la-flex la-items-center la-flex-wrap la-gap-3 la-mb-6">
-                    <span class="la-badge sm primary">Small</span>
-                    <span class="la-badge primary">Medium</span>
-                    <span class="la-badge lg primary">Large</span>
+                <div class="component-box">
+                    <h3>Subtle (Défaut)</h3>
+                    <div class="la-flex la-flex-wrap la-gap-3">
+                        <span class="la-badge">Default</span>
+                        <span class="la-badge primary">Primary</span>
+                        <span class="la-badge secondary">Secondary</span>
+                        <span class="la-badge success">Success</span>
+                        <span class="la-badge warning">Warning</span>
+                        <span class="la-badge error">Danger</span>
+                        <span class="la-badge muted">Muted</span>
+                    </div>
                 </div>
 
-                <h3>Avec icônes</h3>
-                <div class="la-flex la-flex-wrap la-gap-3">
-                    <span class="la-badge success">
-                        <span class="la-icon sm">check_circle</span>
-                        Publié
-                    </span>
-                    <span class="la-badge warning">
-                        <span class="la-icon sm">schedule</span>
-                        En attente
-                    </span>
-                    <span class="la-badge danger">
-                        <span class="la-icon sm">error</span>
-                        Erreur
-                    </span>
+                <div class="component-box">
+                    <h3>Outline</h3>
+                    <div class="la-flex la-flex-wrap la-gap-3">
+                        <span class="la-badge outline">Default</span>
+                        <span class="la-badge outline primary">Primary</span>
+                        <span class="la-badge outline secondary">Secondary</span>
+                        <span class="la-badge outline success">Success</span>
+                        <span class="la-badge outline warning">Warning</span>
+                        <span class="la-badge outline error">Danger</span>
+                    </div>
+                </div>
+
+                <div class="component-box">
+                    <h3>Tailles</h3>
+                    <div class="la-flex la-items-center la-flex-wrap la-gap-3">
+                        <span class="la-badge sm primary">Small</span>
+                        <span class="la-badge primary">Medium</span>
+                        <span class="la-badge lg primary">Large</span>
+                    </div>
+                </div>
+
+                <div class="component-box">
+                    <h3>Avec icônes</h3>
+                    <div class="la-flex la-flex-wrap la-gap-3">
+                        <span class="la-badge success">
+                            <span class="la-icon la-icon-check sm"></span>
+                            Publié
+                        </span>
+                        <span class="la-badge warning">
+                            <span class="la-icon la-icon-clock sm"></span>
+                            En attente
+                        </span>
+                        <span class="la-badge error">
+                            <span class="la-icon la-icon-error sm"></span>
+                            Erreur
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
