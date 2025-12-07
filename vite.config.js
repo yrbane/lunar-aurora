@@ -4,7 +4,7 @@ import path from 'path';
 export default defineConfig({
   root: 'examples', // Racine du serveur de dev
   server: {
-    port: 3000,
+    port: 3001,
     open: true
   },
   resolve: {
