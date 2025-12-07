@@ -224,7 +224,7 @@ const LunarThemes = {
                                 <span class="la-theme-preview"></span>
                                 <span class="la-theme-name">${theme.name}</span>
                                 <span class="la-theme-variant">${theme.variant === 'dark' ? 'Sombre' : 'Clair'}</span>
-                                <span class="la-icon sm la-theme-check">check</span>
+                                <span class="la-icon la-icon-check sm la-theme-check"></span>
                             </button>
                         `).join('')}
                     </div>
@@ -246,9 +246,9 @@ const LunarThemes = {
         switcher.className = 'la-theme-switcher';
         switcher.innerHTML = `
             <button class="la-theme-trigger" aria-haspopup="true" aria-expanded="false">
-                <span class="la-icon">palette</span>
+                <span class="la-icon la-icon-palette"></span>
                 <span class="la-theme-current">${currentThemeData.name}</span>
-                <span class="la-icon sm">expand_more</span>
+                <span class="la-icon la-icon-chevron-down sm"></span>
             </button>
             <div class="la-theme-dropdown">
                 ${this.generateDropdownHTML()}

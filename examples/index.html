@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Press+Start+2P&family=VT323&family=Nunito:wght@400;600;700&family=Fredoka+One&family=Orbitron:wght@400;500;700&family=Share+Tech+Mono&family=Poppins:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/src/aurora.css">
     <style>
         /* Page-specific styles */
@@ -249,25 +248,6 @@
             color: var(--la-primary-hover);
             text-decoration: underline;
         }
-
-        /* Material Icons as .la-icon */
-        .la-icon {
-            font-family: 'Material Icons';
-            font-weight: normal;
-            font-style: normal;
-            font-size: 24px;
-            display: inline-block;
-            line-height: 1;
-            text-transform: none;
-            letter-spacing: normal;
-            word-wrap: normal;
-            white-space: nowrap;
-            direction: ltr;
-            -webkit-font-smoothing: antialiased;
-        }
-        .la-icon.sm { font-size: 18px; }
-        .la-icon.lg { font-size: 32px; }
-        .la-icon.xl { font-size: 48px; }
         
         /* Floating Theme Switcher Position */
         .header-switcher {
@@ -293,11 +273,11 @@
         
         <div class="la-flex la-justify-center la-gap-4 la-flex-wrap la-animate-fade-in-up la-delay-300">
             <a href="https://github.com/yrbane/lunar-aurora" class="la-btn primary lg la-hover-lift">
-                <span class="la-icon sm">code</span>
+                <span class="la-icon la-icon-code sm"></span>
                 GitHub
             </a>
             <a href="#themes" class="la-btn ghost lg la-hover-lift">
-                <span class="la-icon sm">palette</span>
+                <span class="la-icon la-icon-palette sm"></span>
                 Explorer les thèmes
             </a>
         </div>
@@ -310,7 +290,7 @@
             <p class="section-description">Cliquez sur un thème pour le tester en direct. Le choix est sauvegardé automatiquement.</p>
 
             <h3 class="la-h4 la-mb-4 la-flex la-items-center la-gap-2">
-                <span class="la-icon">light_mode</span> Base
+                <span class="la-icon la-icon-sun"></span> Base
             </h3>
             <div class="theme-grid la-mb-8">
                 <div class="theme-card" role="button" tabindex="0" data-theme="light">
@@ -324,7 +304,7 @@
             </div>
 
             <h3 class="la-h4 la-mb-4 la-flex la-items-center la-gap-2">
-                <span class="la-icon">palette</span> Couleurs
+                <span class="la-icon la-icon-palette"></span> Couleurs
             </h3>
             <div class="theme-grid la-mb-8">
                 <div class="theme-card" role="button" tabindex="0" data-theme="cyberpunk">
@@ -354,7 +334,7 @@
             </div>
 
             <h3 class="la-h4 la-mb-4 la-flex la-items-center la-gap-2">
-                <span class="la-icon">videogame_asset</span> Rétro
+                <span class="la-icon la-icon-gamepad"></span> Rétro
             </h3>
             <div class="theme-grid la-mb-8">
                 <div class="theme-card" role="button" tabindex="0" data-theme="8bits-dark">
@@ -376,7 +356,7 @@
             </div>
 
             <h3 class="la-h4 la-mb-4 la-flex la-items-center la-gap-2">
-                <span class="la-icon">terminal</span> Tech
+                <span class="la-icon la-icon-terminal"></span> Tech
             </h3>
             <div class="theme-grid la-mb-8">
                 <div class="theme-card" role="button" tabindex="0" data-theme="hacker">
@@ -394,7 +374,7 @@
             </div>
 
             <h3 class="la-h4 la-mb-4 la-flex la-items-center la-gap-2">
-                <span class="la-icon">history</span> Nostalgie
+                <span class="la-icon la-icon-history"></span> Nostalgie
             </h3>
             <div class="theme-grid">
                 <div class="theme-card" role="button" tabindex="0" data-theme="win95-dark">
@@ -425,7 +405,7 @@
 
             <div class="component-grid">
                 <div class="component-box la-hover-lift">
-                    <h3><span class="la-icon">palette</span> Couleurs primaires</h3>
+                    <h3><span class="la-icon la-icon-palette"></span> Couleurs primaires</h3>
                     <div class="color-palette">
                         <div class="color-swatch" style="background: var(--la-primary);">Primary</div>
                         <div class="color-swatch" style="background: var(--la-secondary);">Secondary</div>
@@ -433,7 +413,7 @@
                     </div>
                 </div>
                 <div class="component-box la-hover-lift">
-                    <h3><span class="la-icon">traffic</span> États</h3>
+                    <h3><span class="la-icon la-icon-traffic"></span> États</h3>
                     <div class="color-palette">
                         <div class="color-swatch" style="background: var(--la-success);">Success</div>
                         <div class="color-swatch" style="background: var(--la-warning);">Warning</div>
@@ -442,7 +422,7 @@
                     </div>
                 </div>
                 <div class="component-box la-hover-lift">
-                    <h3><span class="la-icon">layers</span> Surfaces</h3>
+                    <h3><span class="la-icon la-icon-layers"></span> Surfaces</h3>
                     <div class="color-palette">
                         <div class="color-swatch" style="background: var(--la-surface-0); color: var(--la-text);">0</div>
                         <div class="color-swatch" style="background: var(--la-surface-1); color: var(--la-text);">1</div>
@@ -485,19 +465,19 @@
                     <h3>Avec icônes</h3>
                     <div class="la-flex la-flex-wrap la-gap-3">
                         <button class="la-btn primary la-hover-lift">
-                            <span class="la-icon sm">add</span>
+                            <span class="la-icon la-icon-plus sm"></span>
                             Créer
                         </button>
                         <button class="la-btn success la-hover-lift">
-                            <span class="la-icon sm">check</span>
+                            <span class="la-icon la-icon-check sm"></span>
                             Valider
                         </button>
                         <button class="la-btn danger la-hover-lift">
-                            <span class="la-icon sm">delete</span>
+                            <span class="la-icon la-icon-trash sm"></span>
                             Supprimer
                         </button>
                         <button class="la-btn ghost" aria-label="Paramètres">
-                            <span class="la-icon sm">settings</span>
+                            <span class="la-icon la-icon-settings sm"></span>
                         </button>
                     </div>
                 </div>

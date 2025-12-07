@@ -32,12 +32,9 @@
  * ╚═══════════════════════════════════════════════════════════════════════════╝
  */
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   LAYER DEFINITIONS
-   Cascade layers for predictable specificity
-   ═══════════════════════════════════════════════════════════════════════════ */
+/* Cascade layers for predictable specificity */
 
-@layer reset, tokens, themes, typography, layout, components, utilities, animations;
+@layer reset, tokens, themes, typography, layout, components, icons, utilities, animations;
 
 /* ═══════════════════════════════════════════════════════════════════════════
    CORE MODULES
@@ -60,6 +57,9 @@
 
 /* Components - buttons, cards, forms, etc. */
 @import url('./components.css') layer(components);
+
+/* Icons - SVG mask icons */
+@import url('./icons.css') layer(icons);
 
 /* Animations - keyframes, transitions, hover effects */
 @import url('./animations.css') layer(animations);
