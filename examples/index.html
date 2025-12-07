@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lunar Aurora - Showcase</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Press+Start+2P&family=VT323&family=Nunito:wght@400;600;700&family=Fredoka+One&family=Orbitron:wght@400;500;700&family=Share+Tech+Mono&family=Poppins:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../src/aurora.css">
+    <style>
+        /* Page-specific styles */
+        .showcase-header {
+            background: var(--la-gradient-hero);
+            background-image: var(--la-hero-image);
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+            padding: var(--la-space-16) var(--la-space-4);
+            text-align: center;
+            position: relative;
+        }
+
+        .showcase-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--la-gradient-hero);
+            opacity: 0.9;
+        }
+
+        .showcase-header > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .showcase-title {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: var(--la-space-4);
+            font-family: var(--la-font-display);
+        }
+
+        .showcase-subtitle {
+            font-size: var(--la-text-xl);
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto var(--la-space-8);
+        }
+
+        .section {
+            padding: var(--la-space-12) var(--la-space-4);
+        }
+
+        .section:nth-child(even) {
+            background: var(--la-surface-1);
+        }
+
+        .section-title {
+            font-size: var(--la-text-3xl);
+            font-weight: 700;
+            margin-bottom: var(--la-space-2);
+            font-family: var(--la-font-display);
+        }
+
+        .section-description {
+            color: var(--la-text-secondary);
+            margin-bottom: var(--la-space-8);
+            max-width: 600px;
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--la-space-6);
+        }
+
+        .component-box {
+            background: var(--la-surface-0);
+            border: 1px solid var(--la-border);
+            border-radius: var(--la-radius-lg);
+            padding: var(--la-space-6);
+        }
+
+        .component-box h3 {
+            font-size: var(--la-text-lg);
+            font-weight: 600;
+            margin-bottom: var(--la-space-4);
+            color: var(--la-primary);
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: var(--la-space-3);
+        }
+
+        .theme-card {
+            background: var(--la-surface-2);
+            border: 2px solid var(--la-border);
+            border-radius: var(--la-radius-md);
+            padding: var(--la-space-3);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .theme-card:hover {
+            border-color: var(--la-primary);
+            transform: translateY(-2px);
+        }
+
+        .theme-card.active {
+            border-color: var(--la-primary);
+            background: var(--la-primary-subtle, var(--la-surface-3));
+        }
+
+        .theme-card-name {
+            font-weight: 600;
+            font-size: var(--la-text-sm);
+        }
+
+        .theme-card-variant {
+            font-size: var(--la-text-xs);
+            color: var(--la-text-muted);
+        }
+
+        .color-palette {
+            display: flex;
+            gap: var(--la-space-2);
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--la-radius-md);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: var(--la-space-1);
+            font-size: var(--la-text-xs);
+            font-weight: 500;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .code-block {
+            background: var(--la-code-bg);
+            border: 1px solid var(--la-code-border);
+            border-radius: var(--la-radius-md);
+            padding: var(--la-space-4);
+            font-family: var(--la-font-mono);
+            font-size: var(--la-text-sm);
+            color: var(--la-code-text);
+            overflow-x: auto;
+        }
+
+        .code-block .keyword { color: var(--la-syntax-keyword); }
+        .code-block .string { color: var(--la-syntax-string); }
+        .code-block .function { color: var(--la-syntax-function); }
+        .code-block .comment { color: var(--la-syntax-comment); }
+        .code-block .number { color: var(--la-syntax-number); }
+        .code-block .property { color: var(--la-syntax-property); }
+
+        .icon-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--la-space-4);
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--la-space-2);
+            padding: var(--la-space-3);
+            background: var(--la-surface-2);
+            border-radius: var(--la-radius-md);
+            min-width: 80px;
+        }
+
+        .icon-item .la-icon {
+            font-size: 2rem;
+            color: var(--la-primary);
+        }
+
+        .icon-item span:last-child {
+            font-size: var(--la-text-xs);
+            color: var(--la-text-muted);
+        }
+
+        .glow-demo {
+            padding: var(--la-space-8);
+            text-align: center;
+            border-radius: var(--la-radius-lg);
+            background: var(--la-surface-1);
+            box-shadow: var(--la-shadow-glow, 0 0 30px var(--la-primary));
+        }
+
+        footer {
+            background: var(--la-surface-1);
+            border-top: 1px solid var(--la-border);
+            padding: var(--la-space-8) var(--la-space-4);
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--la-primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Material Icons as .la-icon */
+        .la-icon {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+        }
+        .la-icon.sm { font-size: 18px; }
+        .la-icon.lg { font-size: 32px; }
+        .la-icon.xl { font-size: 48px; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="showcase-header">
+        <h1 class="showcase-title">Lunar Aurora</h1>
+        <p class="showcase-subtitle">Framework CSS moderne avec 30+ themes, OKLCH colors, et composants accessibles</p>
+        <div class="la-flex la-justify-center la-gap-4 la-flex-wrap">
+            <a href="https://github.com/yrbane/lunar-aurora" class="la-btn primary lg">
+                <span class="la-icon sm">code</span>
+                GitHub
+            </a>
+            <a href="#themes" class="la-btn ghost lg">
+                <span class="la-icon sm">palette</span>
+                Explorer les themes
+            </a>
+        </div>
+    </header>
+
+    <!-- Theme Switcher Section -->
+    <section id="themes" class="section">
+        <div class="la-container">
+            <h2 class="section-title">Themes</h2>
+            <p class="section-description">Cliquez sur un theme pour le tester en direct. Le theme est sauvegarde dans votre navigateur.</p>
+
+            <h3 class="la-h4 la-mb-4">Base</h3>
+            <div class="theme-grid la-mb-8">
+                <div class="theme-card" data-theme="light">
+                    <div class="theme-card-name">Light</div>
+                    <div class="theme-card-variant">Clair</div>
+                </div>
+                <div class="theme-card" data-theme="dark">
+                    <div class="theme-card-name">Dark</div>
+                    <div class="theme-card-variant">Sombre</div>
+                </div>
+            </div>
+
+            <h3 class="la-h4 la-mb-4">Couleurs</h3>
+            <div class="theme-grid la-mb-8">
+                <div class="theme-card" data-theme="cyberpunk">
+                    <div class="theme-card-name">Cyberpunk</div>
+                    <div class="theme-card-variant">Neon</div>
+                </div>
+                <div class="theme-card" data-theme="aurora">
+                    <div class="theme-card-name">Aurora</div>
+                    <div class="theme-card-variant">Boreale</div>
+                </div>
+                <div class="theme-card" data-theme="ocean">
+                    <div class="theme-card-name">Ocean</div>
+                    <div class="theme-card-variant">Profond</div>
+                </div>
+                <div class="theme-card" data-theme="forest">
+                    <div class="theme-card-name">Forest</div>
+                    <div class="theme-card-variant">Nature</div>
+                </div>
+                <div class="theme-card" data-theme="sunset">
+                    <div class="theme-card-name">Sunset</div>
+                    <div class="theme-card-variant">Chaleureux</div>
+                </div>
+                <div class="theme-card" data-theme="lavender">
+                    <div class="theme-card-name">Lavender</div>
+                    <div class="theme-card-variant">Doux</div>
+                </div>
+            </div>
+
+            <h3 class="la-h4 la-mb-4">Retro</h3>
+            <div class="theme-grid la-mb-8">
+                <div class="theme-card" data-theme="8bits-dark">
+                    <div class="theme-card-name">8-Bits</div>
+                    <div class="theme-card-variant">Arcade</div>
+                </div>
+                <div class="theme-card" data-theme="bubble-dark">
+                    <div class="theme-card-name">Bubble</div>
+                    <div class="theme-card-variant">Pastel</div>
+                </div>
+                <div class="theme-card" data-theme="galaxian">
+                    <div class="theme-card-name">Galaxian</div>
+                    <div class="theme-card-variant">Space</div>
+                </div>
+                <div class="theme-card" data-theme="mario-dark">
+                    <div class="theme-card-name">Mario</div>
+                    <div class="theme-card-variant">Gaming</div>
+                </div>
+            </div>
+
+            <h3 class="la-h4 la-mb-4">Tech</h3>
+            <div class="theme-grid la-mb-8">
+                <div class="theme-card" data-theme="hacker">
+                    <div class="theme-card-name">Hacker</div>
+                    <div class="theme-card-variant">Matrix</div>
+                </div>
+                <div class="theme-card" data-theme="geek-dark">
+                    <div class="theme-card-name">Geek</div>
+                    <div class="theme-card-variant">Terminal</div>
+                </div>
+                <div class="theme-card" data-theme="mono-dark">
+                    <div class="theme-card-name">Mono</div>
+                    <div class="theme-card-variant">Minimal</div>
+                </div>
+            </div>
+
+            <h3 class="la-h4 la-mb-4">Nostalgie</h3>
+            <div class="theme-grid">
+                <div class="theme-card" data-theme="win95-dark">
+                    <div class="theme-card-name">Win95</div>
+                    <div class="theme-card-variant">Classic</div>
+                </div>
+                <div class="theme-card" data-theme="bsod">
+                    <div class="theme-card-name">BSOD</div>
+                    <div class="theme-card-variant">Error</div>
+                </div>
+                <div class="theme-card" data-theme="web90-dark">
+                    <div class="theme-card-name">Web90</div>
+                    <div class="theme-card-variant">GeoCities</div>
+                </div>
+                <div class="theme-card" data-theme="eco-dark">
+                    <div class="theme-card-name">Eco</div>
+                    <div class="theme-card-variant">Nature</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Colors Section -->
+    <section class="section">
+        <div class="la-container">
+            <h2 class="section-title">Couleurs OKLCH</h2>
+            <p class="section-description">Palette de couleurs perceptuellement uniforme utilisant l'espace colorimetrique OKLCH.</p>
+
+            <div class="component-grid">
+                <div class="component-box">
+                    <h3>Couleurs primaires</h3>
+                    <div class="color-palette">
+                        <div class="color-swatch" style="background: var(--la-primary);">Primary</div>
+                        <div class="color-swatch" style="background: var(--la-secondary);">Secondary</div>
+                        <div class="color-swatch" style="background: var(--la-accent);">Accent</div>
+                    </div>
+                </div>
+                <div class="component-box">
+                    <h3>Etats</h3>
+                    <div class="color-palette">
+                        <div class="color-swatch" style="background: var(--la-success);">Success</div>
+                        <div class="color-swatch" style="background: var(--la-warning);">Warning</div>
+                        <div class="color-swatch" style="background: var(--la-error);">Error</div>
+                        <div class="color-swatch" style="background: var(--la-info);">Info</div>
+                    </div>
+                </div>
+                <div class="component-box">
+                    <h3>Surfaces</h3>
+                    <div class="color-palette">
+                        <div class="color-swatch" style="background: var(--la-surface-0); color: var(--la-text);">0</div>
+                        <div class="color-swatch" style="background: var(--la-surface-1); color: var(--la-text);">1</div>
+                        <div class="color-swatch" style="background: var(--la-surface-2); color: var(--la-text);">2</div>
+                        <div class="color-swatch" style="background: var(--la-surface-3); color: var(--la-text);">3</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Buttons Section -->
+    <section class="section">
+        <div class="la-container">
+            <h2 class="section-title">Boutons</h2>
+            <p class="section-description">Boutons avec variantes de couleurs, tailles et etats.</p>
+
+            <div class="component-grid">
+                <div class="component-box">
+                    <h3>Variantes</h3>
+                    <div class="la-flex la-flex-wrap la-gap-3">
+                        <button class="la-btn">Default</button>
+                        <button class="la-btn primary">Primary</button>
+                        <button class="la-btn secondary">Secondary</button>
+                        <button class="la-btn success">Success</button>
+                        <button class="la-btn warning">Warning</button>
+                        <button class="la-btn danger">Danger</button>
+                        <button class="la-btn ghost">Ghost</button>
+                    </div>
+                </div>
+                <div class="component-box">
+                    <h3>Tailles</h3>
+                    <div class="la-flex la-items-center la-flex-wrap la-gap-3">
+                        <button class="la-btn primary sm">Small</button>
+                        <button class="la-btn primary">Medium</button>
+                        <button class="la-btn primary lg">Large</button>
+                    </div>
+                </div>
+                <div class="component-box">
+                    <h3>Avec icones</h3>
+                    <div class="la-flex la-flex-wrap la-gap-3">
+                        <button class="la-btn primary">
+                            <span class="la-icon sm">add</span>
+                            Creer
+                        </button>
+                        <button class="la-btn success">
+                            <span class="la-icon sm">check</span>
+                            Valider
+                        </button>
+                        <button class="la-btn danger">
+                            <span class="la-icon sm">delete</span>
+                            Supprimer
+                        </button>
+                        <button class="la-btn ghost">
+                            <span class="la-icon sm">settings</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="component-box">
+                    <h3>Etats</h3>
+                    <div class="la-flex la-flex-wrap la-gap-3">
+                        <button class="la-btn primary" disabled>Disabled</button>
+                        <button class="la-btn primary loading">Loading...</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cards Section -->
+    <section class="section">
+        <div class="la-container">
+            <h2 class="section-title">Cartes</h2>
+            <p class="section-description">Conteneurs flexibles pour afficher du contenu.</p>
+
+            <div class="component-grid">
+                <div class="la-card">
+                    <div class="la-card-header">
+                        <h3 class="la-card-title">Carte simple</h3>
+                    </div>
+                    <div class="la-card-body">
+                        <p>Contenu de la carte avec du texte descriptif. Les cartes peuvent contenir tout type de contenu.</p>
+                    </div>
+                    <div class="la-card-footer">
+                        <button class="la-btn primary sm">Action</button>
+                        <button class="la-btn ghost sm">Annuler</button>
+                    </div>
+                </div>
+
+                <a href="#" class="la-card interactive">
+                    <div class="la-card-body">
+                        <div class="la-flex la-items-center la-gap-4">
+                            <span class="la-icon xl" style="color: var(--la-primary);">article</span>
+                            <div>
+                                <h3 class="la-h4">Carte interactive</h3>
+                                <p class="la-text-muted la-text-sm">Cliquez pour plus de details</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <div class="la-card">
+                    <div class="la-card-body">
+                        <div class="la-flex la-items-center la-gap-3 la-mb-4">
+                            <div class="la-avatar">
+                                <span class="la-icon">person</span>
+                            </div>
+                            <div>
+                                <div class="la-font-semibold">John Doe</div>
+                                <div class="la-text-sm la-text-muted">Developpeur</div>
+                            </div>
+                        </div>
+                        <p class="la-text-secondary">Une carte avec un avatar et des informations utilisateur.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Badges Section -->
+    <section class="section">
+        <div class="la-container">
+            <h2 class="section-title">Badges</h2>
+            <p class="section-description">Etiquettes pour afficher des statuts ou des categories.</p>
+
+            <div class="component-box" style="max-width: 600px;">
+                <h3>Variantes</h3>
+                <div class="la-flex la-flex-wrap la-gap-3 la-mb-6">
+                    <span class="la-badge">Default</span>
+                    <span class="la-badge primary">Primary</span>
+                    <span class="la-badge secondary">Secondary</span>
+                    <span class="la-badge success">Success</span>
+                    <span class="la-badge warning">Warning</span>
+                    <span class="la-badge danger">Danger</span>
+                    <span class="la-badge info">Info</span>
+                </div>
+
+                <h3>Tailles</h3>
+                <div class="la-flex la-items-center la-flex-wrap la-gap-3 la-mb-6">
+                    <span class="la-badge sm primary">Small</span>
+                    <span class="la-badge primary">Medium</span>
+                    <span class="la-badge lg primary">Large</span>
+                </div>
+
+                <h3>Avec icones</h3>
+                <div class="la-flex la-flex-wrap la-gap-3">
+                    <span class="la-badge success">
+                        <span class="la-icon sm">check_circle</span>
+                        Publie
+                    </span>
+                    <span class="la-badge warning">
+                        <span class="la-icon sm">schedule</span>
+                        En attente
+                    </span>
+                    <span class="la-badge danger">
+                        <span class="la-icon sm">error</span>
+                        Erreur
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forms Section -->
+    <section class="section">
+        <div class="la-container">
+            <h2 class="section-title">Formulaires</h2>
+            <p class="section-description">Composants de formulaire accessibles et stylises.</p>
+
+            <div class="component-grid">
+                <div class="component-box">
+                    <h3>Champs de texte</h3>
+                    <div class="la-form-group">
+                        <label class="la-label">Email</label>
+                        <input type="email" class="la-input" placeholder="votre@email.com">
+                    </div>
+                    <div class="la-form-group">
+                        <label class="la-label">Mot de passe</label>
+                        <input type="password" class="la-input" placeholder="********">
+                        <span class="la-form-hint">Minimum 8 caracteres</span>
+                    </div>
+                    <div class="la-form-group">
+                        <label class="la-label">Desactive</label>
+                        <input type="text" class="la-input" disabled value="Non modifiable">
+                    </div>
+                </div>
+
+                <div class="component-box">
+                    <h3>Autres controles</h3>
+                    <div class="la-form-group">
+                        <label class="la-label">Selection</label>
+                        <select class="la-select">
+                            <option>Option 1</option>
+                            <option>Option 2</option>
+                            <option>Option 3</option>
+                        </select>
+                    </div>
+                    <div class="la-form-group">
+                        <label class="la-label">Message</label>
+                        <textarea class="la-textarea" rows="3" placeholder="Votre message..."></textarea>
+                    </div>
+                    <div class="la-form-group">
+                        <label class="la-flex la-items-center la-gap-2">
+                            <input type="checkbox" class="la-checkbox">
+                            <span>J'accepte les conditions</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alerts Section -->
+    <section class="section">
+        <div class="la-container">
+            <h2 class="section-title">Alertes</h2>
+            <p class="section-description">Messages de feedback pour l'utilisateur.</p>
+
+            <div style="max-width: 600px;">
+                <div class="la-alert la-mb-4">
+                    <span class="la-icon sm">info</span>
+                    Message d'information par defaut.
+                </div>
+                <div class="la-alert success la-mb-4">
+                    <span class="la-icon sm">check_circle</span>
+                    Operation reussie avec succes !
+                </div>
+                <div class="la-alert warning la-mb-4">
+                    <span class="la-icon sm">warning</span>
+                    Attention, cette action est irreversible.
+                </div>
+                <div class="la-alert error la-mb-4">
+                    <span class="la-icon sm">error</span>
+                    Une erreur est survenue. Veuillez reessayer.
+                </div>
+                <div class="la-alert info">
+                    <span class="la-icon sm">lightbulb</span>
+                    Astuce : utilisez les raccourcis clavier pour aller plus vite.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Syntax Section -->
+    <section class="section">
+        <div class="la-container">
+            <h2 class="section-title">Code & Syntaxe</h2>
+            <p class="section-description">Variables CSS pour la coloration syntaxique des blocs de code.</p>
+
+            <div class="component-grid">
+                <div class="component-box">
+                    <h3>Bloc de code</h3>
+                    <div class="code-block">
+<span class="keyword">const</span> <span class="function">ThemeSwitcher</span> = {
+    <span class="property">storageKey</span>: <span class="string">'lunar-theme'</span>,
+
+    <span class="function">setTheme</span>(name) {
+        <span class="keyword">document</span>.documentElement
+            .setAttribute(<span class="string">'data-theme'</span>, name);
+        <span class="keyword">localStorage</span>.setItem(
+            <span class="keyword">this</span>.storageKey, name
+        );
+    }
+};
+                    </div>
+                </div>
+                <div class="component-box">
+                    <h3>Code inline</h3>
+                    <p>Utilisez la variable <code style="background: var(--la-code-inline-bg); padding: 0.125rem 0.375rem; border-radius: var(--la-radius-sm); font-family: var(--la-font-mono);">--la-primary</code> pour la couleur principale.</p>
+                    <p class="la-mt-4">Executez <code style="background: var(--la-code-inline-bg); padding: 0.125rem 0.375rem; border-radius: var(--la-radius-sm); font-family: var(--la-font-mono);">git clone https://github.com/yrbane/lunar-aurora.git</code> pour installer.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Typography Section -->
+    <section class="section">
+        <div class="la-container">
+            <h2 class="section-title">Typographie</h2>
+            <p class="section-description">Hierarchie typographique avec la police du theme actif.</p>
+
+            <div class="component-box" style="max-width: 800px;">
+                <h1 class="la-h1 la-mb-4">Heading 1</h1>
+                <h2 class="la-h2 la-mb-4">Heading 2</h2>
+                <h3 class="la-h3 la-mb-4">Heading 3</h3>
+                <h4 class="la-h4 la-mb-4">Heading 4</h4>
+                <p class="la-mb-4">Paragraphe normal avec du texte standard. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+                <p class="la-text-secondary la-mb-4">Texte secondaire avec une couleur attenuee pour les informations moins importantes.</p>
+                <p class="la-text-muted la-text-sm">Petit texte muted pour les notes et annotations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Glow Effects Section -->
+    <section class="section">
+        <div class="la-container">
+            <h2 class="section-title">Effets Glow</h2>
+            <p class="section-description">Certains themes incluent des effets de lueur (glow) pour un look futuriste.</p>
+
+            <div class="glow-demo">
+                <span class="la-icon xl" style="color: var(--la-primary);">auto_awesome</span>
+                <h3 class="la-h3 la-mt-4">Effet Glow</h3>
+                <p class="la-text-secondary">Essayez les themes Cyberpunk, Hacker ou Aurora pour voir l'effet glow en action.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Utilities Section -->
+    <section class="section">
+        <div class="la-container">
+            <h2 class="section-title">Utilitaires</h2>
+            <p class="section-description">Classes utilitaires pour la mise en page rapide.</p>
+
+            <div class="component-grid">
+                <div class="component-box">
+                    <h3>Flexbox</h3>
+                    <div class="la-flex la-gap-2 la-mb-4" style="background: var(--la-surface-2); padding: var(--la-space-3); border-radius: var(--la-radius-md);">
+                        <div style="background: var(--la-primary); padding: var(--la-space-2); border-radius: var(--la-radius-sm);">1</div>
+                        <div style="background: var(--la-primary); padding: var(--la-space-2); border-radius: var(--la-radius-sm);">2</div>
+                        <div style="background: var(--la-primary); padding: var(--la-space-2); border-radius: var(--la-radius-sm);">3</div>
+                    </div>
+                    <code class="la-text-sm">.la-flex .la-gap-2</code>
+                </div>
+
+                <div class="component-box">
+                    <h3>Espacement</h3>
+                    <div class="la-p-4 la-mb-4" style="background: var(--la-surface-2); border-radius: var(--la-radius-md);">
+                        <div class="la-p-4" style="background: var(--la-primary); border-radius: var(--la-radius-sm); text-align: center;">.la-p-4</div>
+                    </div>
+                    <code class="la-text-sm">.la-p-4 .la-m-4 .la-mt-8 .la-px-6</code>
+                </div>
+
+                <div class="component-box">
+                    <h3>Texte</h3>
+                    <p class="la-text-center la-mb-2">.la-text-center</p>
+                    <p class="la-text-right la-mb-2">.la-text-right</p>
+                    <p class="la-font-bold la-mb-2">.la-font-bold</p>
+                    <p class="la-text-muted">.la-text-muted</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p class="la-mb-4">
+            <strong>Lunar Aurora</strong> - Framework CSS moderne
+        </p>
+        <p class="la-text-secondary la-text-sm">
+            <a href="https://github.com/yrbane/lunar-aurora">GitHub</a> |
+            <a href="https://github.com/yrbane/lunar-quanta">Lunar Quanta</a> |
+            MIT License
+        </p>
+    </footer>
+
+    <script src="../src/theme-switcher.js"></script>
+    <script>
+        // Initialize theme switcher
+        if (typeof ThemeSwitcher !== 'undefined') {
+            ThemeSwitcher.init();
+        }
+
+        // Theme cards click handler
+        document.querySelectorAll('.theme-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const theme = card.dataset.theme;
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('lunar-theme', theme);
+
+                // Update active state
+                document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+            });
+        });
+
+        // Set initial active theme card
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const activeCard = document.querySelector(`.theme-card[data-theme="${currentTheme}"]`);
+        if (activeCard) activeCard.classList.add('active');
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('lunar-theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+            const savedCard = document.querySelector(`.theme-card[data-theme="${savedTheme}"]`);
+            if (savedCard) savedCard.classList.add('active');
+        }
+    </script>
+</body>
+</html>
