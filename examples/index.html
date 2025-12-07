@@ -52,15 +52,19 @@
             font-family: var(--la-font-display);
             line-height: 1.1;
             text-wrap: balance;
+            color: white; /* Force white for contrast against hero bg */
+            text-shadow: 0 4px 12px rgba(0,0,0,0.3); /* Enhance readability */
         }
 
         .showcase-subtitle {
             font-size: clamp(1.1rem, 2vw, var(--la-text-xl));
-            opacity: 0.9;
+            opacity: 0.95;
             max-width: 700px;
             margin: 0 auto var(--la-space-8);
             line-height: 1.6;
             text-wrap: pretty;
+            color: rgba(255, 255, 255, 0.9); /* Force light color */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .section {
@@ -282,6 +286,35 @@
             </a>
         </div>
     </header>
+
+    <!-- Installation Quick Start -->
+    <section class="la-section sm la-bg-surface-1">
+        <div class="la-container">
+            <div class="la-grid md:cols-2 la-gap-8 la-items-center">
+                <div>
+                    <h2 class="la-h3 la-mb-4">Démarrage rapide</h2>
+                    <p class="la-text-secondary la-mb-4">
+                        Installez Lunar Aurora via NPM ou utilisez le CDN pour démarrer en quelques secondes.
+                        Framework agnostique : fonctionne avec React, Vue, Svelte ou HTML pur.
+                    </p>
+                    <div class="la-flex la-gap-3">
+                        <a href="#" class="la-btn outline secondary sm">Documentation complète</a>
+                    </div>
+                </div>
+                <div class="code-block la-m-0 la-shadow-lg">
+                    <div class="la-flex la-justify-between la-text-xs la-text-muted la-mb-2">
+                        <span>Terminal</span>
+                        <span>bash</span>
+                    </div>
+<span class="comment"># Via NPM</span>
+<span class="keyword">npm</span> install lunar-aurora
+
+<span class="comment"># Import CSS</span>
+<span class="keyword">@import</span> <span class="string">'lunar-aurora/dist/aurora.min.css'</span>;
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Theme Switcher Section -->
     <section id="themes" class="section">
