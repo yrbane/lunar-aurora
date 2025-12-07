@@ -8,9 +8,11 @@
     "src/**/*.css",
     "dist/**/*.css"
   ],
+  "type": "module",
   "scripts": {
-    "build": "postcss src/aurora.css -o dist/aurora.min.css",
-    "watch": "postcss src/aurora.css -o dist/aurora.min.css --watch"
+    "dev": "vite",
+    "build": "postcss src/aurora.css -o dist/aurora.min.css --env production",
+    "preview": "vite preview"
   },
   "repository": {
     "type": "git",
@@ -38,6 +40,8 @@
     "cssnano": "^6.0.1",
     "postcss": "^8.4.31",
     "postcss-cli": "^10.1.0",
-    "postcss-import": "^15.1.0"
+    "postcss-import": "^15.1.0",
+    "postcss-preset-env": "^10.5.0",
+    "vite": "^7.2.6"
   }
 }
