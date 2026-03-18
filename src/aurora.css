@@ -66,3 +66,6 @@
 
 /* Utilities - atomic helper classes */
 @import url('./utilities.css') layer(utilities);
+
+/* Extended utilities - gap, transitions, hover, glassmorphism, recipe components */
+@import url('./extended.css') layer(utilities);

@@ -1,0 +1,360 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   LUNAR AURORA — Extended Utilities
+   Gap, transition, hover, focus, interaction, and food/recipe patterns.
+   Added as part of the recipe-scraper project contribution.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Gap Utilities ──────────────────────────────────────────────────── */
+
+.la-gap-0  { gap: 0; }
+.la-gap-1  { gap: 0.25rem; }
+.la-gap-2  { gap: 0.5rem; }
+.la-gap-3  { gap: 0.75rem; }
+.la-gap-4  { gap: 1rem; }
+.la-gap-5  { gap: 1.25rem; }
+.la-gap-6  { gap: 1.5rem; }
+.la-gap-8  { gap: 2rem; }
+.la-gap-10 { gap: 2.5rem; }
+.la-gap-12 { gap: 3rem; }
+
+.la-gap-x-2 { column-gap: 0.5rem; }
+.la-gap-x-4 { column-gap: 1rem; }
+.la-gap-x-6 { column-gap: 1.5rem; }
+.la-gap-y-2 { row-gap: 0.5rem; }
+.la-gap-y-4 { row-gap: 1rem; }
+.la-gap-y-6 { row-gap: 1.5rem; }
+
+/* ── Transition Utilities ───────────────────────────────────────────── */
+
+.la-transition-none     { transition: none; }
+.la-transition-all      { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.la-transition-colors   { transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease; }
+.la-transition-opacity  { transition: opacity 0.3s ease; }
+.la-transition-shadow   { transition: box-shadow 0.3s ease; }
+.la-transition-transform { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+.la-duration-75   { transition-duration: 75ms; }
+.la-duration-100  { transition-duration: 100ms; }
+.la-duration-150  { transition-duration: 150ms; }
+.la-duration-200  { transition-duration: 200ms; }
+.la-duration-300  { transition-duration: 300ms; }
+.la-duration-500  { transition-duration: 500ms; }
+.la-duration-700  { transition-duration: 700ms; }
+.la-duration-1000 { transition-duration: 1000ms; }
+
+.la-ease-linear  { transition-timing-function: linear; }
+.la-ease-in      { transition-timing-function: cubic-bezier(0.4, 0, 1, 1); }
+.la-ease-out     { transition-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+.la-ease-in-out  { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+.la-ease-spring  { transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+.la-delay-75   { transition-delay: 75ms; }
+.la-delay-100  { transition-delay: 100ms; }
+.la-delay-150  { transition-delay: 150ms; }
+.la-delay-200  { transition-delay: 200ms; }
+.la-delay-300  { transition-delay: 300ms; }
+.la-delay-500  { transition-delay: 500ms; }
+
+/* ── Hover Interaction Utilities ────────────────────────────────────── */
+
+.la-hover-lift {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+.la-hover-lift:hover,
+.la-hover-lift:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: var(--la-shadow-lg, 0 10px 25px oklch(0% 0 0 / 0.15));
+}
+
+.la-hover-grow {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.la-hover-grow:hover,
+.la-hover-grow:focus-visible {
+  transform: scale(1.05);
+}
+
+.la-hover-glow {
+  transition: box-shadow 0.3s ease;
+}
+.la-hover-glow:hover,
+.la-hover-glow:focus-visible {
+  box-shadow: 0 0 20px oklch(from var(--la-primary) l c h / 0.3);
+}
+
+.la-hover-brightness {
+  transition: filter 0.3s ease;
+}
+.la-hover-brightness:hover {
+  filter: brightness(1.15);
+}
+
+.la-hover-dim {
+  transition: opacity 0.2s ease;
+}
+.la-hover-dim:hover {
+  opacity: 0.7;
+}
+
+/* Active press feedback */
+.la-press:active {
+  transform: scale(0.96);
+  transition: transform 0.1s ease;
+}
+
+/* ── Focus Utilities ────────────────────────────────────────────────── */
+
+.la-focus-ring:focus-visible {
+  outline: 3px solid var(--la-primary);
+  outline-offset: 2px;
+}
+
+.la-focus-glow:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px oklch(from var(--la-primary) l c h / 0.25);
+}
+
+/* ── Text Utilities ─────────────────────────────────────────────────── */
+
+.la-text-balance    { text-wrap: balance; }
+.la-text-pretty     { text-wrap: pretty; }
+.la-text-truncate   { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.la-text-clamp-2    { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.la-text-clamp-3    { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.la-text-gradient    {
+  background: linear-gradient(135deg, var(--la-primary), var(--la-accent, var(--la-secondary)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.la-tabular-nums    { font-variant-numeric: tabular-nums; }
+.la-font-display    { font-family: var(--la-font-display, var(--la-font-sans)); }
+
+/* ── Aspect Ratio Extras ────────────────────────────────────────────── */
+
+.la-aspect-card     { aspect-ratio: 16 / 10; }
+.la-aspect-hero     { aspect-ratio: 21 / 9; }
+.la-aspect-thumb    { aspect-ratio: 4 / 3; }
+
+/* ── Glassmorphism ──────────────────────────────────────────────────── */
+
+.la-glass {
+  background: oklch(from var(--la-surface-1) l c h / 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid oklch(from var(--la-border) l c h / 0.3);
+}
+
+.la-glass-strong {
+  background: oklch(from var(--la-surface-1) l c h / 0.85);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid oklch(from var(--la-border) l c h / 0.4);
+}
+
+/* ── Scroll Utilities ───────────────────────────────────────────────── */
+
+.la-scroll-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.la-scroll-x::-webkit-scrollbar { display: none; }
+
+.la-snap-start { scroll-snap-align: start; }
+.la-snap-center { scroll-snap-align: center; }
+
+/* ── Skeleton Shimmer ───────────────────────────────────────────────── */
+
+.la-shimmer {
+  background: linear-gradient(
+    90deg,
+    oklch(from var(--la-surface-2) l c h / 0) 0%,
+    oklch(from var(--la-surface-2) l c h / 0.5) 50%,
+    oklch(from var(--la-surface-2) l c h / 0) 100%
+  );
+  background-size: 400% 100%;
+  animation: la-shimmer 1.8s ease infinite;
+}
+
+@keyframes la-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Food/Recipe Specific Components ────────────────────────────────── */
+
+/* Recipe card with image overlay */
+.la-recipe-card {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+.la-recipe-card:hover,
+.la-recipe-card:focus-within {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px oklch(0% 0 0 / 0.2);
+}
+
+.la-recipe-card-img {
+  position: relative;
+  overflow: hidden;
+}
+.la-recipe-card-img img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.la-recipe-card:hover .la-recipe-card-img img,
+.la-recipe-card:focus-within .la-recipe-card-img img {
+  transform: scale(1.08);
+}
+
+.la-recipe-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, oklch(0% 0 0 / 0.7) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.la-recipe-card-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+}
+
+/* Ingredient checklist */
+.la-ingredient-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--la-radius-sm, 6px);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  user-select: none;
+}
+.la-ingredient-row:nth-child(even) {
+  background: oklch(from var(--la-surface-1) l c h / 0.3);
+}
+.la-ingredient-row:hover {
+  background: oklch(from var(--la-surface-2) l c h / 0.5);
+}
+.la-ingredient-row[aria-checked="true"] {
+  opacity: 0.5;
+}
+.la-ingredient-row[aria-checked="true"] .la-ingredient-name {
+  text-decoration: line-through;
+  text-decoration-color: var(--la-primary);
+  text-decoration-thickness: 2px;
+}
+
+/* Step with connector */
+.la-step {
+  display: flex;
+  gap: 1.25rem;
+  position: relative;
+}
+.la-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 22px;
+  top: 48px;
+  bottom: -12px;
+  width: 2px;
+  background: oklch(from var(--la-border) l c h / 0.2);
+}
+.la-step-number {
+  min-width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  background: var(--la-primary);
+  color: white;
+  box-shadow: 0 2px 8px oklch(from var(--la-primary) l c h / 0.3);
+}
+
+/* Rating stars */
+.la-stars {
+  color: oklch(80% 0.18 85);
+  letter-spacing: 2px;
+  font-size: 1rem;
+}
+
+/* Ken Burns hero image effect */
+.la-ken-burns {
+  overflow: hidden;
+}
+.la-ken-burns img {
+  animation: la-ken-burns 12s ease alternate infinite;
+}
+@keyframes la-ken-burns {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.1) translate(-2%, -1%); }
+}
+
+/* Cooking timer ring */
+.la-timer-ring {
+  transform: rotate(-90deg);
+}
+.la-timer-ring circle {
+  transition: stroke-dashoffset 1s linear;
+}
+
+/* Filter chip group */
+.la-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.la-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1.5px solid oklch(from var(--la-border) l c h / 0.4);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+}
+.la-chip:hover {
+  border-color: var(--la-primary);
+  color: var(--la-primary);
+}
+.la-chip[aria-pressed="true"],
+.la-chip.active {
+  background: var(--la-primary);
+  border-color: var(--la-primary);
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Hero gradient overlay */
+.la-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    oklch(0% 0 0 / 0.85) 0%,
+    oklch(0% 0 0 / 0.5) 40%,
+    oklch(0% 0 0 / 0.2) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
