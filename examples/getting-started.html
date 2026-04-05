@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started — Lunar Aurora</title>
+<meta name="description" content="Guide de démarrage rapide pour Lunar Aurora, le framework CSS moderne.">
+<link rel="icon" href="images/mooncat.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   LUNAR AURORA — GETTING STARTED
+   Guide d'installation sobre et lisible, cohérent avec la landing
+   ═══════════════════════════════════════════════════════════════ */
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family:'Space Grotesk',system-ui,sans-serif;
+  background:#030308;
+  color:#e0e0f0;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  line-height:1.6;
+}
+
+/* ─── CANVAS ÉTOILES (allégé) ─── */
+#starfield {
+  position:fixed;
+  top:0; left:0;
+  width:100vw; height:100vh;
+  z-index:0;
+  pointer-events:none;
+  opacity:0.5;
+}
+
+/* ─── NAV ─── */
+.nav {
+  position:fixed; top:20px; left:50%; transform:translateX(-50%);
+  z-index:100; display:flex; align-items:center; gap:24px;
+  padding:10px 28px;
+  background:rgba(3,3,8,0.4);
+  backdrop-filter:blur(24px) saturate(1.4);
+  -webkit-backdrop-filter:blur(24px) saturate(1.4);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:100px;
+  transition:all 0.5s cubic-bezier(.4,0,.2,1);
+}
+.nav.scrolled {
+  background:rgba(3,3,8,0.92);
+  border-color:rgba(255,255,255,0.1);
+  box-shadow:0 8px 32px rgba(0,0,0,0.6);
+}
+.nav-logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+.nav-logo img {
+  width:28px; height:28px;
+  filter:drop-shadow(0 0 8px rgba(124,58,237,0.6));
+  transition:filter 0.3s;
+}
+.nav-logo:hover img { filter:drop-shadow(0 0 14px rgba(124,58,237,0.9)); }
+.nav-logo span {
+  font-weight:600; font-size:.9rem;
+  background:linear-gradient(135deg,#b390ff,#5ce0d8);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.nav-links { display:flex; gap:20px; font-size:.8rem; }
+.nav-links a {
+  color:rgba(255,255,255,0.4); text-decoration:none;
+  transition:color 0.3s; position:relative;
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px;
+  background:linear-gradient(90deg,#7c3aed,#06b6d4);
+  transition:width 0.3s;
+}
+.nav-links a:hover { color:rgba(255,255,255,0.9); }
+.nav-links a:hover::after { width:100%; }
+.nav-links a.active { color:rgba(255,255,255,0.9); }
+.nav-links a.active::after { width:100%; }
+
+/* ─── HERO COMPACT ─── */
+.hero {
+  position:relative;
+  padding:140px 24px 80px;
+  text-align:center;
+  z-index:1;
+}
+.hero-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:7px 16px; border-radius:100px;
+  background:rgba(124,58,237,.08);
+  border:1px solid rgba(124,58,237,.18);
+  font-size:.73rem; color:#b390ff;
+  margin-bottom:28px; letter-spacing:1.5px;
+  opacity:0; transform:translateY(24px);
+  animation:fade-up .7s .2s forwards;
+}
+.hero-badge .dot {
+  width:6px; height:6px; border-radius:50%;
+  background:#7c3aed; animation:pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+.hero h1 {
+  font-size:clamp(2.4rem,5vw,4rem);
+  font-weight:700; letter-spacing:-2px;
+  margin-bottom:16px;
+  opacity:0; transform:translateY(32px);
+  animation:fade-up .7s .35s forwards;
+}
+.hero h1 .grad {
+  background:linear-gradient(135deg,#fff 0%,#b390ff 45%,#5ce0d8 100%);
+  background-size:200% 200%;
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  animation:grad-shift 6s ease infinite;
+}
+@keyframes grad-shift {
+  0%,100%{background-position:0% 50%} 50%{background-position:100% 50%}
+}
+.hero-sub {
+  font-size:1.1rem; color:rgba(255,255,255,.38);
+  margin-bottom:0; font-weight:300;
+  opacity:0; transform:translateY(32px);
+  animation:fade-up .7s .5s forwards;
+}
+.hero-sub .highlight {
+  color:#5ce0d8; font-weight:500;
+}
+@keyframes fade-up { to{opacity:1;transform:translateY(0)} }
+
+/* Aurora blobs allégés pour doc */
+.aurora {
+  position:absolute; border-radius:50%;
+  filter:blur(120px); pointer-events:none; z-index:0;
+}
+.a1 {
+  width:600px; height:400px; top:-10%; left:-8%;
+  background:radial-gradient(ellipse,rgba(124,58,237,.14),transparent);
+}
+.a2 {
+  width:500px; height:350px; top:0; right:-10%;
+  background:radial-gradient(ellipse,rgba(6,182,212,.1),transparent);
+}
+
+/* ─── LAYOUT PRINCIPAL ─── */
+.page-content {
+  position:relative; z-index:1;
+  max-width:860px; margin:0 auto;
+  padding:0 24px 80px;
+}
+
+/* ─── SECTIONS ─── */
+.doc-section {
+  margin-bottom:72px;
+}
+
+.section-label {
+  display:inline-block; padding:4px 12px; border-radius:100px;
+  font-size:.68rem; letter-spacing:2px; text-transform:uppercase;
+  background:rgba(124,58,237,.07);
+  border:1px solid rgba(124,58,237,.14);
+  color:#b390ff; margin-bottom:16px;
+}
+
+.doc-section h2 {
+  font-size:1.7rem; font-weight:700;
+  letter-spacing:-0.8px; margin-bottom:12px;
+  color:#fff;
+}
+
+.doc-section p {
+  color:rgba(255,255,255,.45);
+  font-size:.95rem; line-height:1.75;
+  margin-bottom:20px;
+}
+
+/* ─── BLOC DE CODE ─── */
+.code-wrap {
+  position:relative;
+  border-radius:16px;
+  background:rgba(8,8,18,.85);
+  border:1px solid rgba(255,255,255,.055);
+  overflow:hidden;
+  backdrop-filter:blur(16px);
+  box-shadow:0 20px 50px rgba(0,0,0,.45);
+  margin-bottom:20px;
+}
+
+/* Barre de titre du code */
+.code-bar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 18px;
+  background:rgba(255,255,255,.025);
+  border-bottom:1px solid rgba(255,255,255,.04);
+  font-size:.72rem; color:rgba(255,255,255,.28);
+  font-family:'JetBrains Mono',monospace;
+}
+.code-bar-dots { display:flex; gap:6px; }
+.code-dot {
+  width:10px; height:10px; border-radius:50%;
+}
+.code-dot-r { background:#ff5f57; }
+.code-dot-y { background:#febc2e; }
+.code-dot-g { background:#28c840; }
+
+/* Bouton copier */
+.copy-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:5px 12px; border-radius:8px;
+  background:rgba(124,58,237,.1);
+  border:1px solid rgba(124,58,237,.2);
+  color:#b390ff; font-size:.72rem;
+  font-family:'Space Grotesk',sans-serif;
+  cursor:pointer; transition:all .25s;
+  user-select:none;
+}
+.copy-btn:hover {
+  background:rgba(124,58,237,.2);
+  border-color:rgba(124,58,237,.4);
+  color:#c4a9ff;
+}
+.copy-btn.copied {
+  background:rgba(6,182,212,.1);
+  border-color:rgba(6,182,212,.3);
+  color:#5ce0d8;
+}
+.copy-btn svg { width:13px; height:13px; flex-shrink:0; }
+
+.code-body {
+  padding:22px 24px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.83rem; line-height:1.9;
+  overflow-x:auto;
+}
+
+/* Coloration syntaxique */
+.ck { color:#c678dd; }
+.cs { color:#98c379; }
+.cf { color:#61afef; }
+.cc { color:#5c6370; font-style:italic; }
+.cv { color:#e5c07b; }
+.ct { color:#e06c75; }
+.cn { color:#e0e0f0; }
+
+/* Inline code */
+code {
+  font-family:'JetBrains Mono',monospace;
+  font-size:.82em;
+  background:rgba(124,58,237,.1);
+  border:1px solid rgba(124,58,237,.15);
+  border-radius:5px;
+  padding:2px 7px;
+  color:#b390ff;
+}
+
+/* ─── INSTALL INLINE (une ligne + bouton copier) ─── */
+.install-line {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:16px; padding:18px 24px;
+}
+.install-cmd {
+  font-family:'JetBrains Mono',monospace;
+  font-size:.9rem; color:#e0e0f0;
+}
+.install-cmd .prompt { color:#5ce0d8; margin-right:10px; }
+
+/* ─── ÉTAPES NUMÉROTÉES ─── */
+.steps {
+  display:flex; flex-direction:column; gap:0;
+}
+.step {
+  display:flex; gap:20px; align-items:flex-start;
+  padding:24px 0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.step:last-child { border-bottom:none; }
+.step-n {
+  width:32px; height:32px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.75rem; font-weight:700;
+  background:rgba(124,58,237,.08);
+  border:1px solid rgba(124,58,237,.18);
+  color:#b390ff; flex-shrink:0; margin-top:2px;
+}
+.step-content h3 {
+  font-size:.95rem; font-weight:600; margin-bottom:6px; color:#fff;
+}
+.step-content p {
+  font-size:.88rem; color:rgba(255,255,255,.4);
+  margin-bottom:12px; line-height:1.65;
+}
+
+/* ─── GRID THÈMES ─── */
+.themes-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(160px,1fr));
+  gap:12px;
+  margin-top:24px;
+}
+.theme-card {
+  padding:16px; border-radius:14px;
+  background:rgba(255,255,255,.018);
+  border:1px solid rgba(255,255,255,.055);
+  cursor:pointer; transition:all .3s;
+  position:relative; overflow:hidden;
+}
+.theme-card:hover {
+  border-color:rgba(255,255,255,.12);
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(0,0,0,.4);
+}
+.theme-card .tc-swatch {
+  width:36px; height:36px; border-radius:10px;
+  margin-bottom:10px;
+  transition:transform .3s;
+}
+.theme-card:hover .tc-swatch { transform:scale(1.1); }
+.theme-card .tc-name {
+  font-size:.82rem; font-weight:600; color:#fff; margin-bottom:3px;
+}
+.theme-card .tc-desc {
+  font-size:.72rem; color:rgba(255,255,255,.3);
+}
+.theme-card .tc-tag {
+  position:absolute; top:10px; right:10px;
+  font-size:.6rem; padding:2px 7px; border-radius:100px;
+  background:rgba(124,58,237,.15);
+  border:1px solid rgba(124,58,237,.2);
+  color:#b390ff; font-family:'JetBrains Mono',monospace;
+}
+
+/* ─── RENDU DU COMPOSANT ─── */
+.component-preview {
+  padding:32px;
+  background:rgba(255,255,255,.012);
+  border:1px solid rgba(255,255,255,.04);
+  border-radius:0 0 16px 16px;
+  display:flex; gap:16px; align-items:center; flex-wrap:wrap;
+}
+
+/* Boutons preview (reproduit les classes la-btn) */
+.la-btn-preview {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:10px 22px; border-radius:10px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.88rem; font-weight:600;
+  cursor:pointer; text-decoration:none;
+  transition:all .3s; border:none;
+}
+.la-btn-primary {
+  background:linear-gradient(135deg,#7c3aed,#06b6d4);
+  color:#fff;
+  box-shadow:0 0 20px rgba(124,58,237,.25);
+}
+.la-btn-primary:hover {
+  transform:translateY(-2px);
+  box-shadow:0 0 36px rgba(124,58,237,.45);
+}
+.la-btn-ghost {
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.65);
+}
+.la-btn-ghost:hover {
+  background:rgba(255,255,255,.08);
+  border-color:rgba(255,255,255,.2);
+  color:#fff; transform:translateY(-2px);
+}
+.la-btn-outline {
+  background:transparent;
+  border:1px solid rgba(124,58,237,.4);
+  color:#b390ff;
+}
+.la-btn-outline:hover {
+  background:rgba(124,58,237,.08);
+  border-color:#b390ff; transform:translateY(-2px);
+}
+
+/* Card preview */
+.la-card-preview {
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:14px; padding:20px;
+  width:200px; flex-shrink:0;
+}
+.la-card-preview .card-title {
+  font-size:.9rem; font-weight:600; margin-bottom:6px;
+  background:linear-gradient(135deg,#b390ff,#5ce0d8);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.la-card-preview .card-body {
+  font-size:.78rem; color:rgba(255,255,255,.35); line-height:1.6;
+}
+
+/* ─── SÉPARATEUR ─── */
+.divider {
+  border:none;
+  border-top:1px solid rgba(255,255,255,.04);
+  margin:0 0 72px;
+}
+
+/* ─── CTA FINAL ─── */
+.cta-section {
+  text-align:center;
+  padding:64px 24px;
+  border-radius:24px;
+  background:rgba(124,58,237,.03);
+  border:1px solid rgba(124,58,237,.08);
+  position:relative; overflow:hidden;
+  margin-bottom:0;
+}
+.cta-section::before {
+  content:''; position:absolute; top:-1px; left:50%; transform:translateX(-50%);
+  width:180px; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(124,58,237,.4),transparent);
+}
+.cta-section img {
+  width:72px; margin:0 auto 20px; display:block;
+  filter:drop-shadow(0 0 20px rgba(124,58,237,.5)) drop-shadow(0 0 40px rgba(6,182,212,.2));
+  animation:mc-float 5s ease-in-out infinite;
+}
+@keyframes mc-float {
+  0%,100%{transform:translateY(0) rotate(0)}
+  40%{transform:translateY(-12px) rotate(2deg)}
+  70%{transform:translateY(7px) rotate(-1.5deg)}
+}
+.cta-section h2 {
+  font-size:1.8rem; font-weight:700; letter-spacing:-1px;
+  margin-bottom:10px;
+}
+.cta-section p {
+  color:rgba(255,255,255,.35); margin-bottom:28px; font-size:.95rem;
+}
+.cta-actions {
+  display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
+}
+.btn {
+  padding:12px 26px; border-radius:12px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.88rem; font-weight:600;
+  cursor:pointer; text-decoration:none;
+  transition:all .3s; border:none;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.btn-glow {
+  background:linear-gradient(135deg,#7c3aed,#06b6d4);
+  color:#fff;
+  box-shadow:0 0 24px rgba(124,58,237,.28);
+}
+.btn-glow:hover {
+  transform:translateY(-3px);
+  box-shadow:0 0 40px rgba(124,58,237,.5);
+}
+.btn-ghost {
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  color:rgba(255,255,255,.55);
+}
+.btn-ghost:hover {
+  border-color:rgba(255,255,255,.2); color:#fff;
+  background:rgba(255,255,255,.06); transform:translateY(-2px);
+}
+
+/* ─── SCROLL REVEAL ─── */
+.rv {
+  opacity:0; transform:translateY(50px);
+  transition:opacity .7s cubic-bezier(.4,0,.2,1), transform .7s cubic-bezier(.4,0,.2,1);
+}
+.rv.vis { opacity:1; transform:none; }
+.st2 { transition-delay:.1s; }
+.st3 { transition-delay:.2s; }
+.st4 { transition-delay:.3s; }
+
+/* ─── FOOTER ─── */
+footer {
+  text-align:center; padding:40px 24px;
+  font-size:.78rem; color:rgba(255,255,255,.18);
+  border-top:1px solid rgba(255,255,255,.04);
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  flex-wrap:wrap;
+  position:relative; z-index:1;
+}
+footer img { width:18px; opacity:.35; }
+footer span { color:rgba(255,255,255,.12); }
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:640px) {
+  .nav { padding:8px 14px; gap:12px; }
+  .nav-links { display:none; }
+  .hero h1 { letter-spacing:-1px; }
+  .install-line { flex-wrap:wrap; gap:12px; }
+  .themes-grid { grid-template-columns:1fr 1fr; }
+}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+  }
+  #starfield { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Étoiles en fond allégé -->
+<canvas id="starfield"></canvas>
+
+<!-- NAV identique à la landing -->
+<nav class="nav" id="nav">
+  <a class="nav-logo" href="landing.html">
+    <img src="images/mooncat.png" alt="Mooncat">
+    <span>Lunar Aurora</span>
+  </a>
+  <div class="nav-links">
+    <a href="landing.html#features">Features</a>
+    <a href="#" class="active">Quick Start</a>
+    <a href="docs.html">Docs</a>
+    <a href="https://github.com/yrbane/lunar-aurora" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</nav>
+
+<!-- HERO COMPACT -->
+<section class="hero">
+  <div class="aurora a1"></div>
+  <div class="aurora a2"></div>
+
+  <div class="hero-badge"><span class="dot"></span> Guide de démarrage</div>
+  <h1><span class="grad">Getting Started</span></h1>
+  <p class="hero-sub">Prêt en <span class="highlight">30 secondes</span> — aucune configuration requise</p>
+</section>
+
+<!-- CONTENU PRINCIPAL -->
+<main class="page-content">
+
+  <!-- ══════════════════════════
+       1. INSTALLATION
+       ══════════════════════════ -->
+  <section class="doc-section rv" id="installation">
+    <span class="section-label">01 — Installation</span>
+    <h2>Installer Lunar Aurora</h2>
+    <p>Ajoutez Lunar Aurora à votre projet via npm. Aucune dépendance externe requise.</p>
+
+    <div class="code-wrap">
+      <div class="code-bar">
+        <div class="code-bar-dots">
+          <span class="code-dot code-dot-r"></span>
+          <span class="code-dot code-dot-y"></span>
+          <span class="code-dot code-dot-g"></span>
+        </div>
+        <span>terminal</span>
+        <button class="copy-btn" data-copy="npm install lunar-aurora" aria-label="Copier la commande">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          Copier
+        </button>
+      </div>
+      <div class="install-line">
+        <span class="install-cmd">
+          <span class="prompt">❯</span>npm install lunar-aurora
+        </span>
+      </div>
+    </div>
+
+    <p>Ou via yarn / pnpm :</p>
+    <div class="code-wrap">
+      <div class="code-bar">
+        <div class="code-bar-dots">
+          <span class="code-dot code-dot-r"></span>
+          <span class="code-dot code-dot-y"></span>
+          <span class="code-dot code-dot-g"></span>
+        </div>
+        <span>terminal</span>
+        <button class="copy-btn" data-copy="yarn add lunar-aurora" aria-label="Copier la commande yarn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          Copier
+        </button>
+      </div>
+      <div class="code-body" style="padding:16px 24px; line-height:1.6;">
+        <div><span class="install-cmd"><span class="prompt" style="color:#5ce0d8;margin-right:10px">❯</span>yarn add lunar-aurora</span></div>
+        <div><span class="install-cmd"><span class="prompt" style="color:#5ce0d8;margin-right:10px">❯</span>pnpm add lunar-aurora</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════
+       2. IMPORT
+       ══════════════════════════ -->
+  <section class="doc-section rv st2" id="import">
+    <span class="section-label">02 — Import</span>
+    <h2>Importer le framework</h2>
+    <p>Importez le CSS et le module JS dans votre point d'entrée. Fonctionne avec Vite, Webpack, Rollup et tous les bundlers modernes.</p>
+
+    <div class="code-wrap">
+      <div class="code-bar">
+        <div class="code-bar-dots">
+          <span class="code-dot code-dot-r"></span>
+          <span class="code-dot code-dot-y"></span>
+          <span class="code-dot code-dot-g"></span>
+        </div>
+        <span>main.js</span>
+        <button class="copy-btn"
+          data-copy="// Styles du framework
+import 'lunar-aurora/dist/aurora.min.css'
+
+// Module JS (thèmes, composants interactifs)
+import LunarAurora from 'lunar-aurora'
+
+// Initialisation
+LunarAurora.init()"
+          aria-label="Copier le code d'import">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          Copier
+        </button>
+      </div>
+      <div class="code-body">
+        <div><span class="cc">// Styles du framework</span></div>
+        <div><span class="ck">import</span> <span class="cs">'lunar-aurora/dist/aurora.min.css'</span></div>
+        <div>&nbsp;</div>
+        <div><span class="cc">// Module JS (thèmes, composants interactifs)</span></div>
+        <div><span class="ck">import</span> <span class="cv">LunarAurora</span> <span class="ck">from</span> <span class="cs">'lunar-aurora'</span></div>
+        <div>&nbsp;</div>
+        <div><span class="cc">// Initialisation</span></div>
+        <div><span class="cv">LunarAurora</span><span class="cn">.</span><span class="cf">init</span><span class="cn">()</span></div>
+      </div>
+    </div>
+
+    <p>Vous pouvez également utiliser le CDN sans bundler :</p>
+    <div class="code-wrap">
+      <div class="code-bar">
+        <div class="code-bar-dots">
+          <span class="code-dot code-dot-r"></span>
+          <span class="code-dot code-dot-y"></span>
+          <span class="code-dot code-dot-g"></span>
+        </div>
+        <span>index.html</span>
+        <button class="copy-btn"
+          data-copy='<link rel="stylesheet" href="https://unpkg.com/lunar-aurora/dist/aurora.min.css">
+<script type="module" src="https://unpkg.com/lunar-aurora/dist/aurora.esm.js"></script>'
+          aria-label="Copier le code CDN">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          Copier
+        </button>
+      </div>
+      <div class="code-body">
+        <div>
+          <span class="ct">&lt;link</span>
+          <span class="cv"> rel</span><span class="cn">=</span><span class="cs">"stylesheet"</span>
+          <span class="cv"> href</span><span class="cn">=</span><span class="cs">"https://unpkg.com/lunar-aurora/dist/aurora.min.css"</span>
+          <span class="ct">&gt;</span>
+        </div>
+        <div>
+          <span class="ct">&lt;script</span>
+          <span class="cv"> type</span><span class="cn">=</span><span class="cs">"module"</span>
+          <span class="cv"> src</span><span class="cn">=</span><span class="cs">"https://unpkg.com/lunar-aurora/dist/aurora.esm.js"</span>
+          <span class="ct">&gt;&lt;/script&gt;</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════
+       3. PREMIER COMPOSANT
+       ══════════════════════════ -->
+  <section class="doc-section rv st3" id="components">
+    <span class="section-label">03 — Premier composant</span>
+    <h2>Vos premiers composants</h2>
+    <p>
+      Tous les composants Lunar Aurora utilisent le préfixe <code>la-</code>.
+      Ajoutez simplement les classes à vos éléments HTML — aucun JS requis pour les composants de base.
+    </p>
+
+    <!-- Boutons -->
+    <p style="margin-bottom:8px; color:rgba(255,255,255,.6); font-size:.88rem; font-weight:500;">Boutons</p>
+    <div class="code-wrap">
+      <div class="code-bar">
+        <div class="code-bar-dots">
+          <span class="code-dot code-dot-r"></span>
+          <span class="code-dot code-dot-y"></span>
+          <span class="code-dot code-dot-g"></span>
+        </div>
+        <span>HTML</span>
+        <button class="copy-btn"
+          data-copy='<button class="la-btn primary">Primary</button>
+<button class="la-btn ghost">Ghost</button>
+<button class="la-btn outline">Outline</button>
+<button class="la-btn primary lg">Large</button>
+<button class="la-btn primary sm">Small</button>'
+          aria-label="Copier le code boutons">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          Copier
+        </button>
+      </div>
+      <div class="code-body">
+        <div>
+          <span class="ct">&lt;button</span>
+          <span class="cv"> class</span><span class="cn">=</span><span class="cs">"la-btn primary"</span>
+          <span class="ct">&gt;</span><span class="cn">Primary</span><span class="ct">&lt;/button&gt;</span>
+        </div>
+        <div>
+          <span class="ct">&lt;button</span>
+          <span class="cv"> class</span><span class="cn">=</span><span class="cs">"la-btn ghost"</span>
+          <span class="ct">&gt;</span><span class="cn">Ghost</span><span class="ct">&lt;/button&gt;</span>
+        </div>
+        <div>
+          <span class="ct">&lt;button</span>
+          <span class="cv"> class</span><span class="cn">=</span><span class="cs">"la-btn outline"</span>
+          <span class="ct">&gt;</span><span class="cn">Outline</span><span class="ct">&lt;/button&gt;</span>
+        </div>
+        <div>
+          <span class="ct">&lt;button</span>
+          <span class="cv"> class</span><span class="cn">=</span><span class="cs">"la-btn primary lg"</span>
+          <span class="ct">&gt;</span><span class="cn">Large</span><span class="ct">&lt;/button&gt;</span>
+        </div>
+        <div>
+          <span class="ct">&lt;button</span>
+          <span class="cv"> class</span><span class="cn">=</span><span class="cs">"la-btn primary sm"</span>
+          <span class="ct">&gt;</span><span class="cn">Small</span><span class="ct">&lt;/button&gt;</span>
+        </div>
+      </div>
+      <!-- Aperçu rendu -->
+      <div class="component-preview">
+        <button class="la-btn-preview la-btn-primary">Primary</button>
+        <button class="la-btn-preview la-btn-ghost">Ghost</button>
+        <button class="la-btn-preview la-btn-outline">Outline</button>
+      </div>
+    </div>
+
+    <!-- Card -->
+    <p style="margin-top:24px; margin-bottom:8px; color:rgba(255,255,255,.6); font-size:.88rem; font-weight:500;">Card</p>
+    <div class="code-wrap">
+      <div class="code-bar">
+        <div class="code-bar-dots">
+          <span class="code-dot code-dot-r"></span>
+          <span class="code-dot code-dot-y"></span>
+          <span class="code-dot code-dot-g"></span>
+        </div>
+        <span>HTML</span>
+        <button class="copy-btn"
+          data-copy='<div class="la-card">
+  <div class="la-card-header">
+    <h3 class="la-card-title">Titre de la card</h3>
+  </div>
+  <div class="la-card-body">
+    <p>Contenu de votre composant card.</p>
+  </div>
+</div>'
+          aria-label="Copier le code card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          Copier
+        </button>
+      </div>
+      <div class="code-body">
+        <div><span class="ct">&lt;div</span> <span class="cv">class</span><span class="cn">=</span><span class="cs">"la-card"</span><span class="ct">&gt;</span></div>
+        <div>&nbsp;&nbsp;<span class="ct">&lt;div</span> <span class="cv">class</span><span class="cn">=</span><span class="cs">"la-card-header"</span><span class="ct">&gt;</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ct">&lt;h3</span> <span class="cv">class</span><span class="cn">=</span><span class="cs">"la-card-title"</span><span class="ct">&gt;</span><span class="cn">Titre de la card</span><span class="ct">&lt;/h3&gt;</span></div>
+        <div>&nbsp;&nbsp;<span class="ct">&lt;/div&gt;</span></div>
+        <div>&nbsp;&nbsp;<span class="ct">&lt;div</span> <span class="cv">class</span><span class="cn">=</span><span class="cs">"la-card-body"</span><span class="ct">&gt;</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ct">&lt;p&gt;</span><span class="cn">Contenu de votre composant card.</span><span class="ct">&lt;/p&gt;</span></div>
+        <div>&nbsp;&nbsp;<span class="ct">&lt;/div&gt;</span></div>
+        <div><span class="ct">&lt;/div&gt;</span></div>
+      </div>
+      <!-- Aperçu rendu -->
+      <div class="component-preview">
+        <div class="la-card-preview">
+          <div class="card-title">Titre de la card</div>
+          <div class="card-body">Contenu de votre composant card.</div>
+        </div>
+        <div class="la-card-preview" style="width:220px;">
+          <div class="card-title">Composant prêt</div>
+          <div class="card-body">Aucune configuration JS nécessaire pour les composants statiques.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════
+       4. THÈMES
+       ══════════════════════════ -->
+  <section class="doc-section rv st4" id="themes">
+    <span class="section-label">04 — Thèmes</span>
+    <h2>Changer de thème</h2>
+    <p>
+      Lunar Aurora inclut <strong style="color:rgba(255,255,255,.75)">30+ thèmes</strong> activables via un seul attribut HTML.
+      Ajoutez <code>data-theme="..."</code> sur la balise <code>&lt;html&gt;</code> ou sur n'importe quel conteneur.
+    </p>
+
+    <div class="code-wrap">
+      <div class="code-bar">
+        <div class="code-bar-dots">
+          <span class="code-dot code-dot-r"></span>
+          <span class="code-dot code-dot-y"></span>
+          <span class="code-dot code-dot-g"></span>
+        </div>
+        <span>HTML</span>
+        <button class="copy-btn"
+          data-copy='<!-- Thème global sur la page entière -->
+<html data-theme="cyberpunk">
+
+<!-- Thème local sur un composant -->
+<div data-theme="cute">
+  <button class="la-btn primary">Kawaii ✨</button>
+</div>'
+          aria-label="Copier le code thème">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          Copier
+        </button>
+      </div>
+      <div class="code-body">
+        <div><span class="cc">&lt;!-- Thème global sur la page entière --&gt;</span></div>
+        <div><span class="ct">&lt;html</span> <span class="cv">data-theme</span><span class="cn">=</span><span class="cs">"cyberpunk"</span><span class="ct">&gt;</span></div>
+        <div>&nbsp;</div>
+        <div><span class="cc">&lt;!-- Thème local sur un composant --&gt;</span></div>
+        <div><span class="ct">&lt;div</span> <span class="cv">data-theme</span><span class="cn">=</span><span class="cs">"cute"</span><span class="ct">&gt;</span></div>
+        <div>&nbsp;&nbsp;<span class="ct">&lt;button</span> <span class="cv">class</span><span class="cn">=</span><span class="cs">"la-btn primary"</span><span class="ct">&gt;</span><span class="cn">Kawaii ✨</span><span class="ct">&lt;/button&gt;</span></div>
+        <div><span class="ct">&lt;/div&gt;</span></div>
+      </div>
+    </div>
+
+    <!-- Grille des thèmes disponibles -->
+    <p>Thèmes disponibles :</p>
+    <div class="themes-grid">
+      <div class="theme-card">
+        <div class="tc-swatch" style="background:linear-gradient(135deg,#7c3aed,#06b6d4)"></div>
+        <div class="tc-name">Dark</div>
+        <div class="tc-desc">Défaut — violet / cyan</div>
+        <span class="tc-tag">dark</span>
+      </div>
+      <div class="theme-card">
+        <div class="tc-swatch" style="background:linear-gradient(135deg,#0ff,#7c3aed)"></div>
+        <div class="tc-name">Cyberpunk</div>
+        <div class="tc-desc">Néon cyan électrique</div>
+        <span class="tc-tag">cyberpunk</span>
+      </div>
+      <div class="theme-card">
+        <div class="tc-swatch" style="background:linear-gradient(135deg,#ec4899,#fbbf24)"></div>
+        <div class="tc-name">Cute</div>
+        <div class="tc-desc">Rose pastel kawaii</div>
+        <span class="tc-tag">cute</span>
+      </div>
+      <div class="theme-card">
+        <div class="tc-swatch" style="background:linear-gradient(135deg,#64748b,#3b82f6)"></div>
+        <div class="tc-name">Pro</div>
+        <div class="tc-desc">Slate sobre et pro</div>
+        <span class="tc-tag">pro</span>
+      </div>
+      <div class="theme-card">
+        <div class="tc-swatch" style="background:linear-gradient(135deg,#10b981,#06b6d4)"></div>
+        <div class="tc-name">Forest</div>
+        <div class="tc-desc">Vert émeraude naturel</div>
+        <span class="tc-tag">forest</span>
+      </div>
+      <div class="theme-card">
+        <div class="tc-swatch" style="background:linear-gradient(135deg,#f59e0b,#ef4444)"></div>
+        <div class="tc-name">Sunset</div>
+        <div class="tc-desc">Dégradé chaud amber</div>
+        <span class="tc-tag">sunset</span>
+      </div>
+      <div class="theme-card">
+        <div class="tc-swatch" style="background:linear-gradient(135deg,#e0e0f0,#94a3b8)"></div>
+        <div class="tc-name">Light</div>
+        <div class="tc-desc">Fond clair minimal</div>
+        <span class="tc-tag">light</span>
+      </div>
+      <div class="theme-card">
+        <div class="tc-swatch" style="background:linear-gradient(135deg,#a855f7,#ec4899)"></div>
+        <div class="tc-name">Aurora</div>
+        <div class="tc-desc">Violet et rose aurora</div>
+        <span class="tc-tag">aurora</span>
+      </div>
+    </div>
+
+    <p style="margin-top:24px; color:rgba(255,255,255,.3); font-size:.85rem;">
+      Et bien plus encore — retrouvez tous les thèmes sur la page <a href="docs.html" style="color:#b390ff; text-decoration:none; border-bottom:1px solid rgba(179,144,255,.3); transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(179,144,255,0.7)'" onmouseout="this.style.borderColor='rgba(179,144,255,0.3)'">Documentation</a>.
+    </p>
+  </section>
+
+  <!-- ══════════════════════════
+       CTA FINAL
+       ══════════════════════════ -->
+  <section class="cta-section rv">
+    <img src="images/mooncat.png" alt="Mooncat">
+    <h2>Prêt à construire ?</h2>
+    <p>Explorez la documentation complète ou parcourez les exemples de composants.</p>
+    <div class="cta-actions">
+      <a href="docs.html" class="btn btn-glow">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        Documentation
+      </a>
+      <a href="landing.html" class="btn btn-ghost">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        Retour à l'accueil
+      </a>
+      <a href="https://github.com/yrbane/lunar-aurora" target="_blank" rel="noopener" class="btn btn-ghost">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <span>Lunar Aurora</span>
+  <span>·</span>
+  <span>Made by <a href="https://github.com/yrbane" target="_blank" rel="noopener" style="color:rgba(255,255,255,.28); text-decoration:none; border-bottom:1px solid rgba(255,255,255,.1);">yrbane</a></span>
+  <span>·</span>
+  <img src="images/mooncat.png" alt="Mooncat">
+  <span>Mooncat approved</span>
+</footer>
+
+<script>
+/* =================================================================
+   GETTING STARTED — Scripts inline (standalone pour GitHub Pages)
+   ================================================================= */
+
+/* ─── Canvas d'étoiles allégé ─── */
+(function() {
+  var canvas = document.getElementById('starfield');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var stars = [];
+  var W, H;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function initStars() {
+    stars = [];
+    for (var i = 0; i < 180; i++) {
+      stars.push({
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random() * 1.5 + 0.3,
+        alpha: Math.random() * 0.6 + 0.1,
+        speed: Math.random() * 0.0003 + 0.0001
+      });
+    }
+  }
+
+  var now = 0;
+  function draw(ts) {
+    now = ts;
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      var twinkle = 0.65 + Math.sin(ts * 0.002 + i * 1.7) * 0.35;
+      ctx.beginPath();
+      ctx.arc(s.x * W, s.y * H, s.size, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(180,160,255,' + (s.alpha * twinkle) + ')';
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  initStars();
+  requestAnimationFrame(draw);
+  window.addEventListener('resize', function() { resize(); initStars(); });
+})();
+
+/* ─── Nav scroll ─── */
+(function() {
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('scrolled', window.pageYOffset > 60);
+  }, { passive: true });
+})();
+
+/* ─── Scroll reveal ─── */
+(function() {
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.rv').forEach(function(el) { obs.observe(el); });
+})();
+
+/* ─── Boutons copier ─── */
+(function() {
+  document.querySelectorAll('.copy-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var text = btn.dataset.copy;
+      if (!text) return;
+
+      /* Utilise l'API Clipboard si disponible, sinon fallback execCommand */
+      var doCopy = function() {
+        btn.textContent = '';
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('width', '13');
+        svg.setAttribute('height', '13');
+        svg.setAttribute('fill', 'none');
+        svg.setAttribute('stroke', 'currentColor');
+        svg.setAttribute('stroke-width', '2');
+        svg.setAttribute('stroke-linecap', 'round');
+        svg.setAttribute('stroke-linejoin', 'round');
+        var pl = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+        pl.setAttribute('points', '20 6 9 17 4 12');
+        svg.appendChild(pl);
+        btn.appendChild(svg);
+        btn.appendChild(document.createTextNode(' Copié !'));
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.classList.remove('copied');
+          btn.innerHTML = '';
+          /* Restaure l'icône copier */
+          var svgR = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svgR.setAttribute('viewBox', '0 0 24 24');
+          svgR.setAttribute('width', '13');
+          svgR.setAttribute('height', '13');
+          svgR.setAttribute('fill', 'none');
+          svgR.setAttribute('stroke', 'currentColor');
+          svgR.setAttribute('stroke-width', '2');
+          svgR.setAttribute('stroke-linecap', 'round');
+          svgR.setAttribute('stroke-linejoin', 'round');
+          var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          rect.setAttribute('x', '9'); rect.setAttribute('y', '9');
+          rect.setAttribute('width', '13'); rect.setAttribute('height', '13');
+          rect.setAttribute('rx', '2'); rect.setAttribute('ry', '2');
+          svgR.appendChild(rect);
+          var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d', 'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1');
+          svgR.appendChild(path);
+          btn.appendChild(svgR);
+          btn.appendChild(document.createTextNode(' Copier'));
+        }, 2000);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(doCopy).catch(function() {
+          /* Fallback silencieux */
+          doCopy();
+        });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch(e) {}
+        document.body.removeChild(ta);
+        doCopy();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
