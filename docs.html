@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lunar Aurora — Documentation</title>
+<meta name="description" content="Complete documentation for the Lunar Aurora CSS framework — OKLCH, CSS Nesting, Container Queries, @property.">
+<link rel="icon" href="images/mooncat.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LUNAR AURORA — DOCUMENTATION
+   Sidebar layout · IntersectionObserver · Syntax highlighting
+   ═══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  background: #030308;
+  color: #e0e0f0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+/* ─── CSS CUSTOM PROPERTIES ─── */
+:root {
+  --violet: #7c3aed;
+  --cyan: #06b6d4;
+  --pink: #ec4899;
+  --violet-soft: #b390ff;
+  --cyan-soft: #5ce0d8;
+  --surface-0: rgba(255,255,255,0.02);
+  --surface-1: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --text-muted: rgba(224,224,240,0.45);
+  --text-secondary: rgba(224,224,240,0.65);
+  --sidebar-w: 260px;
+  --nav-h: 64px;
+  --grad: linear-gradient(135deg, var(--violet-soft), var(--cyan-soft));
+}
+
+/* ─── NAV ─── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 24px;
+  background: rgba(3,3,8,0.85);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid var(--border);
+  transition: border-color 0.3s;
+}
+.nav:hover { border-bottom-color: var(--border-hover); }
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.nav-logo img {
+  width: 28px; height: 28px;
+  filter: drop-shadow(0 0 8px rgba(124,58,237,0.6));
+  transition: filter 0.3s;
+}
+.nav-logo:hover img { filter: drop-shadow(0 0 14px rgba(124,58,237,0.9)); }
+.nav-logo span {
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  font-size: 0.82rem;
+  margin-left: 8px;
+}
+.nav-links a {
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+  transition: color 0.3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: var(--grad);
+  transition: width 0.3s;
+}
+.nav-links a:hover { color: rgba(255,255,255,0.9); }
+.nav-links a:hover::after { width: 100%; }
+.nav-links a.active { color: var(--violet-soft); }
+.nav-links a.active::after { width: 100%; }
+
+.nav-spacer { flex: 1; }
+
+.nav-version {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.5px;
+}
+
+/* ─── LAYOUT: SIDEBAR + CONTENT ─── */
+.docs-layout {
+  display: flex;
+  min-height: 100vh;
+  padding-top: var(--nav-h);
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0;
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--nav-h));
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 28px 0 40px;
+  background: rgba(3,3,8,0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid var(--border);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(124,58,237,0.3) transparent;
+  z-index: 100;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(124,58,237,0.3);
+  border-radius: 2px;
+}
+
+.sidebar-section {
+  margin-bottom: 28px;
+  padding: 0 20px;
+}
+
+.sidebar-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  margin-bottom: 8px;
+  padding-left: 12px;
+}
+
+.sidebar-nav { list-style: none; }
+.sidebar-nav li + li { margin-top: 2px; }
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 0.855rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s;
+  position: relative;
+}
+.sidebar-nav a .icon {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+.sidebar-nav a:hover {
+  background: rgba(124,58,237,0.08);
+  color: rgba(255,255,255,0.85);
+}
+.sidebar-nav a:hover .icon { opacity: 1; }
+
+/* Active state */
+.sidebar-nav a.is-active {
+  background: rgba(124,58,237,0.12);
+  color: var(--violet-soft);
+  font-weight: 500;
+}
+.sidebar-nav a.is-active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 3px; height: 60%;
+  background: var(--grad);
+  border-radius: 0 2px 2px 0;
+}
+
+/* Glassmorphism strip at sidebar bottom */
+.sidebar::after {
+  content: '';
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  display: block;
+  height: 60px;
+  background: linear-gradient(to top, rgba(3,3,8,0.9), transparent);
+  pointer-events: none;
+}
+
+/* ─── MAIN CONTENT ─── */
+.docs-content {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-width: 0;
+  padding: 52px clamp(28px, 5vw, 80px) 100px;
+  max-width: 900px;
+}
+
+/* ─── SECTION ANCHORS ─── */
+.doc-section {
+  margin-bottom: 88px;
+  scroll-margin-top: calc(var(--nav-h) + 24px);
+}
+
+/* ─── SECTION HEADER ─── */
+.section-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--violet-soft);
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+.section-title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+  line-height: 1.15;
+  background: linear-gradient(135deg, #fff 30%, rgba(255,255,255,0.7));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-desc {
+  font-size: 1rem;
+  color: var(--text-muted);
+  max-width: 620px;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+/* ─── DIVIDER ─── */
+.doc-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(124,58,237,0.3), rgba(6,182,212,0.15), transparent);
+  margin-bottom: 40px;
+  border: none;
+}
+
+/* ─── DEMO BLOCK ─── */
+.demo-wrap {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background: rgba(255,255,255,0.015);
+}
+
+.demo-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.025);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+}
+.demo-label .dot-row {
+  display: flex;
+  gap: 5px;
+}
+.demo-label .dot-row span {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.demo-preview {
+  padding: 28px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.demo-preview.stack {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.demo-preview.grid-demo {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+/* ─── CODE BLOCK ─── */
+.code-block {
+  position: relative;
+  background: #0d0d18;
+  border: 1px solid rgba(124,58,237,0.15);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.code-block .cb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.cb-dots { display: flex; gap: 5px; }
+.cb-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.cb-lang {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 20px 20px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(124,58,237,0.2) transparent;
+}
+.code-block pre::-webkit-scrollbar { height: 4px; }
+.code-block pre::-webkit-scrollbar-thumb {
+  background: rgba(124,58,237,0.25);
+  border-radius: 2px;
+}
+
+.code-block code { color: #c5c8ce; }
+
+/* Inline syntax highlight tokens */
+.t-tag { color: #e06c75; }
+.t-attr { color: #d19a66; }
+.t-val { color: #98c379; }
+.t-class { color: #61afef; }
+.t-comment { color: #5c6370; font-style: italic; }
+.t-string { color: #98c379; }
+.t-punct { color: #abb2bf; }
+.t-prop { color: #c678dd; }
+.t-num { color: #d19a66; }
+.t-kw { color: #e06c75; }
+
+/* ─── COMPONENT DEMOS ─── */
+
+/* Buttons */
+.la-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: 'Space Grotesk', sans-serif;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(.4,0,.2,1);
+  white-space: nowrap;
+}
+.la-btn:hover { transform: translateY(-2px); }
+.la-btn:active { transform: translateY(0); }
+
+.la-btn-primary {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(124,58,237,0.25), 0 2px 8px rgba(0,0,0,0.3);
+}
+.la-btn-primary:hover {
+  box-shadow: 0 0 36px rgba(124,58,237,0.5), 0 4px 12px rgba(0,0,0,0.4);
+}
+.la-btn-secondary {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.75);
+}
+.la-btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+  color: #fff;
+}
+.la-btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(124,58,237,0.35);
+  color: var(--violet-soft);
+}
+.la-btn-ghost:hover {
+  background: rgba(124,58,237,0.1);
+  border-color: var(--violet-soft);
+}
+.la-btn-danger {
+  background: rgba(239,68,68,0.15);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #f87171;
+}
+.la-btn-danger:hover {
+  background: rgba(239,68,68,0.25);
+  border-color: rgba(239,68,68,0.5);
+}
+.la-btn-sm {
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  border-radius: 8px;
+}
+.la-btn-lg {
+  padding: 13px 30px;
+  font-size: 1rem;
+  border-radius: 13px;
+}
+
+/* Badges */
+.la-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  border: 1px solid transparent;
+}
+.la-badge-violet {
+  background: rgba(124,58,237,0.1);
+  border-color: rgba(124,58,237,0.2);
+  color: var(--violet-soft);
+}
+.la-badge-cyan {
+  background: rgba(6,182,212,0.1);
+  border-color: rgba(6,182,212,0.2);
+  color: var(--cyan-soft);
+}
+.la-badge-pink {
+  background: rgba(236,72,153,0.1);
+  border-color: rgba(236,72,153,0.2);
+  color: #f9a8d4;
+}
+.la-badge-green {
+  background: rgba(16,185,129,0.1);
+  border-color: rgba(16,185,129,0.2);
+  color: #6ee7b7;
+}
+.la-badge-dot::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+}
+
+/* Cards */
+.la-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.la-card:hover {
+  border-color: rgba(124,58,237,0.25);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(124,58,237,0.08);
+}
+.la-card-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.la-card-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.9);
+}
+.la-card-body {
+  padding: 18px 20px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+.la-card-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: rgba(255,255,255,0.015);
+}
+
+/* Grid system demo */
+.la-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+.la-col-4 { grid-column: span 4; }
+.la-col-6 { grid-column: span 6; }
+.la-col-12 { grid-column: span 12; }
+
+.grid-cell {
+  background: rgba(124,58,237,0.08);
+  border: 1px solid rgba(124,58,237,0.18);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--violet-soft);
+}
+
+/* Forms */
+.la-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  max-width: 380px;
+}
+.la-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: 0.2px;
+}
+.la-input {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  font-family: 'Space Grotesk', sans-serif;
+  color: rgba(255,255,255,0.85);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.la-input:focus {
+  border-color: rgba(124,58,237,0.5);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.12);
+}
+.la-input::placeholder { color: rgba(255,255,255,0.22); }
+.la-select {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  font-family: 'Space Grotesk', sans-serif;
+  color: rgba(255,255,255,0.85);
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.la-select:focus {
+  border-color: rgba(124,58,237,0.5);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.12);
+}
+
+/* Modals preview */
+.modal-preview-wrap {
+  position: relative;
+  background: rgba(3,3,8,0.8);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+.la-modal-box {
+  background: #0d0d18;
+  border: 1px solid rgba(124,58,237,0.2);
+  border-radius: 16px;
+  padding: 24px 28px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(124,58,237,0.1);
+}
+.la-modal-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+.la-modal-body {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.la-modal-footer {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* Tabs */
+.la-tabs { width: 100%; }
+.la-tabs-nav {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.la-tab {
+  padding: 10px 18px;
+  font-size: 0.875rem;
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--text-muted);
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.2s;
+  border-radius: 8px 8px 0 0;
+}
+.la-tab:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.03); }
+.la-tab.active {
+  color: var(--violet-soft);
+  border-bottom-color: var(--violet-soft);
+  background: rgba(124,58,237,0.06);
+}
+.la-tab-panel {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  padding: 4px 0;
+}
+
+/* Accordion */
+.la-accordion { width: 100%; }
+.la-accordion-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 6px;
+  transition: border-color 0.2s;
+}
+.la-accordion-item:hover { border-color: var(--border-hover); }
+.la-accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.025);
+  border: none;
+  color: rgba(255,255,255,0.8);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s;
+}
+.la-accordion-trigger:hover { background: rgba(255,255,255,0.04); }
+.la-accordion-trigger .chevron { transition: transform 0.3s; color: var(--text-muted); }
+.la-accordion-trigger[aria-expanded="true"] .chevron { transform: rotate(180deg); color: var(--violet-soft); }
+.la-accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(.4,0,.2,1);
+}
+.la-accordion-content.open { max-height: 120px; }
+.la-accordion-body {
+  padding: 14px 18px;
+  font-size: 0.855rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  border-top: 1px solid var(--border);
+}
+
+/* Themes palette */
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+.theme-card {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.theme-card:hover { transform: scale(1.04); border-color: var(--border-hover); }
+.theme-swatch { height: 60px; }
+.theme-name {
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(255,255,255,0.025);
+}
+
+/* Typography scale */
+.type-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.type-row:last-child { border-bottom: none; }
+.type-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--violet-soft);
+  width: 110px;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+.type-sample { color: rgba(255,255,255,0.85); }
+
+/* Utility classes demo */
+.util-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+.util-item {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+.util-class {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--cyan-soft);
+  display: block;
+  margin-bottom: 3px;
+}
+.util-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Icons preview */
+.icons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 10px;
+}
+.icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 8px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: all 0.2s;
+  cursor: default;
+}
+.icon-item:hover {
+  background: rgba(124,58,237,0.08);
+  border-color: rgba(124,58,237,0.2);
+}
+.icon-glyph { font-size: 1.3rem; }
+.icon-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ─── DESIGN TOKENS TABLE ─── */
+.tokens-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+.tokens-table th {
+  text-align: left;
+  padding: 8px 14px;
+  font-size: 0.68rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+.tokens-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  vertical-align: middle;
+}
+.tokens-table tr:last-child td { border-bottom: none; }
+.tokens-table tr:hover td { background: rgba(255,255,255,0.02); }
+.token-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--cyan-soft);
+}
+.token-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.token-swatch {
+  width: 20px; height: 20px;
+  border-radius: 5px;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+/* ─── CALLOUT ─── */
+.callout {
+  display: flex;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1px solid;
+  margin-bottom: 20px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.callout-info {
+  background: rgba(6,182,212,0.06);
+  border-color: rgba(6,182,212,0.18);
+  color: rgba(6,182,212,0.9);
+}
+.callout-tip {
+  background: rgba(16,185,129,0.06);
+  border-color: rgba(16,185,129,0.18);
+  color: rgba(16,185,129,0.9);
+}
+.callout-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+
+/* ─── FOOTER ─── */
+footer {
+  margin-left: var(--sidebar-w);
+  padding: 32px 80px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.22);
+}
+footer img {
+  width: 22px; height: 22px;
+  opacity: 0.65;
+  filter: drop-shadow(0 0 6px rgba(124,58,237,0.4));
+}
+footer a {
+  color: rgba(255,255,255,0.35);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+footer a:hover { color: var(--violet-soft); }
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(124,58,237,0.4); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  :root { --sidebar-w: 0px; }
+  .sidebar {
+    transform: translateX(-260px);
+    width: 260px;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    --sidebar-w: 260px;
+  }
+  .docs-content { margin-left: 0; padding: 40px 24px 80px; }
+  footer { margin-left: 0; padding: 28px 24px; }
+  .nav-menu-btn { display: flex !important; }
+}
+
+@media (max-width: 640px) {
+  .demo-preview.grid-demo { grid-template-columns: 1fr; }
+  .hero-stats { flex-direction: column; gap: 12px; }
+}
+
+.nav-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.6);
+  margin-right: 4px;
+  font-size: 1.1rem;
+}
+
+/* ─── SIDEBAR OVERLAY (mobile) ─── */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+}
+.sidebar-overlay.show { display: block; }
+
+/* ─── REDUCED MOTION ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV — identique à landing.html -->
+<nav class="nav" id="nav">
+  <button class="nav-menu-btn" id="menuBtn" aria-label="Toggle sidebar">☰</button>
+  <a class="nav-logo" href="landing.html">
+    <img src="images/mooncat.png" alt="Mooncat">
+    <span>Lunar Aurora</span>
+  </a>
+  <div class="nav-links">
+    <a href="landing.html#features">Features</a>
+    <a href="getting-started.html">Quick Start</a>
+    <a href="docs.html" class="active">Docs</a>
+    <a href="https://github.com/yrbane/lunar-aurora" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <div class="nav-spacer"></div>
+  <span class="nav-version">v1.0.0</span>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ─── LAYOUT ─── -->
+<div class="docs-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar" role="navigation" aria-label="Documentation navigation">
+
+    <div class="sidebar-section">
+      <p class="sidebar-label">Foundations</p>
+      <ul class="sidebar-nav">
+        <li><a href="#getting-started" data-section="getting-started"><span class="icon">🚀</span> Getting Started</a></li>
+        <li><a href="#design-tokens" data-section="design-tokens"><span class="icon">🎨</span> Design Tokens</a></li>
+        <li><a href="#typography" data-section="typography"><span class="icon">Aa</span> Typography</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-section">
+      <p class="sidebar-label">Layout</p>
+      <ul class="sidebar-nav">
+        <li><a href="#grid" data-section="grid"><span class="icon">⊞</span> Grid</a></li>
+        <li><a href="#flexbox" data-section="flexbox"><span class="icon">↔</span> Flexbox</a></li>
+        <li><a href="#container-queries" data-section="container-queries"><span class="icon">📦</span> Container Queries</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-section">
+      <p class="sidebar-label">Components</p>
+      <ul class="sidebar-nav">
+        <li><a href="#buttons" data-section="buttons"><span class="icon">◉</span> Buttons &amp; Badges</a></li>
+        <li><a href="#cards" data-section="cards"><span class="icon">▭</span> Cards</a></li>
+        <li><a href="#forms" data-section="forms"><span class="icon">✏</span> Forms</a></li>
+        <li><a href="#modals" data-section="modals"><span class="icon">⬡</span> Modals</a></li>
+        <li><a href="#tabs-accordions" data-section="tabs-accordions"><span class="icon">≡</span> Tabs &amp; Accordions</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-section">
+      <p class="sidebar-label">Advanced</p>
+      <ul class="sidebar-nav">
+        <li><a href="#themes" data-section="themes"><span class="icon">🌙</span> Themes</a></li>
+        <li><a href="#utilities" data-section="utilities"><span class="icon">⚡</span> Utilities</a></li>
+        <li><a href="#icons" data-section="icons"><span class="icon">✦</span> Icons</a></li>
+      </ul>
+    </div>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="docs-content">
+
+    <!-- ══════════════════════════════════════
+         GETTING STARTED
+         ══════════════════════════════════════ -->
+    <section id="getting-started" class="doc-section">
+      <p class="section-eyebrow">Foundations</p>
+      <h1 class="section-title">Getting Started</h1>
+      <p class="section-desc">Install Lunar Aurora via npm or include it via CDN — no build step required. Works with any HTML project out of the box.</p>
+      <hr class="doc-divider">
+
+      <div class="callout callout-info">
+        <span class="callout-icon">ℹ</span>
+        <div>Lunar Aurora requires no dependencies. It runs purely on modern CSS features — OKLCH, CSS Nesting, Container Queries and <code>@property</code>.</div>
+      </div>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots">
+            <span class="cb-dot" style="background:#ff5f57"></span>
+            <span class="cb-dot" style="background:#febc2e"></span>
+            <span class="cb-dot" style="background:#28c840"></span>
+          </div>
+          <span class="cb-lang">shell</span>
+        </div>
+        <pre><code><span class="t-comment"># Via npm</span>
+<span class="t-kw">npm</span> install lunar-aurora
+
+<span class="t-comment"># Via pnpm / yarn</span>
+<span class="t-kw">pnpm</span> add lunar-aurora
+<span class="t-kw">yarn</span> add lunar-aurora</code></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots">
+            <span class="cb-dot" style="background:#ff5f57"></span>
+            <span class="cb-dot" style="background:#febc2e"></span>
+            <span class="cb-dot" style="background:#28c840"></span>
+          </div>
+          <span class="cb-lang">html</span>
+        </div>
+        <pre><code><span class="t-comment">&lt;!-- Import CSS --&gt;</span>
+<span class="t-tag">&lt;link</span> <span class="t-attr">rel</span><span class="t-punct">=</span><span class="t-string">"stylesheet"</span> <span class="t-attr">href</span><span class="t-punct">=</span><span class="t-string">"node_modules/lunar-aurora/dist/aurora.css"</span><span class="t-tag">&gt;</span>
+
+<span class="t-comment">&lt;!-- Import JS (headless components) --&gt;</span>
+<span class="t-tag">&lt;script</span> <span class="t-attr">src</span><span class="t-punct">=</span><span class="t-string">"node_modules/lunar-aurora/dist/aurora.js"</span> <span class="t-attr">defer</span><span class="t-tag">&gt;&lt;/script&gt;</span>
+
+<span class="t-comment">&lt;!-- Apply a theme --&gt;</span>
+<span class="t-tag">&lt;html</span> <span class="t-attr">data-theme</span><span class="t-punct">=</span><span class="t-string">"dark"</span><span class="t-tag">&gt;</span></code></pre>
+      </div>
+
+      <div class="callout callout-tip">
+        <span class="callout-icon">✦</span>
+        <div>All class names are prefixed with <code>la-</code> to avoid conflicts with other frameworks.</div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         DESIGN TOKENS
+         ══════════════════════════════════════ -->
+    <section id="design-tokens" class="doc-section">
+      <p class="section-eyebrow">Foundations</p>
+      <h2 class="section-title">Design Tokens</h2>
+      <p class="section-desc">All visual values are exposed as CSS custom properties on <code>:root</code> — colors, spacing, radii, shadows, and typography scales.</p>
+      <hr class="doc-divider">
+
+      <table class="tokens-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Value</th>
+            <th>Preview</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="token-name">--la-color-primary</span></td>
+            <td><span class="token-value">oklch(52% 0.28 280)</span></td>
+            <td><span class="token-swatch" style="background:#7c3aed"></span></td>
+          </tr>
+          <tr>
+            <td><span class="token-name">--la-color-secondary</span></td>
+            <td><span class="token-value">oklch(66% 0.2 200)</span></td>
+            <td><span class="token-swatch" style="background:#06b6d4"></span></td>
+          </tr>
+          <tr>
+            <td><span class="token-name">--la-color-accent</span></td>
+            <td><span class="token-value">oklch(62% 0.28 340)</span></td>
+            <td><span class="token-swatch" style="background:#ec4899"></span></td>
+          </tr>
+          <tr>
+            <td><span class="token-name">--la-surface-0</span></td>
+            <td><span class="token-value">oklch(8% 0.02 280)</span></td>
+            <td><span class="token-swatch" style="background:#0d0d18"></span></td>
+          </tr>
+          <tr>
+            <td><span class="token-name">--la-radius-md</span></td>
+            <td><span class="token-value">10px</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><span class="token-name">--la-space-4</span></td>
+            <td><span class="token-value">1rem (16px)</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><span class="token-name">--la-font-body</span></td>
+            <td><span class="token-value">'Space Grotesk', system-ui</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><span class="token-name">--la-font-mono</span></td>
+            <td><span class="token-value">'JetBrains Mono', monospace</span></td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <br>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots">
+            <span class="cb-dot" style="background:#ff5f57"></span>
+            <span class="cb-dot" style="background:#febc2e"></span>
+            <span class="cb-dot" style="background:#28c840"></span>
+          </div>
+          <span class="cb-lang">css</span>
+        </div>
+        <pre><code><span class="t-comment">/* Override tokens at root level */</span>
+<span class="t-tag">:root</span> {
+  <span class="t-prop">--la-color-primary</span>: <span class="t-val">oklch(58% 0.3 270)</span>;
+  <span class="t-prop">--la-radius-md</span>: <span class="t-num">14px</span>;
+  <span class="t-prop">--la-font-body</span>: <span class="t-string">'Inter', sans-serif</span>;
+}</code></pre>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         TYPOGRAPHY
+         ══════════════════════════════════════ -->
+    <section id="typography" class="doc-section">
+      <p class="section-eyebrow">Foundations</p>
+      <h2 class="section-title">Typography</h2>
+      <p class="section-desc">A fluid typographic scale with utility classes for size, weight, and font family. Uses <code>clamp()</code> for responsive sizing.</p>
+      <hr class="doc-divider">
+
+      <div class="demo-wrap">
+        <div class="demo-label">
+          <div class="dot-row">
+            <span style="background:#ff5f57"></span>
+            <span style="background:#febc2e"></span>
+            <span style="background:#28c840"></span>
+          </div>
+          <span>Preview</span>
+        </div>
+        <div class="demo-preview stack" style="padding: 24px 28px;">
+          <div class="type-row">
+            <span class="type-tag">.la-text-5xl</span>
+            <span class="type-sample" style="font-size: 3rem; font-weight: 700; letter-spacing: -1.5px; line-height: 1;">Display</span>
+          </div>
+          <div class="type-row">
+            <span class="type-tag">.la-text-3xl</span>
+            <span class="type-sample" style="font-size: 1.875rem; font-weight: 700;">Heading 1</span>
+          </div>
+          <div class="type-row">
+            <span class="type-tag">.la-text-xl</span>
+            <span class="type-sample" style="font-size: 1.25rem; font-weight: 600;">Heading 2</span>
+          </div>
+          <div class="type-row">
+            <span class="type-tag">.la-text-base</span>
+            <span class="type-sample" style="font-size: 1rem;">Body text — the quick brown fox jumps over the lazy dog.</span>
+          </div>
+          <div class="type-row">
+            <span class="type-tag">.la-text-sm</span>
+            <span class="type-sample" style="font-size: 0.875rem; color: var(--text-muted);">Caption text for secondary information</span>
+          </div>
+          <div class="type-row">
+            <span class="type-tag">.la-font-mono</span>
+            <span class="type-sample" style="font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: var(--cyan-soft);">const aurora = 'beautiful'</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="cb-dot" style="background:#ff5f57"></span><span class="cb-dot" style="background:#febc2e"></span><span class="cb-dot" style="background:#28c840"></span></div>
+          <span class="cb-lang">html</span>
+        </div>
+        <pre><code><span class="t-tag">&lt;h1</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-text-5xl la-font-display la-font-bold"</span><span class="t-tag">&gt;</span>Display<span class="t-tag">&lt;/h1&gt;</span>
+<span class="t-tag">&lt;h2</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-text-3xl la-font-semibold"</span><span class="t-tag">&gt;</span>Heading 1<span class="t-tag">&lt;/h2&gt;</span>
+<span class="t-tag">&lt;p</span>  <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-text-base la-text-muted"</span><span class="t-tag">&gt;</span>Body paragraph<span class="t-tag">&lt;/p&gt;</span>
+<span class="t-tag">&lt;code</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-font-mono la-text-sm"</span><span class="t-tag">&gt;</span>Monospace<span class="t-tag">&lt;/code&gt;</span></code></pre>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         GRID
+         ══════════════════════════════════════ -->
+    <section id="grid" class="doc-section">
+      <p class="section-eyebrow">Layout</p>
+      <h2 class="section-title">Grid</h2>
+      <p class="section-desc">A 12-column CSS Grid system with responsive column utilities. Combines with container queries for truly component-scoped layouts.</p>
+      <hr class="doc-divider">
+
+      <div class="demo-wrap">
+        <div class="demo-label">
+          <div class="dot-row"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+          <span>Preview</span>
+        </div>
+        <div class="demo-preview stack" style="padding:20px;">
+          <div class="la-grid" style="width:100%">
+            <div class="la-col-12 grid-cell">.la-col-12</div>
+          </div>
+          <div class="la-grid" style="width:100%">
+            <div class="la-col-6 grid-cell">.la-col-6</div>
+            <div class="la-col-6 grid-cell">.la-col-6</div>
+          </div>
+          <div class="la-grid" style="width:100%">
+            <div class="la-col-4 grid-cell">.la-col-4</div>
+            <div class="la-col-4 grid-cell">.la-col-4</div>
+            <div class="la-col-4 grid-cell">.la-col-4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="cb-dot" style="background:#ff5f57"></span><span class="cb-dot" style="background:#febc2e"></span><span class="cb-dot" style="background:#28c840"></span></div>
+          <span class="cb-lang">html</span>
+        </div>
+        <pre><code><span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-grid"</span><span class="t-tag">&gt;</span>
+  <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-col-4"</span><span class="t-tag">&gt;</span>One third<span class="t-tag">&lt;/div&gt;</span>
+  <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-col-4"</span><span class="t-tag">&gt;</span>One third<span class="t-tag">&lt;/div&gt;</span>
+  <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-col-4"</span><span class="t-tag">&gt;</span>One third<span class="t-tag">&lt;/div&gt;</span>
+<span class="t-tag">&lt;/div&gt;</span>
+
+<span class="t-comment">&lt;!-- Columns: 1, 2, 3, 4, 6, 8, 9, 10, 12 --&gt;</span>
+<span class="t-comment">&lt;!-- Responsive: la-col-sm-6, la-col-md-4 --&gt;</span></code></pre>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         FLEXBOX
+         ══════════════════════════════════════ -->
+    <section id="flexbox" class="doc-section">
+      <p class="section-eyebrow">Layout</p>
+      <h2 class="section-title">Flexbox</h2>
+      <p class="section-desc">Utility classes for flex layouts — direction, alignment, gap, wrapping. Combine freely for quick one-line layouts.</p>
+      <hr class="doc-divider">
+
+      <div class="demo-wrap">
+        <div class="demo-label">
+          <div class="dot-row"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+          <span>Preview — <code style="font-size:.75rem">.la-flex .la-items-center .la-gap-3 .la-justify-between</code></span>
+        </div>
+        <div class="demo-preview" style="justify-content:space-between;">
+          <span class="la-badge la-badge-violet">Left</span>
+          <span class="la-badge la-badge-cyan">Center flex item</span>
+          <span class="la-badge la-badge-pink">Right</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="cb-dot" style="background:#ff5f57"></span><span class="cb-dot" style="background:#febc2e"></span><span class="cb-dot" style="background:#28c840"></span></div>
+          <span class="cb-lang">html</span>
+        </div>
+        <pre><code><span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-flex la-items-center la-gap-3 la-justify-between"</span><span class="t-tag">&gt;</span>
+  <span class="t-tag">&lt;span&gt;</span>Left<span class="t-tag">&lt;/span&gt;</span>
+  <span class="t-tag">&lt;span&gt;</span>Center<span class="t-tag">&lt;/span&gt;</span>
+  <span class="t-tag">&lt;span&gt;</span>Right<span class="t-tag">&lt;/span&gt;</span>
+<span class="t-tag">&lt;/div&gt;</span>
+
+<span class="t-comment">&lt;!-- Directions: la-flex-col, la-flex-row --&gt;</span>
+<span class="t-comment">&lt;!-- Align: la-items-start, center, end, stretch --&gt;</span>
+<span class="t-comment">&lt;!-- Justify: la-justify-start, center, end, between, around --&gt;</span>
+<span class="t-comment">&lt;!-- Gap: la-gap-1 … la-gap-16 --&gt;</span></code></pre>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         CONTAINER QUERIES
+         ══════════════════════════════════════ -->
+    <section id="container-queries" class="doc-section">
+      <p class="section-eyebrow">Layout</p>
+      <h2 class="section-title">Container Queries</h2>
+      <p class="section-desc">Lunar Aurora leverages CSS Container Queries to make components responsive to their parent's size — not the viewport. Add <code>la-container</code> to any wrapper.</p>
+      <hr class="doc-divider">
+
+      <div class="callout callout-info">
+        <span class="callout-icon">ℹ</span>
+        <div>Container Queries are supported in all modern browsers (Chrome 105+, Firefox 110+, Safari 16+).</div>
+      </div>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="cb-dot" style="background:#ff5f57"></span><span class="cb-dot" style="background:#febc2e"></span><span class="cb-dot" style="background:#28c840"></span></div>
+          <span class="cb-lang">html</span>
+        </div>
+        <pre><code><span class="t-comment">&lt;!-- Mark a container --&gt;</span>
+<span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-container"</span><span class="t-tag">&gt;</span>
+  <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-card la-cq-md:la-flex"</span><span class="t-tag">&gt;</span>
+    <span class="t-comment">&lt;!-- Switches to flex when container &gt; 640px --&gt;</span>
+  <span class="t-tag">&lt;/div&gt;</span>
+<span class="t-tag">&lt;/div&gt;</span></code></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="cb-dot" style="background:#ff5f57"></span><span class="cb-dot" style="background:#febc2e"></span><span class="cb-dot" style="background:#28c840"></span></div>
+          <span class="cb-lang">css</span>
+        </div>
+        <pre><code><span class="t-comment">/* Generated internally by Lunar Aurora */</span>
+<span class="t-tag">.la-container</span> {
+  <span class="t-prop">container-type</span>: <span class="t-val">inline-size</span>;
+}
+
+<span class="t-tag">@container</span> (<span class="t-prop">min-width</span>: <span class="t-num">640px</span>) {
+  <span class="t-tag">.la-cq-md\:la-flex</span> { <span class="t-prop">display</span>: <span class="t-val">flex</span>; }
+}</code></pre>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         BUTTONS & BADGES
+         ══════════════════════════════════════ -->
+    <section id="buttons" class="doc-section">
+      <p class="section-eyebrow">Components</p>
+      <h2 class="section-title">Buttons &amp; Badges</h2>
+      <p class="section-desc">Accessible, themeable button variants and badge components. All transitions use <code>cubic-bezier</code> easing for polish.</p>
+      <hr class="doc-divider">
+
+      <div class="demo-wrap">
+        <div class="demo-label">
+          <div class="dot-row"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+          <span>Button variants</span>
+        </div>
+        <div class="demo-preview">
+          <button class="la-btn la-btn-primary">Primary</button>
+          <button class="la-btn la-btn-secondary">Secondary</button>
+          <button class="la-btn la-btn-ghost">Ghost</button>
+          <button class="la-btn la-btn-danger">Danger</button>
+        </div>
+      </div>
+
+      <div class="demo-wrap">
+        <div class="demo-label">
+          <div class="dot-row"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+          <span>Button sizes</span>
+        </div>
+        <div class="demo-preview" style="align-items:center;">
+          <button class="la-btn la-btn-primary la-btn-sm">Small</button>
+          <button class="la-btn la-btn-primary">Default</button>
+          <button class="la-btn la-btn-primary la-btn-lg">Large</button>
+        </div>
+      </div>
+
+      <div class="demo-wrap">
+        <div class="demo-label">
+          <div class="dot-row"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+          <span>Badges</span>
+        </div>
+        <div class="demo-preview">
+          <span class="la-badge la-badge-violet la-badge-dot">Aurora</span>
+          <span class="la-badge la-badge-cyan la-badge-dot">Cyan</span>
+          <span class="la-badge la-badge-pink la-badge-dot">Pink</span>
+          <span class="la-badge la-badge-green la-badge-dot">Green</span>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="cb-dot" style="background:#ff5f57"></span><span class="cb-dot" style="background:#febc2e"></span><span class="cb-dot" style="background:#28c840"></span></div>
+          <span class="cb-lang">html</span>
+        </div>
+        <pre><code><span class="t-comment">&lt;!-- Buttons --&gt;</span>
+<span class="t-tag">&lt;button</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-btn la-btn-primary"</span><span class="t-tag">&gt;</span>Primary<span class="t-tag">&lt;/button&gt;</span>
+<span class="t-tag">&lt;button</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-btn la-btn-secondary"</span><span class="t-tag">&gt;</span>Secondary<span class="t-tag">&lt;/button&gt;</span>
+<span class="t-tag">&lt;button</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-btn la-btn-ghost"</span><span class="t-tag">&gt;</span>Ghost<span class="t-tag">&lt;/button&gt;</span>
+<span class="t-tag">&lt;button</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-btn la-btn-primary la-btn-sm"</span><span class="t-tag">&gt;</span>Small<span class="t-tag">&lt;/button&gt;</span>
+<span class="t-tag">&lt;button</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-btn la-btn-primary la-btn-lg"</span><span class="t-tag">&gt;</span>Large<span class="t-tag">&lt;/button&gt;</span>
+
+<span class="t-comment">&lt;!-- Badges --&gt;</span>
+<span class="t-tag">&lt;span</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-badge la-badge-violet"</span><span class="t-tag">&gt;</span>Aurora<span class="t-tag">&lt;/span&gt;</span>
+<span class="t-tag">&lt;span</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-badge la-badge-cyan la-badge-dot"</span><span class="t-tag">&gt;</span>Live<span class="t-tag">&lt;/span&gt;</span></code></pre>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         CARDS
+         ══════════════════════════════════════ -->
+    <section id="cards" class="doc-section">
+      <p class="section-eyebrow">Components</p>
+      <h2 class="section-title">Cards</h2>
+      <p class="section-desc">Versatile card component with optional header, body, and footer slots. Hover state elevates the card with a subtle glow.</p>
+      <hr class="doc-divider">
+
+      <div class="demo-wrap">
+        <div class="demo-label">
+          <div class="dot-row"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+          <span>Preview</span>
+        </div>
+        <div class="demo-preview" style="align-items:stretch; gap:16px;">
+          <div class="la-card" style="flex:1; min-width:220px; max-width:320px;">
+            <div class="la-card-header">
+              <span class="la-card-title">Mooncat Card</span>
+              <span class="la-badge la-badge-violet">New</span>
+            </div>
+            <div class="la-card-body">
+              A clean card component with header, body, and footer slots. Uses glass morphism by default.
+            </div>
+            <div class="la-card-footer">
+              <button class="la-btn la-btn-primary la-btn-sm">Action</button>
+              <button class="la-btn la-btn-ghost la-btn-sm">Cancel</button>
+            </div>
+          </div>
+          <div class="la-card" style="flex:1; min-width:220px; max-width:320px;">
+            <div class="la-card-body" style="padding:20px;">
+              <div style="font-size:1.5rem; margin-bottom:10px;">🌙</div>
+              <div style="font-weight:600; margin-bottom:6px; color:rgba(255,255,255,0.85);">Simple Card</div>
+              <div>No header or footer needed — body-only works great too.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="cb-dot" style="background:#ff5f57"></span><span class="cb-dot" style="background:#febc2e"></span><span class="cb-dot" style="background:#28c840"></span></div>
+          <span class="cb-lang">html</span>
+        </div>
+        <pre><code><span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-card"</span><span class="t-tag">&gt;</span>
+  <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-card-header"</span><span class="t-tag">&gt;</span>
+    <span class="t-tag">&lt;span</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-card-title"</span><span class="t-tag">&gt;</span>Title<span class="t-tag">&lt;/span&gt;</span>
+    <span class="t-tag">&lt;span</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-badge la-badge-violet"</span><span class="t-tag">&gt;</span>New<span class="t-tag">&lt;/span&gt;</span>
+  <span class="t-tag">&lt;/div&gt;</span>
+  <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-card-body"</span><span class="t-tag">&gt;</span>
+    Content goes here.
+  <span class="t-tag">&lt;/div&gt;</span>
+  <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-card-footer"</span><span class="t-tag">&gt;</span>
+    <span class="t-tag">&lt;button</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-btn la-btn-primary la-btn-sm"</span><span class="t-tag">&gt;</span>Action<span class="t-tag">&lt;/button&gt;</span>
+  <span class="t-tag">&lt;/div&gt;</span>
+<span class="t-tag">&lt;/div&gt;</span></code></pre>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         FORMS
+         ══════════════════════════════════════ -->
+    <section id="forms" class="doc-section">
+      <p class="section-eyebrow">Components</p>
+      <h2 class="section-title">Forms</h2>
+      <p class="section-desc">Form controls styled to match the dark aesthetic — inputs, selects, checkboxes, and textareas. Focus rings use OKLCH colors for accessibility.</p>
+      <hr class="doc-divider">
+
+      <div class="demo-wrap">
+        <div class="demo-label">
+          <div class="dot-row"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+          <span>Preview</span>
+        </div>
+        <div class="demo-preview stack" style="gap:14px;">
+          <div class="la-form-group">
+            <label class="la-label">Email address</label>
+            <input class="la-input" type="email" placeholder="you@mooncat.dev">
+          </div>
+          <div class="la-form-group">
+            <label class="la-label">Theme</label>
+            <select class="la-select">
+              <option>Dark</option>
+              <option>Cyberpunk</option>
+              <option>Aurora</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="cb-dot" style="background:#ff5f57"></span><span class="cb-dot" style="background:#febc2e"></span><span class="cb-dot" style="background:#28c840"></span></div>
+          <span class="cb-lang">html</span>
+        </div>
+        <pre><code><span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-form-group"</span><span class="t-tag">&gt;</span>
+  <span class="t-tag">&lt;label</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-label"</span> <span class="t-attr">for</span><span class="t-punct">=</span><span class="t-string">"email"</span><span class="t-tag">&gt;</span>Email<span class="t-tag">&lt;/label&gt;</span>
+  <span class="t-tag">&lt;input</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-input"</span> <span class="t-attr">id</span><span class="t-punct">=</span><span class="t-string">"email"</span> <span class="t-attr">type</span><span class="t-punct">=</span><span class="t-string">"email"</span> <span class="t-attr">placeholder</span><span class="t-punct">=</span><span class="t-string">"..."</span><span class="t-tag">&gt;</span>
+<span class="t-tag">&lt;/div&gt;</span>
+
+<span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-form-group"</span><span class="t-tag">&gt;</span>
+  <span class="t-tag">&lt;label</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-label"</span><span class="t-tag">&gt;</span>Select<span class="t-tag">&lt;/label&gt;</span>
+  <span class="t-tag">&lt;select</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-select"</span><span class="t-tag">&gt;</span>
+    <span class="t-tag">&lt;option&gt;</span>Option 1<span class="t-tag">&lt;/option&gt;</span>
+  <span class="t-tag">&lt;/select&gt;</span>
+<span class="t-tag">&lt;/div&gt;</span>
+
+<span class="t-comment">&lt;!-- Also available: la-textarea, la-checkbox, la-radio, la-toggle --&gt;</span></code></pre>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         MODALS
+         ══════════════════════════════════════ -->
+    <section id="modals" class="doc-section">
+      <p class="section-eyebrow">Components</p>
+      <h2 class="section-title">Modals</h2>
+      <p class="section-desc">Headless modal dialogs powered by <code>data-la-modal</code> attributes. Supports keyboard navigation, focus trap, and backdrop click to close.</p>
+      <hr class="doc-divider">
+
+      <div class="demo-wrap">
+        <div class="demo-label">
+          <div class="dot-row"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+          <span>Preview (static)</span>
+        </div>
+        <div class="modal-preview-wrap">
+          <div class="la-modal-box">
+            <div class="la-modal-title">Confirm action</div>
+            <div class="la-modal-body">This will permanently delete the component. This action cannot be undone.</div>
+            <div class="la-modal-footer">
+              <button class="la-btn la-btn-ghost la-btn-sm" id="demoModalClose">Cancel</button>
+              <button class="la-btn la-btn-danger la-btn-sm">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="cb-dot" style="background:#ff5f57"></span><span class="cb-dot" style="background:#febc2e"></span><span class="cb-dot" style="background:#28c840"></span></div>
+          <span class="cb-lang">html</span>
+        </div>
+        <pre><code><span class="t-comment">&lt;!-- Trigger --&gt;</span>
+<span class="t-tag">&lt;button</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-btn la-btn-primary"</span>
+        <span class="t-attr">data-la-modal-open</span><span class="t-punct">=</span><span class="t-string">"my-modal"</span><span class="t-tag">&gt;</span>
+  Open Modal
+<span class="t-tag">&lt;/button&gt;</span>
+
+<span class="t-comment">&lt;!-- Dialog --&gt;</span>
+<span class="t-tag">&lt;dialog</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-modal"</span> <span class="t-attr">id</span><span class="t-punct">=</span><span class="t-string">"my-modal"</span><span class="t-tag">&gt;</span>
+  <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-modal-box"</span><span class="t-tag">&gt;</span>
+    <span class="t-tag">&lt;h2</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-modal-title"</span><span class="t-tag">&gt;</span>Title<span class="t-tag">&lt;/h2&gt;</span>
+    <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-modal-body"</span><span class="t-tag">&gt;</span>Content<span class="t-tag">&lt;/div&gt;</span>
+    <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-modal-footer"</span><span class="t-tag">&gt;</span>
+      <span class="t-tag">&lt;button</span> <span class="t-attr">data-la-modal-close</span><span class="t-tag">&gt;</span>Close<span class="t-tag">&lt;/button&gt;</span>
+    <span class="t-tag">&lt;/div&gt;</span>
+  <span class="t-tag">&lt;/div&gt;</span>
+<span class="t-tag">&lt;/dialog&gt;</span></code></pre>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         TABS & ACCORDIONS
+         ══════════════════════════════════════ -->
+    <section id="tabs-accordions" class="doc-section">
+      <p class="section-eyebrow">Components</p>
+      <h2 class="section-title">Tabs &amp; Accordions</h2>
+      <p class="section-desc">Accessible tab and accordion components driven by <code>aria-*</code> attributes. No JS configuration needed — the framework handles state automatically.</p>
+      <hr class="doc-divider">
+
+      <div class="demo-wrap">
+        <div class="demo-label">
+          <div class="dot-row"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+          <span>Tabs</span>
+        </div>
+        <div class="demo-preview stack" style="gap:0; padding:20px 24px;">
+          <div class="la-tabs">
+            <div class="la-tabs-nav" role="tablist">
+              <button class="la-tab active" role="tab" aria-selected="true" id="tab1-btn">Overview</button>
+              <button class="la-tab" role="tab" aria-selected="false" id="tab2-btn">Usage</button>
+              <button class="la-tab" role="tab" aria-selected="false" id="tab3-btn">API</button>
+            </div>
+            <div class="la-tab-panel" id="tab1-panel" role="tabpanel">
+              Lunar Aurora components are headless — they provide structure and behavior, not style. Customize freely with utility classes.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-wrap" style="margin-top:16px;">
+        <div class="demo-label">
+          <div class="dot-row"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+          <span>Accordion</span>
+        </div>
+        <div class="demo-preview stack" style="padding:16px 20px; gap:0;">
+          <div class="la-accordion">
+            <div class="la-accordion-item">
+              <button class="la-accordion-trigger" aria-expanded="true" id="acc1">
+                What browsers are supported?
+                <span class="chevron">▼</span>
+              </button>
+              <div class="la-accordion-content open" id="acc1-content">
+                <div class="la-accordion-body">All modern browsers: Chrome 105+, Firefox 110+, Safari 16+, Edge 105+. IE is not supported.</div>
+              </div>
+            </div>
+            <div class="la-accordion-item">
+              <button class="la-accordion-trigger" aria-expanded="false" id="acc2">
+                Can I use it with React / Vue?
+                <span class="chevron">▼</span>
+              </button>
+              <div class="la-accordion-content" id="acc2-content">
+                <div class="la-accordion-body">Yes — Lunar Aurora is pure CSS + vanilla JS. Use the classes directly in JSX or templates.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="cb-dot" style="background:#ff5f57"></span><span class="cb-dot" style="background:#febc2e"></span><span class="cb-dot" style="background:#28c840"></span></div>
+          <span class="cb-lang">html</span>
+        </div>
+        <pre><code><span class="t-comment">&lt;!-- Tabs --&gt;</span>
+<span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-tabs"</span><span class="t-tag">&gt;</span>
+  <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-tabs-nav"</span> <span class="t-attr">role</span><span class="t-punct">=</span><span class="t-string">"tablist"</span><span class="t-tag">&gt;</span>
+    <span class="t-tag">&lt;button</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-tab"</span> <span class="t-attr">role</span><span class="t-punct">=</span><span class="t-string">"tab"</span><span class="t-tag">&gt;</span>Tab 1<span class="t-tag">&lt;/button&gt;</span>
+    <span class="t-tag">&lt;button</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-tab"</span> <span class="t-attr">role</span><span class="t-punct">=</span><span class="t-string">"tab"</span><span class="t-tag">&gt;</span>Tab 2<span class="t-tag">&lt;/button&gt;</span>
+  <span class="t-tag">&lt;/div&gt;</span>
+  <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-tab-panel"</span> <span class="t-attr">role</span><span class="t-punct">=</span><span class="t-string">"tabpanel"</span><span class="t-tag">&gt;</span>Content<span class="t-tag">&lt;/div&gt;</span>
+<span class="t-tag">&lt;/div&gt;</span>
+
+<span class="t-comment">&lt;!-- Accordion --&gt;</span>
+<span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-accordion"</span><span class="t-tag">&gt;</span>
+  <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-accordion-item"</span><span class="t-tag">&gt;</span>
+    <span class="t-tag">&lt;button</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-accordion-trigger"</span> <span class="t-attr">aria-expanded</span><span class="t-punct">=</span><span class="t-string">"false"</span><span class="t-tag">&gt;</span>
+      Question? <span class="t-tag">&lt;span</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"chevron"</span><span class="t-tag">&gt;</span>▼<span class="t-tag">&lt;/span&gt;</span>
+    <span class="t-tag">&lt;/button&gt;</span>
+    <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-accordion-content"</span><span class="t-tag">&gt;</span>
+      <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-accordion-body"</span><span class="t-tag">&gt;</span>Answer.<span class="t-tag">&lt;/div&gt;</span>
+    <span class="t-tag">&lt;/div&gt;</span>
+  <span class="t-tag">&lt;/div&gt;</span>
+<span class="t-tag">&lt;/div&gt;</span></code></pre>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         THEMES
+         ══════════════════════════════════════ -->
+    <section id="themes" class="doc-section">
+      <p class="section-eyebrow">Advanced</p>
+      <h2 class="section-title">Themes</h2>
+      <p class="section-desc">Apply any of 30+ themes with a single <code>data-theme</code> attribute on any element. Themes cascade — nest them for local overrides.</p>
+      <hr class="doc-divider">
+
+      <div class="theme-grid">
+        <div class="theme-card">
+          <div class="theme-swatch" style="background: linear-gradient(135deg,#7c3aed,#06b6d4)"></div>
+          <div class="theme-name">dark</div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch" style="background: linear-gradient(135deg,#0ff,#7c3aed)"></div>
+          <div class="theme-name">cyberpunk</div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch" style="background: linear-gradient(135deg,#b390ff,#5ce0d8,#ec4899)"></div>
+          <div class="theme-name">aurora</div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch" style="background: linear-gradient(135deg,#10b981,#065f46)"></div>
+          <div class="theme-name">hacker</div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch" style="background: linear-gradient(135deg,#f472b6,#fbbf24,#f9a8d4)"></div>
+          <div class="theme-name">pastel</div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch" style="background: linear-gradient(135deg,#f59e0b,#dc2626)"></div>
+          <div class="theme-name">retro</div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch" style="background: linear-gradient(135deg,#64748b,#1e293b)"></div>
+          <div class="theme-name">slate</div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch" style="background: linear-gradient(135deg,#fde68a,#f59e0b,#92400e)"></div>
+          <div class="theme-name">amber</div>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="cb-dot" style="background:#ff5f57"></span><span class="cb-dot" style="background:#febc2e"></span><span class="cb-dot" style="background:#28c840"></span></div>
+          <span class="cb-lang">html</span>
+        </div>
+        <pre><code><span class="t-comment">&lt;!-- Global theme --&gt;</span>
+<span class="t-tag">&lt;html</span> <span class="t-attr">data-theme</span><span class="t-punct">=</span><span class="t-string">"dark"</span><span class="t-tag">&gt;</span>
+
+<span class="t-comment">&lt;!-- Component-level override --&gt;</span>
+<span class="t-tag">&lt;div</span> <span class="t-attr">data-theme</span><span class="t-punct">=</span><span class="t-string">"cyberpunk"</span><span class="t-tag">&gt;</span>
+  <span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-card"</span><span class="t-tag">&gt;</span>Cyber card<span class="t-tag">&lt;/div&gt;</span>
+<span class="t-tag">&lt;/div&gt;</span>
+
+<span class="t-comment">&lt;!-- Switch theme with JS --&gt;</span>
+<span class="t-tag">&lt;script<span class="t-tag">&gt;</span></span>
+  document.documentElement.dataset.theme = <span class="t-string">'aurora'</span>;
+<span class="t-tag">&lt;/script&gt;</span>
+
+<span class="t-comment">&lt;!-- Available: dark · light · cyberpunk · aurora · hacker
+              pastel · retro · slate · amber · ocean · +20 more --&gt;</span></code></pre>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         UTILITIES
+         ══════════════════════════════════════ -->
+    <section id="utilities" class="doc-section">
+      <p class="section-eyebrow">Advanced</p>
+      <h2 class="section-title">Utilities</h2>
+      <p class="section-desc">A comprehensive set of utility classes for spacing, display, overflow, opacity, cursor, and more. All prefixed with <code>la-</code>.</p>
+      <hr class="doc-divider">
+
+      <div class="util-grid">
+        <div class="util-item">
+          <span class="util-class">.la-hidden</span>
+          <span class="util-desc">display: none</span>
+        </div>
+        <div class="util-item">
+          <span class="util-class">.la-sr-only</span>
+          <span class="util-desc">Visually hidden, screen reader visible</span>
+        </div>
+        <div class="util-item">
+          <span class="util-class">.la-truncate</span>
+          <span class="util-desc">text-overflow: ellipsis</span>
+        </div>
+        <div class="util-item">
+          <span class="util-class">.la-rounded-full</span>
+          <span class="util-desc">border-radius: 9999px</span>
+        </div>
+        <div class="util-item">
+          <span class="util-class">.la-overflow-hidden</span>
+          <span class="util-desc">overflow: hidden</span>
+        </div>
+        <div class="util-item">
+          <span class="util-class">.la-pointer</span>
+          <span class="util-desc">cursor: pointer</span>
+        </div>
+        <div class="util-item">
+          <span class="util-class">.la-opacity-50</span>
+          <span class="util-desc">opacity: 0.5</span>
+        </div>
+        <div class="util-item">
+          <span class="util-class">.la-glass</span>
+          <span class="util-desc">Glassmorphism preset</span>
+        </div>
+        <div class="util-item">
+          <span class="util-class">.la-gradient-text</span>
+          <span class="util-desc">Gradient fill on text</span>
+        </div>
+        <div class="util-item">
+          <span class="util-class">.la-m-{n}</span>
+          <span class="util-desc">margin (0–16)</span>
+        </div>
+        <div class="util-item">
+          <span class="util-class">.la-p-{n}</span>
+          <span class="util-desc">padding (0–16)</span>
+        </div>
+        <div class="util-item">
+          <span class="util-class">.la-w-full</span>
+          <span class="util-desc">width: 100%</span>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="cb-dot" style="background:#ff5f57"></span><span class="cb-dot" style="background:#febc2e"></span><span class="cb-dot" style="background:#28c840"></span></div>
+          <span class="cb-lang">html</span>
+        </div>
+        <pre><code><span class="t-comment">&lt;!-- Spacing utilities --&gt;</span>
+<span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-p-4 la-m-2"</span><span class="t-tag">&gt;</span>...<span class="t-tag">&lt;/div&gt;</span>
+
+<span class="t-comment">&lt;!-- Glassmorphism --&gt;</span>
+<span class="t-tag">&lt;div</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-glass la-rounded-full la-p-4"</span><span class="t-tag">&gt;</span>...<span class="t-tag">&lt;/div&gt;</span>
+
+<span class="t-comment">&lt;!-- Gradient text --&gt;</span>
+<span class="t-tag">&lt;h1</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-gradient-text la-text-3xl la-font-bold"</span><span class="t-tag">&gt;</span>
+  Glow Up
+<span class="t-tag">&lt;/h1&gt;</span></code></pre>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         ICONS
+         ══════════════════════════════════════ -->
+    <section id="icons" class="doc-section">
+      <p class="section-eyebrow">Advanced</p>
+      <h2 class="section-title">Icons</h2>
+      <p class="section-desc">Inline SVG icons bundled as CSS classes. No external fonts, no external requests. Used via <code>.la-icon-*</code> or the <code>&lt;la-icon&gt;</code> web component.</p>
+      <hr class="doc-divider">
+
+      <div class="icons-grid">
+        <div class="icon-item">
+          <span class="icon-glyph">🌙</span>
+          <span class="icon-name">moon</span>
+        </div>
+        <div class="icon-item">
+          <span class="icon-glyph">✦</span>
+          <span class="icon-name">star</span>
+        </div>
+        <div class="icon-item">
+          <span class="icon-glyph">⚡</span>
+          <span class="icon-name">zap</span>
+        </div>
+        <div class="icon-item">
+          <span class="icon-glyph">◉</span>
+          <span class="icon-name">circle</span>
+        </div>
+        <div class="icon-item">
+          <span class="icon-glyph">▭</span>
+          <span class="icon-name">rect</span>
+        </div>
+        <div class="icon-item">
+          <span class="icon-glyph">⬡</span>
+          <span class="icon-name">hex</span>
+        </div>
+        <div class="icon-item">
+          <span class="icon-glyph">✏</span>
+          <span class="icon-name">edit</span>
+        </div>
+        <div class="icon-item">
+          <span class="icon-glyph">⊞</span>
+          <span class="icon-name">grid</span>
+        </div>
+        <div class="icon-item">
+          <span class="icon-glyph">↔</span>
+          <span class="icon-name">arrows</span>
+        </div>
+        <div class="icon-item">
+          <span class="icon-glyph">≡</span>
+          <span class="icon-name">menu</span>
+        </div>
+        <div class="icon-item">
+          <span class="icon-glyph">⬆</span>
+          <span class="icon-name">arrow-up</span>
+        </div>
+        <div class="icon-item">
+          <span class="icon-glyph">✕</span>
+          <span class="icon-name">close</span>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="cb-dot" style="background:#ff5f57"></span><span class="cb-dot" style="background:#febc2e"></span><span class="cb-dot" style="background:#28c840"></span></div>
+          <span class="cb-lang">html</span>
+        </div>
+        <pre><code><span class="t-comment">&lt;!-- CSS class approach --&gt;</span>
+<span class="t-tag">&lt;span</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-icon la-icon-moon"</span> <span class="t-attr">aria-hidden</span><span class="t-punct">=</span><span class="t-string">"true"</span><span class="t-tag">&gt;&lt;/span&gt;</span>
+
+<span class="t-comment">&lt;!-- Web component approach --&gt;</span>
+<span class="t-tag">&lt;la-icon</span> <span class="t-attr">name</span><span class="t-punct">=</span><span class="t-string">"moon"</span> <span class="t-attr">size</span><span class="t-punct">=</span><span class="t-string">"20"</span><span class="t-tag">&gt;&lt;/la-icon&gt;</span>
+
+<span class="t-comment">&lt;!-- Inside a button --&gt;</span>
+<span class="t-tag">&lt;button</span> <span class="t-attr">class</span><span class="t-punct">=</span><span class="t-string">"la-btn la-btn-primary"</span><span class="t-tag">&gt;</span>
+  <span class="t-tag">&lt;la-icon</span> <span class="t-attr">name</span><span class="t-punct">=</span><span class="t-string">"star"</span><span class="t-tag">&gt;&lt;/la-icon&gt;</span>
+  Favorite
+<span class="t-tag">&lt;/button&gt;</span></code></pre>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>Lunar Aurora</span>
+  <span style="opacity:0.3">·</span>
+  <span>Made by <a href="https://github.com/yrbane" target="_blank" rel="noopener">yrbane</a></span>
+  <span style="opacity:0.3">·</span>
+  <img src="images/mooncat.png" alt="Mooncat">
+  <span>Mooncat approved</span>
+</footer>
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT — inline, standalone
+     ═══════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ──────────────────────────────────────
+     NAV : scroll border effect
+     ────────────────────────────────────── */
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function () {
+    nav.style.borderBottomColor = window.scrollY > 10
+      ? 'rgba(255,255,255,0.1)'
+      : 'rgba(255,255,255,0.06)';
+  }, { passive: true });
+
+  /* ──────────────────────────────────────
+     MOBILE SIDEBAR TOGGLE
+     ────────────────────────────────────── */
+  var sidebar = document.getElementById('sidebar');
+  var menuBtn = document.getElementById('menuBtn');
+  var overlay = document.getElementById('sidebarOverlay');
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    overlay.classList.add('show');
+    menuBtn.setAttribute('aria-expanded', 'true');
+  }
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  menuBtn.addEventListener('click', function () {
+    sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+  });
+  overlay.addEventListener('click', closeSidebar);
+
+  /* ──────────────────────────────────────
+     INTERSECTION OBSERVER — active nav item
+     Observe each doc section, highlight
+     the matching sidebar link on scroll
+     ────────────────────────────────────── */
+  var navLinks = document.querySelectorAll('.sidebar-nav a[data-section]');
+
+  /* Build a map: section id → nav link */
+  var linkMap = {};
+  navLinks.forEach(function (link) {
+    linkMap[link.dataset.section] = link;
+  });
+
+  var observerOptions = {
+    root: null,
+    /* Offset: section becomes "active" when its top reaches 30% from viewport top */
+    rootMargin: '-' + (document.getElementById('nav').offsetHeight + 20) + 'px 0px -55% 0px',
+    threshold: 0
+  };
+
+  var currentActive = null;
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      var id = entry.target.id;
+      var link = linkMap[id];
+      if (!link) return;
+
+      if (entry.isIntersecting) {
+        /* Deactivate previous */
+        if (currentActive && currentActive !== link) {
+          currentActive.classList.remove('is-active');
+        }
+        link.classList.add('is-active');
+        currentActive = link;
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.doc-section[id]').forEach(function (section) {
+    observer.observe(section);
+  });
+
+  /* ──────────────────────────────────────
+     SMOOTH SIDEBAR SCROLL TO ACTIVE LINK
+     Keep active item visible in sidebar
+     ────────────────────────────────────── */
+  function scrollSidebarToActive(link) {
+    var sidebarEl = document.getElementById('sidebar');
+    var linkTop = link.offsetTop;
+    var sidebarH = sidebarEl.clientHeight;
+    var scrollTop = sidebarEl.scrollTop;
+
+    /* Only scroll if link is outside visible area */
+    if (linkTop < scrollTop + 40 || linkTop > scrollTop + sidebarH - 80) {
+      sidebarEl.scrollTo({
+        top: linkTop - sidebarH / 3,
+        behavior: 'smooth'
+      });
+    }
+  }
+
+  /* Observe sidebar nav changes to scroll */
+  var sidebarMO = new MutationObserver(function (mutations) {
+    mutations.forEach(function (m) {
+      if (m.type === 'attributes' && m.attributeName === 'class') {
+        var el = m.target;
+        if (el.classList.contains('is-active')) {
+          scrollSidebarToActive(el);
+        }
+      }
+    });
+  });
+
+  navLinks.forEach(function (link) {
+    sidebarMO.observe(link, { attributes: true });
+  });
+
+  /* ──────────────────────────────────────
+     TABS DEMO — interactive
+     ────────────────────────────────────── */
+  var tabBtns = document.querySelectorAll('.la-tab[role="tab"]');
+  var tabPanels = ['Overview — Lunar Aurora components are headless: structure + behavior, fully stylable.',
+                   'Usage — Import aurora.css, add data-theme, start using la-* classes.',
+                   'API — data-la-modal-open, data-la-modal-close, data-la-tabs, data-la-accordion.'];
+
+  tabBtns.forEach(function (btn, i) {
+    btn.addEventListener('click', function () {
+      tabBtns.forEach(function (b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById('tab1-panel');
+      if (panel) panel.textContent = tabPanels[i] || tabPanels[0];
+    });
+  });
+
+  /* ──────────────────────────────────────
+     ACCORDION DEMO — interactive
+     ────────────────────────────────────── */
+  document.querySelectorAll('.la-accordion-trigger').forEach(function (trigger) {
+    trigger.addEventListener('click', function () {
+      var expanded = trigger.getAttribute('aria-expanded') === 'true';
+      var contentId = trigger.id + '-content';
+      var content = document.getElementById(contentId);
+
+      /* Toggle */
+      trigger.setAttribute('aria-expanded', String(!expanded));
+      if (content) {
+        content.classList.toggle('open', !expanded);
+      }
+    });
+  });
+
+  /* ──────────────────────────────────────
+     CLOSE DEMO MODAL BUTTON
+     ────────────────────────────────────── */
+  var demoClose = document.getElementById('demoModalClose');
+  if (demoClose) {
+    demoClose.addEventListener('click', function () {
+      var wrap = demoClose.closest('.modal-preview-wrap');
+      if (wrap) {
+        wrap.style.opacity = '0.4';
+        wrap.style.pointerEvents = 'none';
+        setTimeout(function () {
+          wrap.style.opacity = '1';
+          wrap.style.pointerEvents = '';
+        }, 800);
+      }
+    });
+  }
+
+})();
+</script>
+
+</body>
+</html>
