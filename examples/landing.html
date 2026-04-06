@@ -1188,6 +1188,10 @@ footer img { width:20px; opacity:.35; }
   var btns = document.querySelectorAll('.theme-btn');
   btns[0].classList.add('active');
 
+  var mcGlow = document.querySelector('.mc-glow');
+  var mcImgEl = document.querySelector('.mc-img');
+  var ctaMc = document.querySelector('.cta-mc');
+
   function switchTheme(i) {
     var theme = themes[i];
     document.body.className = theme === 'cosmic' ? '' : 'theme-' + theme;
@@ -1202,6 +1206,24 @@ footer img { width:20px; opacity:.35; }
       var c = roll < 0.5 ? tc.primary : roll < 0.8 ? tc.secondary : tc.accent;
       updateStarColor(star, c);
     });
+
+    // Forcer la mise à jour du halo mooncat (les gradients ne transitionnent pas via CSS)
+    var p = tc.primary, s = tc.secondary;
+    if (mcGlow) {
+      mcGlow.style.background = 'radial-gradient(circle,rgba(' + p + ',.3),rgba(' + s + ',.12) 55%,transparent 72%)';
+    }
+    if (mcImgEl) {
+      var cs = getComputedStyle(document.documentElement);
+      var g1 = cs.getPropertyValue('--t-glow-1').trim();
+      var g2 = cs.getPropertyValue('--t-glow-2').trim();
+      mcImgEl.style.filter = 'drop-shadow(0 0 40px ' + g1 + ') drop-shadow(0 0 80px ' + g2 + ')';
+    }
+    if (ctaMc) {
+      var cs2 = getComputedStyle(document.documentElement);
+      var g1b = cs2.getPropertyValue('--t-glow-1').trim();
+      var g2b = cs2.getPropertyValue('--t-glow-2').trim();
+      ctaMc.style.filter = 'drop-shadow(0 0 28px ' + g1b + ') drop-shadow(0 0 56px ' + g2b + ')';
+    }
 
     smoothSpeed = 40;
   }
