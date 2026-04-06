@@ -307,10 +307,20 @@ code {
   cursor:pointer; transition:all .3s;
   position:relative; overflow:hidden;
 }
-.theme-card:hover {
+.theme-card:hover, .theme-card.active {
   border-color:rgba(255,255,255,.12);
   transform:translateY(-3px);
   box-shadow:0 12px 32px rgba(0,0,0,.4);
+}
+.theme-card.active {
+  border-color:rgba(124,58,237,.4);
+  box-shadow:0 0 20px rgba(124,58,237,.15), 0 12px 32px rgba(0,0,0,.4);
+}
+.theme-card.active::before {
+  content:'✓'; position:absolute; top:10px; left:10px;
+  width:20px; height:20px; border-radius:50%;
+  background:rgba(124,58,237,.8); color:#fff;
+  font-size:10px; display:flex; align-items:center; justify-content:center;
 }
 .theme-card .tc-swatch {
   width:36px; height:36px; border-radius:10px;
@@ -504,6 +514,47 @@ footer span { color:rgba(255,255,255,.12); }
   }
   #starfield { display:none; }
 }
+
+/* ─── THEME SYSTEM ─── */
+:root {
+  --gs-primary:124,58,237;
+  --gs-secondary:6,182,212;
+  --gs-accent:#b390ff;
+  --gs-glow:rgba(124,58,237,.5);
+}
+body.theme-cyberpunk { --gs-primary:0,255,255; --gs-secondary:124,58,237; --gs-accent:#0ff; --gs-glow:rgba(0,255,255,.5); }
+body.theme-cute { --gs-primary:236,72,153; --gs-secondary:251,191,36; --gs-accent:#f9a8d4; --gs-glow:rgba(236,72,153,.5); }
+body.theme-pro { --gs-primary:100,116,139; --gs-secondary:59,130,246; --gs-accent:#94a3b8; --gs-glow:rgba(100,116,139,.4); }
+body.theme-forest { --gs-primary:16,185,129; --gs-secondary:6,182,212; --gs-accent:#34d399; --gs-glow:rgba(16,185,129,.5); }
+body.theme-sunset { --gs-primary:245,158,11; --gs-secondary:239,68,68; --gs-accent:#fbbf24; --gs-glow:rgba(245,158,11,.5); }
+body.theme-light { --gs-primary:100,116,139; --gs-secondary:148,163,184; --gs-accent:#64748b; --gs-glow:rgba(100,116,139,.3); background:#f0f0f5; color:#1e1e2e; }
+body.theme-aurora { --gs-primary:168,85,247; --gs-secondary:236,72,153; --gs-accent:#c084fc; --gs-glow:rgba(168,85,247,.5); }
+
+/* Éléments thématisés */
+.nav-logo img { filter:drop-shadow(0 0 8px rgba(var(--gs-primary),.6)); }
+.nav-logo span { background:linear-gradient(135deg,var(--gs-accent),rgb(var(--gs-secondary))); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.nav-links a::after { background:linear-gradient(90deg,rgb(var(--gs-primary)),rgb(var(--gs-secondary))); }
+.hero-compact h1 .grad { background:linear-gradient(135deg,#fff 0%,var(--gs-accent) 50%,rgb(var(--gs-secondary)) 100%); background-size:200% 200%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:grad-shift 6s ease infinite; }
+.hero-compact .highlight { color:var(--gs-accent); }
+.section-label { color:var(--gs-accent); }
+.code-block { border-color:rgba(var(--gs-primary),.1); }
+.code-header { border-bottom-color:rgba(var(--gs-primary),.08); }
+.copy-btn { color:var(--gs-accent); border-color:rgba(var(--gs-primary),.15); }
+.copy-btn:hover { background:rgba(var(--gs-primary),.08); border-color:rgba(var(--gs-primary),.3); }
+.copy-btn.copied { color:rgb(var(--gs-secondary)); border-color:rgba(var(--gs-secondary),.3); }
+.doc-section h2 { border-bottom-color:rgba(var(--gs-primary),.1); }
+.tc-tag { background:rgba(var(--gs-primary),.15); border-color:rgba(var(--gs-primary),.2); color:var(--gs-accent); }
+.theme-card.active { border-color:rgba(var(--gs-primary),.4); box-shadow:0 0 20px rgba(var(--gs-primary),.15),0 12px 32px rgba(0,0,0,.4); }
+.theme-card.active::before { background:rgba(var(--gs-primary),.8); }
+.cta-section img { filter:drop-shadow(0 0 24px var(--gs-glow)); }
+.cta-section h2 { color:var(--gs-accent); }
+.cta-section a.btn-primary { background:linear-gradient(135deg,rgb(var(--gs-primary)),rgb(var(--gs-secondary))); box-shadow:0 0 24px rgba(var(--gs-primary),.25); }
+.cta-section a.btn-secondary { border-color:rgba(var(--gs-primary),.15); color:var(--gs-accent); }
+
+/* Transition douce entre thèmes */
+body, .nav-logo img, .nav-logo span, .hero-compact h1 .grad, .section-label,
+.code-block, .copy-btn, .tc-tag, .theme-card, .cta-section img, .cta-section h2,
+.cta-section a { transition:all .5s cubic-bezier(.4,0,.2,1); }
 </style>
 </head>
 <body>
@@ -975,11 +1026,17 @@ LunarAurora.init()"
       var twinkle = 0.65 + Math.sin(ts * 0.002 + i * 1.7) * 0.35;
       ctx.beginPath();
       ctx.arc(s.x * W, s.y * H, s.size, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(180,160,255,' + (s.alpha * twinkle) + ')';
+      ctx.fillStyle = 'rgba(' + starColor[0] + ',' + starColor[1] + ',' + starColor[2] + ',' + (s.alpha * twinkle) + ')';
       ctx.fill();
     }
     requestAnimationFrame(draw);
   }
+
+  var starColor = [180, 160, 255];
+
+  canvas._updateColor = function(rgb) {
+    starColor = rgb;
+  };
 
   resize();
   initStars();
@@ -1071,6 +1128,34 @@ LunarAurora.init()"
         document.body.removeChild(ta);
         doCopy();
       }
+    });
+  });
+})();
+
+/* ─── Switcher de thème (cliquable sur les cards) ─── */
+(function() {
+  var cards = document.querySelectorAll('.theme-card');
+  var themeMap = ['dark', 'cyberpunk', 'cute', 'pro', 'forest', 'sunset', 'light', 'aurora'];
+
+  // Premier thème actif par défaut
+  if (cards[0]) cards[0].classList.add('active');
+
+  cards.forEach(function(card, i) {
+    card.addEventListener('click', function() {
+      var theme = themeMap[i];
+      // Changer la classe du body
+      document.body.className = theme === 'dark' ? '' : 'theme-' + theme;
+
+      // Mettre à jour la carte active
+      cards.forEach(function(c) { c.classList.remove('active'); });
+      card.classList.add('active');
+
+      // Mettre à jour les couleurs des étoiles
+      var cs = getComputedStyle(document.documentElement);
+      var p = cs.getPropertyValue('--gs-primary').trim();
+      var rgb = p.split(',').map(Number);
+      var canvas = document.getElementById('starfield');
+      if (canvas && canvas._updateColor) canvas._updateColor(rgb);
     });
   });
 })();
