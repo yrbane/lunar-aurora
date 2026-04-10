@@ -64,14 +64,132 @@
     /* Applied by inheritance from below */
 }
 
-/* FIX: Split selector for compatibility with PostCSS Nesting */
+/* Dark mode variables — inlined for postcss-import compatibility */
 [data-theme="dark"] {
-    @import "./themes/_dark-vars.css";
+    /* Surfaces */
+    --la-surface-0: oklch(12% 0.02 var(--la-hue-primary));
+    --la-surface-1: oklch(16% 0.02 var(--la-hue-primary));
+    --la-surface-2: oklch(20% 0.02 var(--la-hue-primary));
+    --la-surface-3: oklch(24% 0.02 var(--la-hue-primary));
+    --la-surface-raised: oklch(18% 0.02 var(--la-hue-primary));
+    --la-surface-overlay: oklch(15% 0.02 var(--la-hue-primary) / 95%);
+
+    /* Text */
+    --la-text: oklch(95% 0.01 var(--la-hue-primary));
+    --la-text-secondary: oklch(75% 0.01 var(--la-hue-primary));
+    --la-text-muted: oklch(55% 0.01 var(--la-hue-primary));
+    --la-text-disabled: oklch(40% 0.005 var(--la-hue-primary));
+
+    /* Borders */
+    --la-border: oklch(28% 0.02 var(--la-hue-primary));
+    --la-border-strong: oklch(38% 0.02 var(--la-hue-primary));
+    --la-border-subtle: oklch(22% 0.01 var(--la-hue-primary));
+
+    /* Primary */
+    --la-primary: oklch(68% 0.22 var(--la-hue-primary));
+    --la-primary-subtle: oklch(22% 0.08 var(--la-hue-primary));
+
+    /* Code (dark) */
+    --la-code-bg: oklch(15% 0.015 var(--la-hue-primary));
+    --la-code-text: oklch(85% 0.01 var(--la-hue-primary));
+    --la-code-header: oklch(12% 0.02 var(--la-hue-primary));
+    --la-code-border: oklch(25% 0.02 var(--la-hue-primary));
+    --la-code-lang: oklch(72% 0.2 142);
+    --la-code-lang-glow: oklch(72% 0.2 142 / 60%);
+    --la-code-inline-bg: oklch(22% 0.02 var(--la-hue-primary));
+    --la-code-selection: oklch(35% 0.1 var(--la-hue-primary));
+    --la-code-line-highlight: oklch(20% 0.04 var(--la-hue-primary));
+    --la-code-line-number: oklch(45% 0.01 var(--la-hue-primary));
+
+    /* Syntax (dark) */
+    --la-syntax-comment: oklch(55% 0.01 var(--la-hue-primary));
+    --la-syntax-punctuation: oklch(80% 0.01 var(--la-hue-primary));
+    --la-syntax-property: oklch(70% 0.15 210);
+    --la-syntax-string: oklch(75% 0.12 200);
+    --la-syntax-operator: oklch(70% 0.2 15);
+    --la-syntax-keyword: oklch(70% 0.2 15);
+    --la-syntax-function: oklch(78% 0.15 280);
+    --la-syntax-variable: oklch(75% 0.15 35);
+    --la-syntax-number: oklch(70% 0.15 210);
+    --la-syntax-class: oklch(70% 0.18 30);
+    --la-syntax-regex: oklch(65% 0.15 0);
+    --la-syntax-tag: oklch(72% 0.18 142);
+    --la-syntax-attribute: oklch(70% 0.12 200);
+
+    /* Shadows */
+    --la-shadow-sm: 0 1px 3px oklch(0% 0 0 / 30%), 0 1px 2px oklch(0% 0 0 / 20%);
+    --la-shadow-md: 0 4px 6px -1px oklch(0% 0 0 / 40%), 0 2px 4px -2px oklch(0% 0 0 / 30%);
+    --la-shadow-lg: 0 10px 15px -3px oklch(0% 0 0 / 50%), 0 4px 6px -4px oklch(0% 0 0 / 40%);
+
+    /* Gradient */
+    --la-gradient-hero: linear-gradient(135deg,
+        oklch(12% 0.1 var(--la-hue-primary)) 0%,
+        oklch(15% 0.08 calc(var(--la-hue-primary) + 20)) 50%,
+        oklch(14% 0.12 var(--la-hue-secondary)) 100%);
 }
 
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-        @import "./themes/_dark-vars.css";
+        /* Surfaces */
+        --la-surface-0: oklch(12% 0.02 var(--la-hue-primary));
+        --la-surface-1: oklch(16% 0.02 var(--la-hue-primary));
+        --la-surface-2: oklch(20% 0.02 var(--la-hue-primary));
+        --la-surface-3: oklch(24% 0.02 var(--la-hue-primary));
+        --la-surface-raised: oklch(18% 0.02 var(--la-hue-primary));
+        --la-surface-overlay: oklch(15% 0.02 var(--la-hue-primary) / 95%);
+
+        /* Text */
+        --la-text: oklch(95% 0.01 var(--la-hue-primary));
+        --la-text-secondary: oklch(75% 0.01 var(--la-hue-primary));
+        --la-text-muted: oklch(55% 0.01 var(--la-hue-primary));
+        --la-text-disabled: oklch(40% 0.005 var(--la-hue-primary));
+
+        /* Borders */
+        --la-border: oklch(28% 0.02 var(--la-hue-primary));
+        --la-border-strong: oklch(38% 0.02 var(--la-hue-primary));
+        --la-border-subtle: oklch(22% 0.01 var(--la-hue-primary));
+
+        /* Primary */
+        --la-primary: oklch(68% 0.22 var(--la-hue-primary));
+        --la-primary-subtle: oklch(22% 0.08 var(--la-hue-primary));
+
+        /* Code (dark) */
+        --la-code-bg: oklch(15% 0.015 var(--la-hue-primary));
+        --la-code-text: oklch(85% 0.01 var(--la-hue-primary));
+        --la-code-header: oklch(12% 0.02 var(--la-hue-primary));
+        --la-code-border: oklch(25% 0.02 var(--la-hue-primary));
+        --la-code-lang: oklch(72% 0.2 142);
+        --la-code-lang-glow: oklch(72% 0.2 142 / 60%);
+        --la-code-inline-bg: oklch(22% 0.02 var(--la-hue-primary));
+        --la-code-selection: oklch(35% 0.1 var(--la-hue-primary));
+        --la-code-line-highlight: oklch(20% 0.04 var(--la-hue-primary));
+        --la-code-line-number: oklch(45% 0.01 var(--la-hue-primary));
+
+        /* Syntax (dark) */
+        --la-syntax-comment: oklch(55% 0.01 var(--la-hue-primary));
+        --la-syntax-punctuation: oklch(80% 0.01 var(--la-hue-primary));
+        --la-syntax-property: oklch(70% 0.15 210);
+        --la-syntax-string: oklch(75% 0.12 200);
+        --la-syntax-operator: oklch(70% 0.2 15);
+        --la-syntax-keyword: oklch(70% 0.2 15);
+        --la-syntax-function: oklch(78% 0.15 280);
+        --la-syntax-variable: oklch(75% 0.15 35);
+        --la-syntax-number: oklch(70% 0.15 210);
+        --la-syntax-class: oklch(70% 0.18 30);
+        --la-syntax-regex: oklch(65% 0.15 0);
+        --la-syntax-tag: oklch(72% 0.18 142);
+        --la-syntax-attribute: oklch(70% 0.12 200);
+
+        /* Shadows */
+        --la-shadow-sm: 0 1px 3px oklch(0% 0 0 / 30%), 0 1px 2px oklch(0% 0 0 / 20%);
+        --la-shadow-md: 0 4px 6px -1px oklch(0% 0 0 / 40%), 0 2px 4px -2px oklch(0% 0 0 / 30%);
+        --la-shadow-lg: 0 10px 15px -3px oklch(0% 0 0 / 50%), 0 4px 6px -4px oklch(0% 0 0 / 40%);
+
+        /* Gradient */
+        --la-gradient-hero: linear-gradient(135deg,
+            oklch(12% 0.1 var(--la-hue-primary)) 0%,
+            oklch(15% 0.08 calc(var(--la-hue-primary) + 20)) 50%,
+            oklch(14% 0.12 var(--la-hue-secondary)) 100%);
     }
 }
 
