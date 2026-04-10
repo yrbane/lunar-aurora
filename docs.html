@@ -9,14 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yrbane/lunar-aurora@main/dist/aurora.min.css">
 <style>
 /* ═══════════════════════════════════════════════════════════
    LUNAR AURORA — DOCUMENTATION
    Sidebar layout · IntersectionObserver · Syntax highlighting
+   (Le reset et les variables de base sont fournis par le framework)
    ═══════════════════════════════════════════════════════════ */
-
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
   font-family: 'Space Grotesk', system-ui, sans-serif;
@@ -27,22 +26,10 @@ body {
   line-height: 1.6;
 }
 
-/* ─── CSS CUSTOM PROPERTIES ─── */
+/* ─── CSS CUSTOM PROPERTIES (spécifiques au layout docs) ─── */
 :root {
-  --violet: #7c3aed;
-  --cyan: #06b6d4;
-  --pink: #ec4899;
-  --violet-soft: #b390ff;
-  --cyan-soft: #5ce0d8;
-  --surface-0: rgba(255,255,255,0.02);
-  --surface-1: rgba(255,255,255,0.04);
-  --border: rgba(255,255,255,0.06);
-  --border-hover: rgba(255,255,255,0.12);
-  --text-muted: rgba(224,224,240,0.45);
-  --text-secondary: rgba(224,224,240,0.65);
   --sidebar-w: 260px;
   --nav-h: 64px;
-  --grad: linear-gradient(135deg, var(--violet-soft), var(--cyan-soft));
 }
 
 /* ─── NAV ─── */
@@ -58,10 +45,10 @@ body {
   background: rgba(3,3,8,0.85);
   backdrop-filter: blur(24px) saturate(1.4);
   -webkit-backdrop-filter: blur(24px) saturate(1.4);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--la-border);
   transition: border-color 0.3s;
 }
-.nav:hover { border-bottom-color: var(--border-hover); }
+.nav:hover { border-bottom-color: var(--la-border-strong); }
 
 .nav-logo {
   display: flex;
@@ -79,7 +66,7 @@ body {
 .nav-logo span {
   font-weight: 600;
   font-size: 0.9rem;
-  background: var(--grad);
+  background: var(--la-gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -101,12 +88,12 @@ body {
   position: absolute;
   bottom: -4px; left: 0;
   width: 0; height: 1px;
-  background: var(--grad);
+  background: var(--la-gradient-primary);
   transition: width 0.3s;
 }
 .nav-links a:hover { color: rgba(255,255,255,0.9); }
 .nav-links a:hover::after { width: 100%; }
-.nav-links a.active { color: var(--violet-soft); }
+.nav-links a.active { color: var(--la-primary); }
 .nav-links a.active::after { width: 100%; }
 
 .nav-spacer { flex: 1; }
@@ -116,7 +103,7 @@ body {
   font-size: 0.72rem;
   color: rgba(255,255,255,0.22);
   background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
+  border: 1px solid var(--la-border);
   padding: 4px 10px;
   border-radius: 100px;
   letter-spacing: 0.5px;
@@ -142,7 +129,7 @@ body {
   background: rgba(3,3,8,0.6);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid var(--border);
+  border-right: 1px solid var(--la-border);
   scrollbar-width: thin;
   scrollbar-color: rgba(124,58,237,0.3) transparent;
   z-index: 100;
@@ -179,7 +166,7 @@ body {
   padding: 7px 12px;
   border-radius: 8px;
   font-size: 0.855rem;
-  color: var(--text-secondary);
+  color: var(--la-text-secondary);
   text-decoration: none;
   transition: all 0.2s;
   position: relative;
@@ -200,7 +187,7 @@ body {
 /* Active state */
 .sidebar-nav a.is-active {
   background: rgba(124,58,237,0.12);
-  color: var(--violet-soft);
+  color: var(--la-primary);
   font-weight: 500;
 }
 .sidebar-nav a.is-active::before {
@@ -209,7 +196,7 @@ body {
   left: 0; top: 50%;
   transform: translateY(-50%);
   width: 3px; height: 60%;
-  background: var(--grad);
+  background: var(--la-gradient-primary);
   border-radius: 0 2px 2px 0;
 }
 
@@ -246,7 +233,7 @@ body {
   font-size: 0.68rem;
   letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--violet-soft);
+  color: var(--la-primary);
   margin-bottom: 10px;
   opacity: 0.8;
 }
@@ -264,7 +251,7 @@ body {
 
 .section-desc {
   font-size: 1rem;
-  color: var(--text-muted);
+  color: var(--la-text-muted);
   max-width: 620px;
   line-height: 1.7;
   margin-bottom: 32px;
@@ -280,7 +267,7 @@ body {
 
 /* ─── DEMO BLOCK ─── */
 .demo-wrap {
-  border: 1px solid var(--border);
+  border: 1px solid var(--la-border);
   border-radius: 14px;
   overflow: hidden;
   margin-bottom: 20px;
@@ -293,7 +280,7 @@ body {
   justify-content: space-between;
   padding: 10px 16px;
   background: rgba(255,255,255,0.025);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--la-border);
   font-size: 0.72rem;
   color: rgba(255,255,255,0.3);
   font-family: 'JetBrains Mono', monospace;
@@ -431,11 +418,11 @@ body {
 .la-btn-ghost {
   background: transparent;
   border: 1px solid rgba(124,58,237,0.35);
-  color: var(--violet-soft);
+  color: var(--la-primary);
 }
 .la-btn-ghost:hover {
   background: rgba(124,58,237,0.1);
-  border-color: var(--violet-soft);
+  border-color: var(--la-primary);
 }
 .la-btn-danger {
   background: rgba(239,68,68,0.15);
@@ -472,12 +459,12 @@ body {
 .la-badge-violet {
   background: rgba(124,58,237,0.1);
   border-color: rgba(124,58,237,0.2);
-  color: var(--violet-soft);
+  color: var(--la-primary);
 }
 .la-badge-cyan {
   background: rgba(6,182,212,0.1);
   border-color: rgba(6,182,212,0.2);
-  color: var(--cyan-soft);
+  color: var(--la-secondary);
 }
 .la-badge-pink {
   background: rgba(236,72,153,0.1);
@@ -500,7 +487,7 @@ body {
 /* Cards */
 .la-card {
   background: rgba(255,255,255,0.03);
-  border: 1px solid var(--border);
+  border: 1px solid var(--la-border);
   border-radius: 16px;
   overflow: hidden;
   transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
@@ -512,7 +499,7 @@ body {
 }
 .la-card-header {
   padding: 18px 20px 14px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--la-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -525,12 +512,12 @@ body {
 .la-card-body {
   padding: 18px 20px;
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--la-text-muted);
   line-height: 1.65;
 }
 .la-card-footer {
   padding: 12px 20px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--la-border);
   display: flex;
   gap: 8px;
   align-items: center;
@@ -556,7 +543,7 @@ body {
   text-align: center;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem;
-  color: var(--violet-soft);
+  color: var(--la-primary);
 }
 
 /* Forms */
@@ -611,7 +598,7 @@ body {
 .modal-preview-wrap {
   position: relative;
   background: rgba(3,3,8,0.8);
-  border: 1px solid var(--border);
+  border: 1px solid var(--la-border);
   border-radius: 16px;
   padding: 28px;
   display: flex;
@@ -635,7 +622,7 @@ body {
 }
 .la-modal-body {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--la-text-muted);
   line-height: 1.6;
   margin-bottom: 20px;
 }
@@ -650,14 +637,14 @@ body {
 .la-tabs-nav {
   display: flex;
   gap: 2px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--la-border);
   margin-bottom: 20px;
 }
 .la-tab {
   padding: 10px 18px;
   font-size: 0.875rem;
   font-family: 'Space Grotesk', sans-serif;
-  color: var(--text-muted);
+  color: var(--la-text-muted);
   border: none;
   background: none;
   cursor: pointer;
@@ -668,13 +655,13 @@ body {
 }
 .la-tab:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.03); }
 .la-tab.active {
-  color: var(--violet-soft);
-  border-bottom-color: var(--violet-soft);
+  color: var(--la-primary);
+  border-bottom-color: var(--la-primary);
   background: rgba(124,58,237,0.06);
 }
 .la-tab-panel {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--la-text-secondary);
   line-height: 1.65;
   padding: 4px 0;
 }
@@ -682,13 +669,13 @@ body {
 /* Accordion */
 .la-accordion { width: 100%; }
 .la-accordion-item {
-  border: 1px solid var(--border);
+  border: 1px solid var(--la-border);
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 6px;
   transition: border-color 0.2s;
 }
-.la-accordion-item:hover { border-color: var(--border-hover); }
+.la-accordion-item:hover { border-color: var(--la-border-strong); }
 .la-accordion-trigger {
   width: 100%;
   display: flex;
@@ -706,8 +693,8 @@ body {
   transition: background 0.2s;
 }
 .la-accordion-trigger:hover { background: rgba(255,255,255,0.04); }
-.la-accordion-trigger .chevron { transition: transform 0.3s; color: var(--text-muted); }
-.la-accordion-trigger[aria-expanded="true"] .chevron { transform: rotate(180deg); color: var(--violet-soft); }
+.la-accordion-trigger .chevron { transition: transform 0.3s; color: var(--la-text-muted); }
+.la-accordion-trigger[aria-expanded="true"] .chevron { transform: rotate(180deg); color: var(--la-primary); }
 .la-accordion-content {
   max-height: 0;
   overflow: hidden;
@@ -717,9 +704,9 @@ body {
 .la-accordion-body {
   padding: 14px 18px;
   font-size: 0.855rem;
-  color: var(--text-muted);
+  color: var(--la-text-muted);
   line-height: 1.65;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--la-border);
 }
 
 /* Themes palette */
@@ -732,16 +719,16 @@ body {
 .theme-card {
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 1px solid var(--la-border);
   transition: all 0.2s;
   cursor: pointer;
 }
-.theme-card:hover { transform: scale(1.04); border-color: var(--border-hover); }
+.theme-card:hover { transform: scale(1.04); border-color: var(--la-border-strong); }
 .theme-swatch { height: 60px; }
 .theme-name {
   padding: 8px 12px;
   font-size: 0.75rem;
-  color: var(--text-secondary);
+  color: var(--la-text-secondary);
   font-family: 'JetBrains Mono', monospace;
   background: rgba(255,255,255,0.025);
 }
@@ -752,13 +739,13 @@ body {
   align-items: baseline;
   gap: 16px;
   padding: 10px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--la-border);
 }
 .type-row:last-child { border-bottom: none; }
 .type-tag {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.7rem;
-  color: var(--violet-soft);
+  color: var(--la-primary);
   width: 110px;
   flex-shrink: 0;
   opacity: 0.8;
@@ -774,20 +761,20 @@ body {
 }
 .util-item {
   background: rgba(255,255,255,0.025);
-  border: 1px solid var(--border);
+  border: 1px solid var(--la-border);
   border-radius: 8px;
   padding: 10px 14px;
 }
 .util-class {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.74rem;
-  color: var(--cyan-soft);
+  color: var(--la-secondary);
   display: block;
   margin-bottom: 3px;
 }
 .util-desc {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--la-text-muted);
 }
 
 /* Icons preview */
@@ -803,7 +790,7 @@ body {
   gap: 6px;
   padding: 14px 8px;
   background: rgba(255,255,255,0.025);
-  border: 1px solid var(--border);
+  border: 1px solid var(--la-border);
   border-radius: 10px;
   transition: all 0.2s;
   cursor: default;
@@ -816,7 +803,7 @@ body {
 .icon-name {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.62rem;
-  color: var(--text-muted);
+  color: var(--la-text-muted);
   text-align: center;
 }
 
@@ -829,7 +816,7 @@ body {
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: rgba(255,255,255,0.25);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--la-border);
   font-weight: 500;
 }
 .tokens-table td {
@@ -842,12 +829,12 @@ body {
 .token-name {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.78rem;
-  color: var(--cyan-soft);
+  color: var(--la-secondary);
 }
 .token-value {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.78rem;
-  color: var(--text-muted);
+  color: var(--la-text-muted);
 }
 .token-swatch {
   width: 20px; height: 20px;
@@ -885,7 +872,7 @@ body {
 footer {
   margin-left: var(--sidebar-w);
   padding: 32px 80px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--la-border);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -902,7 +889,7 @@ footer a {
   text-decoration: none;
   transition: color 0.2s;
 }
-footer a:hover { color: var(--violet-soft); }
+footer a:hover { color: var(--la-primary); }
 
 /* ─── SCROLLBAR ─── */
 ::-webkit-scrollbar { width: 6px; }
@@ -937,7 +924,7 @@ footer a:hover { color: var(--violet-soft); }
   justify-content: center;
   width: 36px; height: 36px;
   background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border);
+  border: 1px solid var(--la-border);
   border-radius: 8px;
   cursor: pointer;
   color: rgba(255,255,255,0.6);
@@ -970,12 +957,12 @@ footer a:hover { color: var(--violet-soft); }
 <!-- NAV — identique à landing.html -->
 <nav class="nav" id="nav">
   <button class="nav-menu-btn" id="menuBtn" aria-label="Toggle sidebar">☰</button>
-  <a class="nav-logo" href="landing.html">
+  <a class="nav-logo" href="index.html">
     <img src="images/mooncat.png" alt="Mooncat">
     <span>Lunar Aurora</span>
   </a>
   <div class="nav-links">
-    <a href="landing.html#features">Features</a>
+    <a href="index.html#features">Features</a>
     <a href="getting-started.html">Quick Start</a>
     <a href="docs.html" class="active">Docs</a>
     <a href="https://github.com/yrbane/lunar-aurora" target="_blank" rel="noopener">GitHub</a>
@@ -1212,11 +1199,11 @@ footer a:hover { color: var(--violet-soft); }
           </div>
           <div class="type-row">
             <span class="type-tag">.la-text-sm</span>
-            <span class="type-sample" style="font-size: 0.875rem; color: var(--text-muted);">Caption text for secondary information</span>
+            <span class="type-sample" style="font-size: 0.875rem; color: var(--la-text-muted);">Caption text for secondary information</span>
           </div>
           <div class="type-row">
             <span class="type-tag">.la-font-mono</span>
-            <span class="type-sample" style="font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: var(--cyan-soft);">const aurora = 'beautiful'</span>
+            <span class="type-sample" style="font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: var(--la-secondary);">const aurora = 'beautiful'</span>
           </div>
         </div>
       </div>
@@ -2100,6 +2087,7 @@ footer a:hover { color: var(--violet-soft); }
 
 })();
 </script>
+<script src="https://cdn.jsdelivr.net/gh/yrbane/lunar-aurora@main/src/theme-switcher.js"></script>
 
 </body>
 </html>

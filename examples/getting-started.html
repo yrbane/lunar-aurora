@@ -9,14 +9,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yrbane/lunar-aurora@main/dist/aurora.min.css">
 <style>
 /* ═══════════════════════════════════════════════════════════════
    LUNAR AURORA — GETTING STARTED
    Guide d'installation sobre et lisible, cohérent avec la landing
    ═══════════════════════════════════════════════════════════════ */
-
-*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
 
 body {
   font-family:'Space Grotesk',system-ui,sans-serif;
@@ -515,44 +513,29 @@ footer span { color:rgba(255,255,255,.12); }
   #starfield { display:none; }
 }
 
-/* ─── THEME SYSTEM ─── */
-:root {
-  --gs-primary:124,58,237;
-  --gs-secondary:6,182,212;
-  --gs-accent:#b390ff;
-  --gs-glow:rgba(124,58,237,.5);
-}
-body.theme-cyberpunk { --gs-primary:0,255,255; --gs-secondary:124,58,237; --gs-accent:#0ff; --gs-glow:rgba(0,255,255,.5); }
-body.theme-cute { --gs-primary:236,72,153; --gs-secondary:251,191,36; --gs-accent:#f9a8d4; --gs-glow:rgba(236,72,153,.5); }
-body.theme-pro { --gs-primary:100,116,139; --gs-secondary:59,130,246; --gs-accent:#94a3b8; --gs-glow:rgba(100,116,139,.4); }
-body.theme-forest { --gs-primary:16,185,129; --gs-secondary:6,182,212; --gs-accent:#34d399; --gs-glow:rgba(16,185,129,.5); }
-body.theme-sunset { --gs-primary:245,158,11; --gs-secondary:239,68,68; --gs-accent:#fbbf24; --gs-glow:rgba(245,158,11,.5); }
-body.theme-light { --gs-primary:100,116,139; --gs-secondary:148,163,184; --gs-accent:#64748b; --gs-glow:rgba(100,116,139,.3); background:#f0f0f5; color:#1e1e2e; }
-body.theme-aurora { --gs-primary:168,85,247; --gs-secondary:236,72,153; --gs-accent:#c084fc; --gs-glow:rgba(168,85,247,.5); }
-
-/* Éléments thématisés */
-.nav-logo img { filter:drop-shadow(0 0 8px rgba(var(--gs-primary),.6)); }
-.nav-logo span { background:linear-gradient(135deg,var(--gs-accent),rgb(var(--gs-secondary))); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-.nav-links a::after { background:linear-gradient(90deg,rgb(var(--gs-primary)),rgb(var(--gs-secondary))); }
-.hero-compact h1 .grad { background:linear-gradient(135deg,#fff 0%,var(--gs-accent) 50%,rgb(var(--gs-secondary)) 100%); background-size:200% 200%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:grad-shift 6s ease infinite; }
-.hero-compact .highlight { color:var(--gs-accent); }
-.section-label { color:var(--gs-accent); }
-.code-block { border-color:rgba(var(--gs-primary),.1); }
-.code-header { border-bottom-color:rgba(var(--gs-primary),.08); }
-.copy-btn { color:var(--gs-accent); border-color:rgba(var(--gs-primary),.15); }
-.copy-btn:hover { background:rgba(var(--gs-primary),.08); border-color:rgba(var(--gs-primary),.3); }
-.copy-btn.copied { color:rgb(var(--gs-secondary)); border-color:rgba(var(--gs-secondary),.3); }
-.doc-section h2 { border-bottom-color:rgba(var(--gs-primary),.1); }
-.tc-tag { background:rgba(var(--gs-primary),.15); border-color:rgba(var(--gs-primary),.2); color:var(--gs-accent); }
-.theme-card.active { border-color:rgba(var(--gs-primary),.4); box-shadow:0 0 20px rgba(var(--gs-primary),.15),0 12px 32px rgba(0,0,0,.4); }
-.theme-card.active::before { background:rgba(var(--gs-primary),.8); }
-.cta-section img { filter:drop-shadow(0 0 24px var(--gs-glow)); }
-.cta-section h2 { color:var(--gs-accent); }
-.cta-section a.btn-primary { background:linear-gradient(135deg,rgb(var(--gs-primary)),rgb(var(--gs-secondary))); box-shadow:0 0 24px rgba(var(--gs-primary),.25); }
-.cta-section a.btn-secondary { border-color:rgba(var(--gs-primary),.15); color:var(--gs-accent); }
+/* ─── ÉLÉMENTS THÉMATISÉS (via variables Lunar Aurora) ─── */
+.nav-logo img { filter:drop-shadow(0 0 8px color-mix(in oklch, var(--la-primary) 60%, transparent)); }
+.nav-logo span { background:linear-gradient(135deg,var(--la-accent),var(--la-secondary)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.nav-links a::after { background:linear-gradient(90deg,var(--la-primary),var(--la-secondary)); }
+.hero h1 .grad { background:linear-gradient(135deg,#fff 0%,var(--la-accent) 50%,var(--la-secondary) 100%); background-size:200% 200%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:grad-shift 6s ease infinite; }
+.hero .highlight { color:var(--la-accent); }
+.section-label { color:var(--la-accent); }
+.code-block { border-color:color-mix(in oklch, var(--la-primary) 10%, transparent); }
+.code-header { border-bottom-color:color-mix(in oklch, var(--la-primary) 8%, transparent); }
+.copy-btn { color:var(--la-accent); border-color:color-mix(in oklch, var(--la-primary) 15%, transparent); }
+.copy-btn:hover { background:color-mix(in oklch, var(--la-primary) 8%, transparent); border-color:color-mix(in oklch, var(--la-primary) 30%, transparent); }
+.copy-btn.copied { color:var(--la-secondary); border-color:color-mix(in oklch, var(--la-secondary) 30%, transparent); }
+.doc-section h2 { border-bottom-color:color-mix(in oklch, var(--la-primary) 10%, transparent); }
+.tc-tag { background:color-mix(in oklch, var(--la-primary) 15%, transparent); border-color:color-mix(in oklch, var(--la-primary) 20%, transparent); color:var(--la-accent); }
+.theme-card.active { border-color:color-mix(in oklch, var(--la-primary) 40%, transparent); box-shadow:0 0 20px color-mix(in oklch, var(--la-primary) 15%, transparent),0 12px 32px rgba(0,0,0,.4); }
+.theme-card.active::before { background:color-mix(in oklch, var(--la-primary) 80%, transparent); }
+.cta-section img { filter:drop-shadow(0 0 24px color-mix(in oklch, var(--la-primary) 50%, transparent)); }
+.cta-section h2 { color:var(--la-accent); }
+.cta-section a.btn-primary { background:linear-gradient(135deg,var(--la-primary),var(--la-secondary)); box-shadow:0 0 24px color-mix(in oklch, var(--la-primary) 25%, transparent); }
+.cta-section a.btn-secondary { border-color:color-mix(in oklch, var(--la-primary) 15%, transparent); color:var(--la-accent); }
 
 /* Transition douce entre thèmes */
-body, .nav-logo img, .nav-logo span, .hero-compact h1 .grad, .section-label,
+body, .nav-logo img, .nav-logo span, .hero h1 .grad, .section-label,
 .code-block, .copy-btn, .tc-tag, .theme-card, .cta-section img, .cta-section h2,
 .cta-section a { transition:all .5s cubic-bezier(.4,0,.2,1); }
 </style>
@@ -564,15 +547,16 @@ body, .nav-logo img, .nav-logo span, .hero-compact h1 .grad, .section-label,
 
 <!-- NAV identique à la landing -->
 <nav class="nav" id="nav">
-  <a class="nav-logo" href="landing.html">
+  <a class="nav-logo" href="index.html">
     <img src="images/mooncat.png" alt="Mooncat">
     <span>Lunar Aurora</span>
   </a>
   <div class="nav-links">
-    <a href="landing.html#features">Features</a>
+    <a href="index.html#features">Features</a>
     <a href="#" class="active">Quick Start</a>
     <a href="docs.html">Docs</a>
     <a href="https://github.com/yrbane/lunar-aurora" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://yrbane.github.io/" target="_blank" rel="noopener">Portfolio</a>
   </div>
 </nav>
 
@@ -896,49 +880,49 @@ LunarAurora.init()"
     <!-- Grille des thèmes disponibles -->
     <p>Thèmes disponibles :</p>
     <div class="themes-grid">
-      <div class="theme-card">
+      <div class="theme-card" data-theme="dark">
         <div class="tc-swatch" style="background:linear-gradient(135deg,#7c3aed,#06b6d4)"></div>
         <div class="tc-name">Dark</div>
         <div class="tc-desc">Défaut — violet / cyan</div>
         <span class="tc-tag">dark</span>
       </div>
-      <div class="theme-card">
+      <div class="theme-card" data-theme="cyberpunk">
         <div class="tc-swatch" style="background:linear-gradient(135deg,#0ff,#7c3aed)"></div>
         <div class="tc-name">Cyberpunk</div>
         <div class="tc-desc">Néon cyan électrique</div>
         <span class="tc-tag">cyberpunk</span>
       </div>
-      <div class="theme-card">
+      <div class="theme-card" data-theme="bubble">
         <div class="tc-swatch" style="background:linear-gradient(135deg,#ec4899,#fbbf24)"></div>
         <div class="tc-name">Cute</div>
         <div class="tc-desc">Rose pastel kawaii</div>
-        <span class="tc-tag">cute</span>
+        <span class="tc-tag">bubble</span>
       </div>
-      <div class="theme-card">
+      <div class="theme-card" data-theme="mono-dark">
         <div class="tc-swatch" style="background:linear-gradient(135deg,#64748b,#3b82f6)"></div>
         <div class="tc-name">Pro</div>
         <div class="tc-desc">Slate sobre et pro</div>
-        <span class="tc-tag">pro</span>
+        <span class="tc-tag">mono-dark</span>
       </div>
-      <div class="theme-card">
+      <div class="theme-card" data-theme="eco-dark">
         <div class="tc-swatch" style="background:linear-gradient(135deg,#10b981,#06b6d4)"></div>
         <div class="tc-name">Forest</div>
         <div class="tc-desc">Vert émeraude naturel</div>
-        <span class="tc-tag">forest</span>
+        <span class="tc-tag">eco-dark</span>
       </div>
-      <div class="theme-card">
+      <div class="theme-card" data-theme="sunset">
         <div class="tc-swatch" style="background:linear-gradient(135deg,#f59e0b,#ef4444)"></div>
         <div class="tc-name">Sunset</div>
         <div class="tc-desc">Dégradé chaud amber</div>
         <span class="tc-tag">sunset</span>
       </div>
-      <div class="theme-card">
+      <div class="theme-card" data-theme="light">
         <div class="tc-swatch" style="background:linear-gradient(135deg,#e0e0f0,#94a3b8)"></div>
         <div class="tc-name">Light</div>
         <div class="tc-desc">Fond clair minimal</div>
         <span class="tc-tag">light</span>
       </div>
-      <div class="theme-card">
+      <div class="theme-card" data-theme="aurora">
         <div class="tc-swatch" style="background:linear-gradient(135deg,#a855f7,#ec4899)"></div>
         <div class="tc-name">Aurora</div>
         <div class="tc-desc">Violet et rose aurora</div>
@@ -963,7 +947,7 @@ LunarAurora.init()"
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
         Documentation
       </a>
-      <a href="landing.html" class="btn btn-ghost">
+      <a href="index.html" class="btn btn-ghost">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
         Retour à l'accueil
       </a>
@@ -986,6 +970,7 @@ LunarAurora.init()"
   <span>Mooncat approved</span>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/gh/yrbane/lunar-aurora@main/src/theme-switcher.js"></script>
 <script>
 /* =================================================================
    GETTING STARTED — Scripts inline (standalone pour GitHub Pages)
@@ -1132,32 +1117,75 @@ LunarAurora.init()"
   });
 })();
 
-/* ─── Switcher de thème (cliquable sur les cards) ─── */
+/* ─── Switcher de thème (cliquable sur les cards, via LunarThemes) ─── */
 (function() {
   var cards = document.querySelectorAll('.theme-card');
-  var themeMap = ['dark', 'cyberpunk', 'cute', 'pro', 'forest', 'sunset', 'light', 'aurora'];
+  /* Mapping des noms de thèmes locaux vers les noms du framework */
+  var themeMap = {
+    dark: 'dark',
+    cyberpunk: 'cyberpunk',
+    cute: 'bubble',
+    pro: 'mono-dark',
+    forest: 'eco-dark',
+    sunset: 'sunset',
+    light: 'light',
+    aurora: 'aurora'
+  };
+  var themeKeys = ['dark', 'cyberpunk', 'cute', 'pro', 'forest', 'sunset', 'light', 'aurora'];
 
-  // Premier thème actif par défaut
-  if (cards[0]) cards[0].classList.add('active');
+  /* Fonction utilitaire : extraire la couleur primaire pour les étoiles */
+  function updateStarColor() {
+    var s = getComputedStyle(document.documentElement);
+    var primaryColor = s.getPropertyValue('--la-primary').trim();
+    /* Tenter d'extraire les composantes RGB depuis la couleur calculée */
+    var canvas = document.getElementById('starfield');
+    if (canvas && canvas._updateColor) {
+      /* Créer un élément temporaire pour résoudre la couleur en RGB */
+      var tmp = document.createElement('div');
+      tmp.style.color = primaryColor;
+      tmp.style.display = 'none';
+      document.body.appendChild(tmp);
+      var computed = getComputedStyle(tmp).color;
+      document.body.removeChild(tmp);
+      var match = computed.match(/(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+      if (match) {
+        canvas._updateColor([parseInt(match[1]), parseInt(match[2]), parseInt(match[3])]);
+      }
+    }
+  }
 
+  /* Mettre à jour l'état actif des cards */
+  function updateActiveCards(themeName) {
+    cards.forEach(function(c, i) {
+      var key = themeKeys[i];
+      c.classList.toggle('active', themeMap[key] === themeName);
+    });
+  }
+
+  /* Initialiser l'état actif selon le thème courant */
+  var currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  updateActiveCards(currentTheme);
+
+  /* Écouter les clics sur les cards */
   cards.forEach(function(card, i) {
     card.addEventListener('click', function() {
-      var theme = themeMap[i];
-      // Changer la classe du body
-      document.body.className = theme === 'dark' ? '' : 'theme-' + theme;
-
-      // Mettre à jour la carte active
-      cards.forEach(function(c) { c.classList.remove('active'); });
-      card.classList.add('active');
-
-      // Mettre à jour les couleurs des étoiles
-      var cs = getComputedStyle(document.documentElement);
-      var p = cs.getPropertyValue('--gs-primary').trim();
-      var rgb = p.split(',').map(Number);
-      var canvas = document.getElementById('starfield');
-      if (canvas && canvas._updateColor) canvas._updateColor(rgb);
+      var key = themeKeys[i];
+      var frameworkTheme = themeMap[key];
+      LunarThemes.setTheme(frameworkTheme);
     });
   });
+
+  /* Écouter l'événement themechange pour mettre à jour les cards et les étoiles */
+  document.addEventListener('themechange', function(e) {
+    updateActiveCards(e.detail.theme);
+    /* Petit délai pour laisser le CSS se propager */
+    requestAnimationFrame(function() {
+      updateStarColor();
+    });
+  });
+
+  /* Mettre à jour la couleur initiale des étoiles */
+  updateStarColor();
 })();
 </script>
 </body>
