@@ -1,0 +1,139 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABLEAU DE DONNÉES — .la-table
+
+   S'applique à un <table> sémantique : aucune structure imposée, aucun JS.
+   Le tri et la pagination restent à l'application ; la doc en donne une recette.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Enveloppe : sur écran étroit, le tableau défile au lieu de casser la page. */
+.la-table-wrap {
+    overflow-x: auto;
+    /* Le défilement doit rester atteignable au clavier. */
+    scrollbar-width: thin;
+    scrollbar-color: var(--la-border-strong) transparent;
+}
+
+.la-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--la-text-sm);
+    color: var(--la-text);
+
+    /* --- En-tête ------------------------------------------------------- */
+    & thead th {
+        text-align: start;
+        font-size: var(--la-text-xs);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--la-text-muted);
+        padding: var(--la-space-2) var(--la-space-3);
+        border-block-end: 1px solid var(--la-border);
+        white-space: nowrap;
+    }
+
+    /* --- Corps --------------------------------------------------------- */
+    & tbody td {
+        padding: var(--la-space-3);
+        vertical-align: top;
+        border-block-end: 1px solid var(--la-border-subtle);
+    }
+
+    & tbody tr {
+        transition: background var(--la-duration-fast) var(--la-ease-out);
+
+        &:hover {
+            background: var(--la-surface-2);
+        }
+    }
+
+    /* --- Pied ---------------------------------------------------------- */
+    & tfoot td {
+        padding: var(--la-space-3);
+        border-block-start: 1px solid var(--la-border);
+        color: var(--la-text-muted);
+        font-size: var(--la-text-xs);
+    }
+
+    & caption {
+        caption-side: top;
+        text-align: start;
+        padding-block-end: var(--la-space-2);
+        color: var(--la-text-muted);
+        font-size: var(--la-text-sm);
+    }
+
+    /* --- Densité -------------------------------------------------------- */
+    &.compact {
+        & thead th { padding: var(--la-space-1) var(--la-space-2); }
+        & tbody td, & tfoot td { padding: var(--la-space-2); }
+    }
+
+    &.comfortable {
+        & thead th { padding: var(--la-space-3) var(--la-space-4); }
+        & tbody td, & tfoot td { padding: var(--la-space-4); }
+    }
+
+    /* --- Variantes ------------------------------------------------------ */
+    &.striped tbody tr:nth-child(even) {
+        background: var(--la-surface-1);
+
+        &:hover { background: var(--la-surface-2); }
+    }
+
+    &.bordered {
+        & th, & td { border: 1px solid var(--la-border-subtle); }
+        & thead th { border-color: var(--la-border); }
+    }
+
+    /* En-tête figé : utile dès que la liste dépasse l'écran. */
+    &.sticky thead th {
+        position: sticky;
+        inset-block-start: 0;
+        z-index: 1;
+        background: var(--la-surface-0);
+        /* Sans ce filet, les lignes défilantes semblent traverser l'en-tête. */
+        box-shadow: inset 0 -1px 0 var(--la-border);
+    }
+
+    /* --- Colonnes triables ---------------------------------------------- */
+    /* Le style ne fait qu'exposer l'affordance ; le tri lui-même est à vous. */
+    & thead th[data-sort] {
+        cursor: pointer;
+        user-select: none;
+
+        &:hover { color: var(--la-primary); }
+
+        &::after {
+            content: '';
+            display: inline-block;
+            inline-size: 0;
+            block-size: 0;
+            margin-inline-start: var(--la-space-1);
+            border-inline: 4px solid transparent;
+            /* Repère neutre tant qu'aucun sens n'est choisi. */
+            border-block-start: 4px solid currentColor;
+            opacity: 0.25;
+            vertical-align: middle;
+        }
+
+        &[aria-sort='ascending']::after {
+            border-block-start: none;
+            border-block-end: 4px solid currentColor;
+            opacity: 1;
+        }
+
+        &[aria-sort='descending']::after {
+            opacity: 1;
+        }
+    }
+
+    /* --- Alignements ponctuels ------------------------------------------ */
+    & .num { text-align: end; font-variant-numeric: tabular-nums; }
+    & .center { text-align: center; }
+}
+
+/* Le survol animé n'a pas de sens pour qui demande moins de mouvement. */
+@media (prefers-reduced-motion: reduce) {
+    .la-table tbody tr { transition: none; }
+}

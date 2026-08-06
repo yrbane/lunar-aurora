@@ -134,6 +134,7 @@ Le framework inclut des composants purement CSS et des composants interactifs (J
 
 - **Boutons, Badges, Cartes** (CSS pur)
 - **Formulaires** (CSS pur)
+- **Tableaux de données** (CSS pur — densités, zébrage, en-tête figé, colonnes triables)
 - **Tabs** (JS + Accessibilité)
 - **Accordéons** (JS + Accessibilité)
 - **Modales** (JS + `<dialog>` natif)

@@ -28,6 +28,7 @@ export default defineConfig({
             { text: 'Buttons', link: '/components/buttons' },
             { text: 'Cards', link: '/components/cards' },
             { text: 'Forms', link: '/components/forms' },
+            { text: 'Tables', link: '/components/tables' },
             { text: 'Interactive', link: '/components/interactive' }
           ]
         }

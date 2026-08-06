@@ -1,6 +1,6 @@
 {
   "name": "lunar-aurora",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A disruptive CSS framework using avant-garde techniques: OKLCH, @property, CSS nesting, container queries, and more.",
   "main": "src/aurora.css",
   "style": "src/aurora.css",
