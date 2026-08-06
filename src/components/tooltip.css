@@ -1,0 +1,236 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   INFOBULLE — .la-tooltip
+
+   Infobulle 100 % CSS posée sur l'élément déclencheur : le libellé vient de
+   `data-tooltip` et s'affiche au survol ET au focus clavier, sans aucun JS.
+   Le rattachement sémantique (`aria-describedby`) reste à l'application.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/*
+   Emploi recommandé — l'infobulle visuelle ne suffit pas aux lecteurs d'écran :
+   ni `data-tooltip` ni le contenu généré de `::after` ne sont restitués de façon
+   fiable. Doublez toujours le texte par un élément référencé en `aria-describedby` :
+
+       <button class="la-tooltip" data-tooltip="Supprimer la ligne"
+               aria-describedby="tip-suppr">🗑</button>
+       <span id="tip-suppr" hidden>Supprimer la ligne</span>
+
+   Un élément porteur de `hidden` reste lisible via `aria-describedby` tout en
+   restant invisible à l'écran : c'est le repli le plus sûr sans classe utilitaire.
+
+   Sur un déclencheur non focusable (un <span>, une icône), enveloppez un élément
+   focusable : la règle `&:has(:focus-visible)` ci-dessous couvre ce cas.
+*/
+
+.la-tooltip {
+    /* Ancre du positionnement absolu de la bulle et de sa flèche. */
+    position: relative;
+
+    /* Repères partagés par la bulle et la flèche : un seul endroit à ajuster. */
+    --_la-tooltip-bg: var(--la-surface-raised);
+    --_la-tooltip-gap: var(--la-space-2);
+    --_la-tooltip-arrow: 5px;
+    /* Décalage d'apparition. Mis à 0 sous prefers-reduced-motion : le centrage,
+       lui, vit dans le premier axe de `translate` et n'est jamais touché. */
+    --_la-tooltip-shift: var(--la-space-1);
+
+    /* --- La bulle --------------------------------------------------------- */
+    &::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        z-index: var(--la-z-tooltip);
+
+        padding: var(--la-space-1-5) var(--la-space-2-5);
+        background: var(--_la-tooltip-bg);
+        color: var(--la-text);
+        border: 1px solid var(--la-border);
+        border-radius: var(--la-radius-md);
+        box-shadow: var(--la-shadow-md);
+
+        font-size: var(--la-text-xs);
+        font-weight: 400;
+        line-height: 1.4;
+        text-align: start;
+        text-transform: none;
+        letter-spacing: normal;
+
+        /* Anti-débordement : la bulle passe à la ligne plutôt que de sortir de
+           l'écran, et ne dépasse jamais la largeur du viewport. */
+        inline-size: max-content;
+        max-inline-size: min(16rem, calc(100vw - var(--la-space-8)));
+        white-space: normal;
+        overflow-wrap: anywhere;
+
+        /* Une infobulle ne doit jamais voler le pointeur à son déclencheur. */
+        pointer-events: none;
+
+        opacity: 0;
+        visibility: hidden;
+        transition:
+            opacity var(--la-duration-fast) var(--la-ease-out),
+            visibility var(--la-duration-fast) var(--la-ease-out),
+            translate var(--la-duration-fast) var(--la-ease-out);
+    }
+
+    /* --- La flèche -------------------------------------------------------- */
+    &::before {
+        content: '';
+        position: absolute;
+        z-index: var(--la-z-tooltip);
+        inline-size: 0;
+        block-size: 0;
+        border: var(--_la-tooltip-arrow) solid transparent;
+        pointer-events: none;
+
+        opacity: 0;
+        visibility: hidden;
+        transition:
+            opacity var(--la-duration-fast) var(--la-ease-out),
+            visibility var(--la-duration-fast) var(--la-ease-out);
+    }
+
+    /* --- Révélation : survol OU focus clavier ----------------------------- */
+    /* Sans le focus, l'infobulle resterait décorative pour qui n'a pas de souris. */
+    &:hover,
+    &:focus-visible,
+    &:has(:focus-visible) {
+        &::after,
+        &::before {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    /* --- Placement : haut (défaut) ---------------------------------------- */
+    &::after {
+        inset-block-end: calc(100% + var(--_la-tooltip-gap));
+        inset-inline-start: 50%;
+        translate: -50% var(--_la-tooltip-shift);
+    }
+
+    &::before {
+        inset-block-end: calc(100% + var(--_la-tooltip-gap) - var(--_la-tooltip-arrow) * 2 + 1px);
+        inset-inline-start: 50%;
+        margin-inline-start: calc(var(--_la-tooltip-arrow) * -1);
+        border-block-start-color: var(--la-border);
+    }
+
+    &:hover::after,
+    &:focus-visible::after,
+    &:has(:focus-visible)::after {
+        translate: -50% 0;
+    }
+
+    /* --- Placement : bas -------------------------------------------------- */
+    &.bottom {
+        &::after {
+            inset-block-end: auto;
+            inset-block-start: calc(100% + var(--_la-tooltip-gap));
+            translate: -50% calc(var(--_la-tooltip-shift) * -1);
+        }
+
+        &::before {
+            inset-block-end: auto;
+            inset-block-start: calc(100% + var(--_la-tooltip-gap) - var(--_la-tooltip-arrow) * 2 + 1px);
+            border-block-start-color: transparent;
+            border-block-end-color: var(--la-border);
+        }
+
+        &:hover::after,
+        &:focus-visible::after,
+        &:has(:focus-visible)::after {
+            translate: -50% 0;
+        }
+    }
+
+    /* --- Placement : avant (gauche en LTR) -------------------------------- */
+    &.start {
+        &::after {
+            inset-block-end: auto;
+            inset-block-start: 50%;
+            inset-inline-start: auto;
+            inset-inline-end: calc(100% + var(--_la-tooltip-gap));
+            translate: var(--_la-tooltip-shift) -50%;
+        }
+
+        &::before {
+            inset-block-end: auto;
+            inset-block-start: 50%;
+            inset-inline-start: auto;
+            inset-inline-end: calc(100% + var(--_la-tooltip-gap) - var(--_la-tooltip-arrow) * 2 + 1px);
+            margin-inline-start: 0;
+            margin-block-start: calc(var(--_la-tooltip-arrow) * -1);
+            border-block-start-color: transparent;
+            border-inline-start-color: var(--la-border);
+        }
+
+        &:hover::after,
+        &:focus-visible::after,
+        &:has(:focus-visible)::after {
+            translate: 0 -50%;
+        }
+    }
+
+    /* --- Placement : après (droite en LTR) -------------------------------- */
+    &.end {
+        &::after {
+            inset-block-end: auto;
+            inset-block-start: 50%;
+            inset-inline-start: calc(100% + var(--_la-tooltip-gap));
+            translate: calc(var(--_la-tooltip-shift) * -1) -50%;
+        }
+
+        &::before {
+            inset-block-end: auto;
+            inset-block-start: 50%;
+            inset-inline-start: calc(100% + var(--_la-tooltip-gap) - var(--_la-tooltip-arrow) * 2 + 1px);
+            margin-inline-start: 0;
+            margin-block-start: calc(var(--_la-tooltip-arrow) * -1);
+            border-block-start-color: transparent;
+            border-inline-end-color: var(--la-border);
+        }
+
+        &:hover::after,
+        &:focus-visible::after,
+        &:has(:focus-visible)::after {
+            translate: 0 -50%;
+        }
+    }
+}
+
+/* Repli étroit : sous 30rem, une bulle latérale déborderait presque toujours.
+   On la ramène au-dessus du déclencheur, centrée, quel que soit le placement. */
+@media (max-width: 30rem) {
+    .la-tooltip.start,
+    .la-tooltip.end {
+        &::after {
+            inset-block-start: auto;
+            inset-block-end: calc(100% + var(--_la-tooltip-gap));
+            inset-inline-start: 50%;
+            inset-inline-end: auto;
+            translate: -50% var(--_la-tooltip-shift);
+        }
+
+        /* La flèche latérale n'aurait plus de sens : on la retire. */
+        &::before { display: none; }
+
+        &:hover::after,
+        &:focus-visible::after,
+        &:has(:focus-visible)::after {
+            translate: -50% 0;
+        }
+    }
+}
+
+/* Le glissement d'apparition est un confort, pas une information : on annule
+   seulement le décalage, jamais le centrage. */
+@media (prefers-reduced-motion: reduce) {
+    .la-tooltip {
+        --_la-tooltip-shift: 0px;
+
+        &::after,
+        &::before {
+            transition: none;
+        }
+    }
+}

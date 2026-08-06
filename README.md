@@ -132,9 +132,14 @@ const current = LunarAurora.Themes.getTheme();
 
 Le framework inclut des composants purement CSS et des composants interactifs (JS).
 
-- **Boutons, Badges, Cartes** (CSS pur)
-- **Formulaires** (CSS pur)
+- **Boutons, Badges, Avatars, Chips** (CSS pur)
+- **Cartes** (CSS pur — élevée, contourée, verre dépoli, cliquable)
+- **Formulaires** — champs, listes, cases, radios, **interrupteurs** (CSS pur)
 - **Tableaux de données** (CSS pur — densités, zébrage, en-tête figé, colonnes triables)
+- **Statistiques & états vides** (CSS pur — tuiles de KPI avec tendance, écrans « rien à afficher »)
+- **Navigation** — fil d'Ariane, pagination (CSS pur)
+- **Retours utilisateur** — alertes, notifications éphémères, barres de progression (CSS pur)
+- **Surcouches** — infobulles, menus déroulants sur `<details>` natif (CSS pur)
 - **Tabs** (JS + Accessibilité)
 - **Accordéons** (JS + Accessibilité)
 - **Modales** (JS + `<dialog>` natif)

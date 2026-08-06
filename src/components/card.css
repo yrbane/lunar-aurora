@@ -1,0 +1,146 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   CARTE — .la-card
+
+   Un conteneur neutre : surface, filet, rayon, rien de plus. Les sous-blocs
+   (en-tête, corps, pied, média) posent le rythme ; le contenu reste à vous.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.la-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--la-surface-raised);
+    color: var(--la-text);
+    border: 1px solid var(--la-border-subtle);
+    border-radius: var(--la-radius-lg);
+    /* Le média doit être rogné par le rayon de la carte, pas déborder dessus. */
+    overflow: hidden;
+
+    /* Une carte peut être un lien : elle n'hérite pas du soulignement. */
+    &:is(a) {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    /* --- En-tête -------------------------------------------------------- */
+    /* Titre à gauche, action éventuelle à droite ; passe à la ligne si étroit. */
+    & .la-card-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--la-space-2) var(--la-space-4);
+        padding: var(--la-space-4) var(--la-space-5);
+        border-block-end: 1px solid var(--la-border-subtle);
+
+        /* Les titres de l'application ne doivent pas creuser l'en-tête. */
+        & :is(h1, h2, h3, h4, h5, h6) {
+            margin: 0;
+            font-size: var(--la-text-md);
+            font-weight: var(--la-weight-semibold);
+            line-height: var(--la-leading-tight);
+        }
+    }
+
+    /* --- Corps ---------------------------------------------------------- */
+    /* Prend la hauteur restante : plusieurs cartes d'une grille s'alignent. */
+    & .la-card-body {
+        flex: 1;
+        padding: var(--la-space-5);
+    }
+
+    /* --- Pied ----------------------------------------------------------- */
+    & .la-card-footer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--la-space-3);
+        padding: var(--la-space-4) var(--la-space-5);
+        border-block-start: 1px solid var(--la-border-subtle);
+        color: var(--la-text-muted);
+        font-size: var(--la-text-sm);
+    }
+
+    /* --- Média ---------------------------------------------------------- */
+    /* Pleine largeur, sans marge : s'utilise en frère de l'en-tête ou du corps. */
+    & .la-card-media {
+        display: block;
+        inline-size: 100%;
+        object-fit: cover;
+        background: var(--la-surface-2);
+
+        & :is(img, video, picture, svg) {
+            display: block;
+            inline-size: 100%;
+            block-size: 100%;
+            object-fit: cover;
+        }
+    }
+
+    /* --- Densité --------------------------------------------------------- */
+    &.compact {
+        & .la-card-header { padding: var(--la-space-3) var(--la-space-4); }
+        & .la-card-body { padding: var(--la-space-4); }
+        & .la-card-footer { padding: var(--la-space-3) var(--la-space-4); }
+    }
+
+    /* --- Variantes ------------------------------------------------------- */
+    /* Détachée du fond : l'ombre remplace le filet. */
+    &.elevated {
+        border-color: transparent;
+        box-shadow: var(--la-shadow-md);
+    }
+
+    /* Un simple filet, sans surface : utile posée sur un fond déjà coloré. */
+    &.outlined {
+        background: transparent;
+        border-color: var(--la-border-strong);
+        box-shadow: none;
+    }
+
+    /* Reprend le traitement de `.la-glass` : à réserver aux fonds contrastés. */
+    &.glass {
+        background: oklch(from var(--la-surface-1) l c h / 0.7);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-color: oklch(from var(--la-border) l c h / 0.3);
+    }
+
+    /* --- Carte cliquable -------------------------------------------------- */
+    /* L'élévation signale l'affordance ; le focus clavier reste toujours visible. */
+    &.interactive {
+        cursor: pointer;
+        transition:
+            transform var(--la-duration-fast) var(--la-ease-out),
+            box-shadow var(--la-duration-fast) var(--la-ease-out),
+            border-color var(--la-duration-fast) var(--la-ease-out);
+
+        &:hover {
+            transform: translateY(-2px);
+            border-color: var(--la-border);
+            box-shadow: var(--la-shadow-lg);
+        }
+
+        &:active {
+            transform: translateY(0);
+            box-shadow: var(--la-shadow-sm);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--la-border-focus);
+            outline-offset: 2px;
+        }
+    }
+}
+
+/* L'élévation animée n'a pas de sens pour qui demande moins de mouvement. */
+@media (prefers-reduced-motion: reduce) {
+    .la-card.interactive {
+        transition: none;
+
+        &:hover,
+        &:active {
+            transform: none;
+        }
+    }
+}

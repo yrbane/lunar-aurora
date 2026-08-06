@@ -1,0 +1,116 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   FIL D'ARIANE — .la-breadcrumb
+
+   S'applique à un <nav aria-label="Fil d'Ariane"> contenant un <ol> : l'ordre
+   est porteur de sens, la liste ordonnée le dit. Le dernier maillon se marque
+   par aria-current="page" et devient inerte. Aucun JS : le repli mobile est
+   purement déclaratif.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.la-breadcrumb {
+    /* Séparateur redéfinissable au cas par cas : --_sep: '›' par exemple. */
+    --_sep: '/';
+
+    font-size: var(--la-text-sm);
+    color: var(--la-text-muted);
+
+    & ol,
+    & ul {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--la-space-1);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    & li {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--la-space-1);
+        /* Un chemin ne se coupe pas en plein milieu d'un libellé. */
+        white-space: nowrap;
+
+        /* Le séparateur est décoratif : le texte alternatif vide (« / '' »)
+           l'exclut de la restitution vocale. Si vous devez viser un navigateur
+           dépourvu de cette syntaxe, posez plutôt vous-même aria-hidden="true"
+           sur un élément séparateur dédié dans le balisage. */
+        &::after {
+            content: var(--_sep) / '';
+            color: var(--la-text-muted);
+            opacity: 0.5;
+            /* Le séparateur ne doit pas s'écarter comme un maillon. */
+            margin-inline-start: var(--la-space-1);
+        }
+
+        /* Rien après le dernier maillon : le chemin s'arrête là. */
+        &:last-child::after {
+            content: none;
+        }
+    }
+
+    & a {
+        padding-inline: var(--la-space-0-5);
+        color: var(--la-text-muted);
+        border-radius: var(--la-radius-sm);
+        text-decoration: none;
+        transition: color var(--la-duration-fast) var(--la-ease-out);
+
+        &:hover {
+            color: var(--la-primary);
+            /* Le soulignement double la couleur : le survol reste lisible
+               pour qui ne distingue pas les teintes. */
+            text-decoration: underline;
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--la-border-focus);
+            outline-offset: 2px;
+        }
+    }
+
+    /* --- Page courante ---------------------------------------------------- */
+    /* Dernier maillon : on y est déjà, il n'y a rien à cliquer. Le contraste
+       renforcé et la graisse le distinguent sans recourir à la seule couleur. */
+    & [aria-current='page'] {
+        color: var(--la-text);
+        font-weight: var(--la-weight-medium);
+        text-decoration: none;
+        cursor: default;
+        pointer-events: none;
+    }
+
+    /* --- Variante compacte -------------------------------------------------- */
+    &.sm {
+        font-size: var(--la-text-xs);
+
+        & ol,
+        & ul {
+            gap: var(--la-space-0-5);
+        }
+    }
+}
+
+/* --- Repli mobile ----------------------------------------------------------
+   Sur écran étroit, on garde la racine, le parent immédiat et la page courante :
+   les maillons du milieu se replient derrière une ellipse. Le balisage, lui,
+   reste complet — les lecteurs d'écran et les moteurs voient tout le chemin. */
+@media (max-width: 30rem) {
+    .la-breadcrumb li:not(:first-child):not(:last-child):not(:nth-last-child(2)) {
+        display: none;
+    }
+
+    /* L'ellipse ne s'affiche que s'il y a bien quelque chose de replié :
+       le :has() vérifie qu'un maillon intermédiaire existe après la racine. */
+    .la-breadcrumb li:first-child:has(~ li:not(:last-child):not(:nth-last-child(2)))::after {
+        content: var(--_sep) ' … ' var(--_sep) / '';
+    }
+}
+
+/* Qui demande moins de mouvement n'a que faire des fondus de survol. */
+@media (prefers-reduced-motion: reduce) {
+    .la-breadcrumb a {
+        transition: none;
+    }
+}

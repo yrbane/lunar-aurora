@@ -1,0 +1,142 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   INTERRUPTEUR — .la-switch
+
+   S'applique à une vraie case à cocher `<input type="checkbox" role="switch">` :
+   focus, coche et clavier restent gérés par le navigateur, le CSS ne fait que
+   redessiner. Réservé aux préférences à effet immédiat (pas de bouton valider).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/*
+   Emploi — le libellé se place avant ou après, `.la-switch-field` gère l'ordre :
+
+       <label class="la-switch-field">
+           <input type="checkbox" role="switch" class="la-switch" checked>
+           <span>Notifications</span>
+       </label>
+
+       <label class="la-switch-field reverse">
+           <span>Mode sombre</span>
+           <input type="checkbox" role="switch" class="la-switch">
+       </label>
+
+   `role="switch"` fait annoncer « activé / désactivé » plutôt que « coché ».
+   Pour un interrupteur sans libellé visible, ajoutez un `aria-label`.
+
+   Accessibilité : l'état ne repose pas que sur la couleur — la position du
+   curseur (à gauche / à droite) le signale tout autant.
+*/
+
+.la-switch {
+    /* Réglages locaux : changer la taille ne demande qu'à toucher ces deux-là. */
+    --_la-switch-track-i: var(--la-space-10);
+    --_la-switch-track-b: var(--la-space-6);
+    --_la-switch-pad: 3px;
+    --_la-switch-thumb: calc(var(--_la-switch-track-b) - var(--_la-switch-pad) * 2);
+
+    /* On efface le rendu natif pour repartir d'une piste vierge. */
+    appearance: none;
+    flex-shrink: 0;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+
+    inline-size: var(--_la-switch-track-i);
+    block-size: var(--_la-switch-track-b);
+    border: 1px solid var(--la-border-strong);
+    border-radius: var(--la-radius-full);
+    background-color: var(--la-surface-3);
+    cursor: pointer;
+
+    /* Le curseur est peint en fond : les pseudo-éléments sur <input> ne sont
+       pas fiables d'un navigateur à l'autre, un dégradé radial l'est. */
+    background-image: radial-gradient(
+        closest-side circle,
+        var(--la-surface-0) 96%,
+        transparent 100%
+    );
+    background-repeat: no-repeat;
+    background-size: var(--_la-switch-thumb) var(--_la-switch-thumb);
+    background-position: var(--_la-switch-pad) center;
+
+    transition:
+        background-color var(--la-duration-fast) var(--la-ease-out),
+        background-position var(--la-duration-fast) var(--la-ease-out),
+        border-color var(--la-duration-fast) var(--la-ease-out);
+
+    /* --- Activé ----------------------------------------------------------- */
+    &:checked {
+        background-color: var(--la-primary);
+        border-color: var(--la-primary);
+        /* Le pourcentage cale le bord du curseur sur celui de la piste. */
+        background-position: calc(100% - var(--_la-switch-pad)) center;
+    }
+
+    /* En écriture droite-à-gauche, le curseur doit voyager dans l'autre sens. */
+    &:dir(rtl) {
+        background-position: calc(100% - var(--_la-switch-pad)) center;
+
+        &:checked {
+            background-position: var(--_la-switch-pad) center;
+        }
+    }
+
+    /* --- Focus clavier ---------------------------------------------------- */
+    &:focus-visible {
+        outline: 2px solid var(--la-border-focus);
+        outline-offset: 2px;
+    }
+
+    /* --- Survol ----------------------------------------------------------- */
+    &:hover:not(:disabled) {
+        border-color: var(--la-primary);
+    }
+
+    /* --- Désactivé -------------------------------------------------------- */
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+        background-color: var(--la-surface-2);
+        border-color: var(--la-border);
+
+        &:checked {
+            background-color: var(--la-text-disabled);
+            border-color: var(--la-text-disabled);
+        }
+    }
+
+    /* --- Taille réduite --------------------------------------------------- */
+    &.sm {
+        --_la-switch-track-i: var(--la-space-8);
+        --_la-switch-track-b: var(--la-space-4);
+        --_la-switch-pad: 2px;
+    }
+}
+
+/* Enveloppe libellé + interrupteur. Le <label> rend toute la ligne cliquable. */
+.la-switch-field {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--la-space-2);
+    cursor: pointer;
+    font-size: var(--la-text-sm);
+    color: var(--la-text);
+
+    /* Libellé écrit avant l'input dans le HTML : l'ordre visuel suit tout seul.
+       `.reverse` sert à inverser sans toucher à l'ordre du DOM. */
+    &.reverse {
+        flex-direction: row-reverse;
+    }
+
+    /* Un libellé grisé sans interrupteur grisé serait un message contradictoire. */
+    &:has(.la-switch:disabled) {
+        cursor: not-allowed;
+        color: var(--la-text-disabled);
+    }
+}
+
+/* Le glissement du curseur est un agrément : l'état reste lisible sans lui. */
+@media (prefers-reduced-motion: reduce) {
+    .la-switch {
+        transition: none;
+    }
+}

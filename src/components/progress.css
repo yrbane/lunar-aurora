@@ -1,0 +1,176 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   BARRE DE PROGRESSION — .la-progress
+
+   Progression déterminée, sur `<progress>` natif ou sur un `<div>` porteur de
+   `role="progressbar"` dont la valeur vient de la variable `--la-progress-value`.
+   Aucun JS imposé : côté serveur, un attribut `style` suffit à piloter la barre.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/*
+   Les deux formes, au choix :
+
+   1. Élément natif — le plus simple, l'accessibilité est offerte :
+
+        <progress class="la-progress" value="42" max="100">42 %</progress>
+
+   2. Div ARIA — indispensable dès qu'il faut un dégradé, des rayures animées
+      ou un rendu strictement identique entre navigateurs :
+
+        <div class="la-progress" role="progressbar"
+             aria-valuenow="42" aria-valuemin="0" aria-valuemax="100"
+             aria-valuetext="Téléversement : 42 %"
+             style="--la-progress-value: 42"></div>
+
+      `--la-progress-value` est un nombre de 0 à 100 (sans unité) et doit rester
+      synchronisé avec `aria-valuenow` : sinon l'affichage ment au lecteur d'écran.
+
+   Accessibilité : la couleur d'une variante ne porte jamais l'information seule.
+   Accompagnez toujours la barre d'un libellé visible ou d'un `aria-valuetext`
+   explicite (« Quota dépassé : 96 % ») — un daltonien ne verra pas le rouge.
+*/
+
+.la-progress {
+    /* Réglages locaux repris par les deux formes et par toutes les variantes. */
+    --_la-progress-size: var(--la-space-2);
+    --_la-progress-fill: var(--la-primary);
+    --_la-progress-track: var(--la-surface-3);
+    --la-progress-value: 0;
+
+    display: block;
+    inline-size: 100%;
+    block-size: var(--_la-progress-size);
+    border: none;
+    border-radius: var(--la-radius-full);
+    background: var(--_la-progress-track);
+    /* Sans ça, le remplissage arrondi bave hors de la piste. */
+    overflow: hidden;
+    /* Neutralise le rendu natif de <progress> avant de le reconstruire. */
+    appearance: none;
+    color: var(--_la-progress-fill);
+
+    /* --- Tailles ---------------------------------------------------------- */
+    &.sm { --_la-progress-size: var(--la-space-1); }
+    &.lg { --_la-progress-size: var(--la-space-3); }
+
+    /* --- Variantes de couleur -------------------------------------------- */
+    &.success { --_la-progress-fill: var(--la-success); }
+    &.warning { --_la-progress-fill: var(--la-warning); }
+    &.error   { --_la-progress-fill: var(--la-error); }
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Forme 1 — <progress> natif
+   Les pseudo-éléments -webkit- et -moz- ne peuvent pas cohabiter dans une même
+   règle : un sélecteur inconnu invaliderait tout le bloc. D'où la séparation.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+progress.la-progress::-webkit-progress-bar {
+    background: var(--_la-progress-track);
+    border-radius: var(--la-radius-full);
+}
+
+progress.la-progress::-webkit-progress-value {
+    background-color: var(--_la-progress-fill);
+    border-radius: var(--la-radius-full);
+    transition: inline-size var(--la-duration-fast) var(--la-ease-out);
+}
+
+progress.la-progress::-moz-progress-bar {
+    background-color: var(--_la-progress-fill);
+    border-radius: var(--la-radius-full);
+}
+
+/* Rayures sur l'élément natif : même motif, appliqué au remplissage. */
+progress.la-progress.striped::-webkit-progress-value {
+    background-image: linear-gradient(
+        45deg,
+        oklch(100% 0 0 / 25%) 25%,
+        transparent 25%,
+        transparent 50%,
+        oklch(100% 0 0 / 25%) 50%,
+        oklch(100% 0 0 / 25%) 75%,
+        transparent 75%,
+        transparent
+    );
+    background-size: var(--la-space-4) var(--la-space-4);
+    animation: la-progress-stripes 1s linear infinite;
+}
+
+progress.la-progress.striped::-moz-progress-bar {
+    background-image: linear-gradient(
+        45deg,
+        oklch(100% 0 0 / 25%) 25%,
+        transparent 25%,
+        transparent 50%,
+        oklch(100% 0 0 / 25%) 50%,
+        oklch(100% 0 0 / 25%) 75%,
+        transparent 75%,
+        transparent
+    );
+    background-size: var(--la-space-4) var(--la-space-4);
+    animation: la-progress-stripes 1s linear infinite;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Forme 2 — <div role="progressbar">
+   Le remplissage est un ::after : aucun élément enfant à écrire dans le HTML.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.la-progress[role='progressbar'] {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-start: 0;
+        block-size: 100%;
+        /* `clamp` protège d'une valeur hors bornes envoyée par le serveur. */
+        inline-size: clamp(0%, calc(var(--la-progress-value) * 1%), 100%);
+        background-color: var(--_la-progress-fill);
+        border-radius: var(--la-radius-full);
+        transition: inline-size var(--la-duration-fast) var(--la-ease-out);
+    }
+
+    /* --- Rayures animées -------------------------------------------------- */
+    &.striped::after {
+        background-image: linear-gradient(
+            45deg,
+            oklch(100% 0 0 / 25%) 25%,
+            transparent 25%,
+            transparent 50%,
+            oklch(100% 0 0 / 25%) 50%,
+            oklch(100% 0 0 / 25%) 75%,
+            transparent 75%,
+            transparent
+        );
+        background-size: var(--la-space-4) var(--la-space-4);
+        animation: la-progress-stripes 1s linear infinite;
+    }
+}
+
+@keyframes la-progress-stripes {
+    from { background-position: 0 0; }
+    to   { background-position: var(--la-space-4) 0; }
+}
+
+/* Une barre qui défile en permanence est une gêne réelle pour certains
+   utilisateurs : on garde les rayures, on retire le mouvement. */
+@media (prefers-reduced-motion: reduce) {
+    .la-progress[role='progressbar'] {
+        &::after,
+        &.striped::after {
+            animation: none;
+            transition: none;
+        }
+    }
+
+    progress.la-progress.striped::-webkit-progress-value {
+        animation: none;
+        transition: none;
+    }
+
+    progress.la-progress.striped::-moz-progress-bar {
+        animation: none;
+    }
+}

@@ -1,0 +1,235 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   NOTIFICATION ÉPHÉMÈRE — .la-toast / .la-toast-region
+
+   Le pendant éphémère de .la-alert : la confirmation qui apparaît après une
+   action puis s'efface. CSS seul — l'insertion, la temporisation et le retrait
+   du toast sont à l'application, qui pose role="status" (ou role="alert" si
+   l'urgence le justifie) et la classe .leaving avant de retirer l'élément.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* --- Région : le coin de l'écran où les toasts s'empilent ------------------- */
+.la-toast-region {
+    /* Décalage d'entrée, hérité par les toasts. Par défaut : depuis le bas. */
+    --_tx: 0;
+    --_ty: var(--la-space-4);
+
+    position: fixed;
+    /* Au-dessus du contenu, sous les dialogues modaux. */
+    z-index: var(--la-z-toast);
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--la-space-2);
+    inline-size: min(24rem, calc(100% - var(--la-space-8)));
+    padding: var(--la-space-4);
+
+    /* Coin par défaut : bas / fin. */
+    inset-block: auto 0;
+    inset-inline: auto 0;
+
+    /* La région couvre une bande entière de l'écran : elle ne doit pas
+       intercepter les clics destinés au contenu qui se trouve dessous. */
+    pointer-events: none;
+
+    & > * {
+        pointer-events: auto;
+    }
+
+    /* --- Coins ------------------------------------------------------------- */
+    /* En haut, la pile croît vers le bas ; en bas, elle croît vers le haut :
+       le dernier toast reste toujours le plus proche du bord. */
+    &.top-start,
+    &.top-end {
+        --_ty: calc(var(--la-space-4) * -1);
+
+        flex-direction: column;
+        inset-block: 0 auto;
+    }
+
+    &.top-start,
+    &.bottom-start {
+        --_tx: calc(var(--la-space-4) * -1);
+
+        inset-inline: 0 auto;
+    }
+
+    &.top-end,
+    &.bottom-end {
+        --_tx: var(--la-space-4);
+
+        inset-inline: auto 0;
+    }
+
+    &.bottom-start,
+    &.bottom-end {
+        --_ty: var(--la-space-4);
+
+        flex-direction: column-reverse;
+        inset-block: auto 0;
+    }
+}
+
+/* --- Le toast lui-même ------------------------------------------------------ */
+.la-toast {
+    --_accent: var(--la-border-strong);
+
+    display: flex;
+    align-items: flex-start;
+    gap: var(--la-space-3);
+    padding: var(--la-space-3) var(--la-space-4);
+    background: var(--la-surface-0);
+    color: var(--la-text);
+    border: 1px solid var(--la-border);
+    /* Liseré latéral : le premier repère de gravité, avant même la lecture. */
+    border-inline-start: 3px solid var(--_accent);
+    border-radius: var(--la-radius-md);
+    box-shadow: var(--la-shadow-lg);
+    font-size: var(--la-text-sm);
+    animation: la-toast-in var(--la-duration-base) var(--la-ease-out) both;
+
+    /* Symbole de gravité, posé par les variantes uniquement si l'application
+       n'a pas fourni sa propre icône. Décoratif (texte alternatif vide) :
+       le message porte le sens, le glyphe évite que la couleur soit seule. */
+    &::before {
+        flex-shrink: 0;
+        color: var(--_accent);
+        font-weight: var(--la-weight-bold);
+        line-height: 1.5;
+    }
+
+    & .la-toast-icon {
+        flex-shrink: 0;
+        color: var(--_accent);
+        font-size: 1.25rem;
+        line-height: 1.2;
+    }
+
+    /* min-inline-size: 0 — sans quoi un long mot fait déborder le flex. */
+    & .la-toast-content {
+        flex: 1;
+        min-inline-size: 0;
+    }
+
+    & .la-toast-title {
+        font-weight: var(--la-weight-semibold);
+        margin-block-end: var(--la-space-0-5);
+    }
+
+    & .la-toast-message {
+        color: var(--la-text-secondary);
+    }
+
+    /* Fermeture manuelle : indispensable dès qu'un toast porte une action,
+       et pour qui a besoin de plus de temps que le délai automatique. */
+    & .la-toast-close {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-inline-size: 32px;
+        min-block-size: 32px;
+        margin-inline-start: var(--la-space-1);
+        padding: 0;
+        background: none;
+        color: var(--la-text-muted);
+        border: none;
+        border-radius: var(--la-radius-sm);
+        font: inherit;
+        line-height: 1;
+        cursor: pointer;
+        transition:
+            background var(--la-duration-fast) var(--la-ease-out),
+            color var(--la-duration-fast) var(--la-ease-out);
+
+        &:hover {
+            background: var(--la-surface-2);
+            color: var(--la-text);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--la-border-focus);
+            outline-offset: 2px;
+        }
+    }
+
+    /* --- Variantes de gravité ---------------------------------------------- */
+    &.info {
+        --_accent: var(--la-info);
+
+        &:not(:has(.la-toast-icon))::before { content: 'i' / ''; }
+    }
+
+    &.success {
+        --_accent: var(--la-success);
+
+        &:not(:has(.la-toast-icon))::before { content: '✓' / ''; }
+    }
+
+    &.warning {
+        --_accent: var(--la-warning);
+
+        &:not(:has(.la-toast-icon))::before { content: '!' / ''; }
+    }
+
+    &.error {
+        --_accent: var(--la-error);
+
+        &:not(:has(.la-toast-icon))::before { content: '✕' / ''; }
+    }
+
+    /* --- Sortie ------------------------------------------------------------- */
+    /* L'application pose .leaving, attend la fin de l'animation, puis retire
+       l'élément du DOM. Sans ce relais, le toast resterait figé transparent. */
+    &.leaving {
+        animation: la-toast-out var(--la-duration-base) var(--la-ease-out) both;
+    }
+}
+
+/* --- Animations --------------------------------------------------------------
+   Le décalage vient de la région (--_tx / --_ty) : un toast entre toujours
+   depuis le bord dont il est le plus proche. */
+@keyframes la-toast-in {
+    from {
+        opacity: 0;
+        transform: translate3d(var(--_tx, 0), var(--_ty, 1rem), 0) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes la-toast-out {
+    from {
+        opacity: 1;
+        transform: none;
+    }
+
+    to {
+        opacity: 0;
+        transform: translate3d(var(--_tx, 0), var(--_ty, 1rem), 0) scale(0.98);
+    }
+}
+
+/* Une notification qui surgit en glissant est exactement ce que fuit
+   prefers-reduced-motion : il ne reste qu'un fondu, assez court pour que
+   l'application puisse toujours attendre la fin de l'animation. */
+@media (prefers-reduced-motion: reduce) {
+    .la-toast {
+        animation: la-toast-fade var(--la-duration-fast) var(--la-ease-out) both;
+    }
+
+    .la-toast.leaving {
+        animation: la-toast-fade-out var(--la-duration-fast) var(--la-ease-out) both;
+    }
+}
+
+@keyframes la-toast-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes la-toast-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}

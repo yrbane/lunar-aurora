@@ -1,0 +1,132 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   TUILE DE STATISTIQUE — .la-stat
+
+   Un chiffre clé, son libellé, sa tendance. Le calcul et le formatage des
+   nombres restent à l'application ; la tuile ne fait que les mettre en scène.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Rangée de tuiles : autant de colonnes que la largeur en autorise, jamais
+   moins d'une seule — d'où le `min()` qui empêche le débordement sur mobile. */
+.la-stat-group {
+    --_min-col-size: 200px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--_min-col-size), 100%), 1fr));
+    gap: var(--la-space-4);
+
+    &.sm { --_min-col-size: 150px; }
+    &.lg { --_min-col-size: 260px; }
+}
+
+.la-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--la-space-1);
+    padding: var(--la-space-5);
+    background: var(--la-surface-raised);
+    color: var(--la-text);
+    border: 1px solid var(--la-border-subtle);
+    border-radius: var(--la-radius-lg);
+    text-align: start;
+
+    /* --- Icône facultative ------------------------------------------------ */
+    /* Décorative : le sens passe par le libellé, pas par le pictogramme. */
+    & .la-stat-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        inline-size: var(--la-space-10);
+        block-size: var(--la-space-10);
+        margin-block-end: var(--la-space-2);
+        background: var(--la-surface-2);
+        color: var(--la-primary);
+        border-radius: var(--la-radius-md);
+        font-size: var(--la-text-md);
+        line-height: 1;
+    }
+
+    /* --- Valeur ----------------------------------------------------------- */
+    /* Chiffres à chasse fixe : les valeurs s'alignent d'une tuile à l'autre. */
+    & .la-stat-value {
+        font-size: var(--la-text-2xl);
+        font-weight: var(--la-weight-bold);
+        line-height: var(--la-leading-tight);
+        font-variant-numeric: tabular-nums;
+        color: var(--la-text);
+    }
+
+    /* --- Libellé ---------------------------------------------------------- */
+    & .la-stat-label {
+        font-size: var(--la-text-sm);
+        color: var(--la-text-muted);
+        line-height: var(--la-leading-snug);
+    }
+
+    /* --- Tendance --------------------------------------------------------- */
+    /* La couleur ne porte jamais seule l'information : un signe la double,
+       pour le daltonisme comme pour une impression en noir et blanc. */
+    & .la-stat-trend {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--la-space-1);
+        margin-block-start: var(--la-space-1);
+        font-size: var(--la-text-sm);
+        font-weight: var(--la-weight-medium);
+        font-variant-numeric: tabular-nums;
+        color: var(--la-text-secondary);
+
+        &::before {
+            font-size: var(--la-text-xs);
+            line-height: 1;
+        }
+
+        &.up {
+            color: var(--la-success);
+
+            &::before { content: '▲'; }
+        }
+
+        &.down {
+            color: var(--la-error);
+
+            &::before { content: '▼'; }
+        }
+
+        &.flat {
+            color: var(--la-text-muted);
+
+            &::before { content: '▬'; }
+        }
+    }
+
+    /* --- Densité ---------------------------------------------------------- */
+    &.compact {
+        padding: var(--la-space-3) var(--la-space-4);
+
+        & .la-stat-value { font-size: var(--la-text-xl); }
+
+        & .la-stat-icon {
+            inline-size: var(--la-space-8);
+            block-size: var(--la-space-8);
+            margin-block-end: var(--la-space-1);
+        }
+    }
+
+    /* --- Variantes -------------------------------------------------------- */
+    /* Sans cadre : la tuile s'efface quand elle vit déjà dans une carte. */
+    &.plain {
+        padding: 0;
+        background: transparent;
+        border-color: transparent;
+    }
+
+    /* Chiffre mis en avant : réservé à la métrique principale d'un tableau. */
+    &.featured {
+        border-color: var(--la-border);
+
+        & .la-stat-value {
+            font-size: var(--la-text-3xl);
+            color: var(--la-primary);
+        }
+    }
+}

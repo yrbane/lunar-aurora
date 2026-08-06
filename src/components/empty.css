@@ -1,0 +1,114 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ÉTAT VIDE — .la-empty
+
+   Le bloc « rien à afficher » : icône, titre, explication, action facultative.
+   La microcopie appartient au projet — ici, seulement le rythme et le cadrage.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.la-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--la-space-3);
+    /* Respiration généreuse : le vide doit se lire comme un choix, pas un bug. */
+    padding-block: var(--la-space-16);
+    padding-inline: var(--la-space-6);
+    /* Centre la tuile verticalement quand le conteneur est en flex ou en grid. */
+    margin-block: auto;
+    text-align: center;
+    color: var(--la-text-muted);
+
+    /* --- Icône ou emoji ---------------------------------------------------- */
+    /* Décorative : le message reste entier si elle n'est pas rendue. */
+    & .la-empty-icon {
+        font-size: var(--la-text-4xl);
+        line-height: 1;
+        color: var(--la-text-muted);
+        opacity: 0.7;
+
+        & svg {
+            inline-size: 3rem;
+            block-size: 3rem;
+        }
+    }
+
+    /* --- Titre -------------------------------------------------------------- */
+    & .la-empty-title {
+        margin: 0;
+        font-size: var(--la-text-lg);
+        font-weight: var(--la-weight-semibold);
+        line-height: var(--la-leading-tight);
+        color: var(--la-text);
+    }
+
+    /* --- Explication --------------------------------------------------------- */
+    /* Mesure bornée : au-delà, une phrase centrée devient pénible à lire. */
+    & .la-empty-text {
+        margin: 0;
+        max-inline-size: 42ch;
+        font-size: var(--la-text-sm);
+        line-height: var(--la-leading-relaxed);
+        color: var(--la-text-muted);
+    }
+
+    /* --- Action -------------------------------------------------------------- */
+    & .la-empty-action {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: var(--la-space-3);
+        margin-block-start: var(--la-space-2);
+
+        /* Filet de sécurité si l'action n'est pas un composant déjà stylé. */
+        & :focus-visible {
+            outline: 2px solid var(--la-border-focus);
+            outline-offset: 2px;
+        }
+    }
+
+    /* --- Densité -------------------------------------------------------------- */
+    &.compact {
+        gap: var(--la-space-2);
+        padding-block: var(--la-space-8);
+
+        & .la-empty-icon { font-size: var(--la-text-2xl); }
+        & .la-empty-title { font-size: var(--la-text-md); }
+    }
+
+    /* --- Variantes de contexte ------------------------------------------------ */
+    /* Premier usage : « rien encore » — on invite à créer, ton positif. */
+    &.first {
+        & .la-empty-icon {
+            color: var(--la-primary);
+            opacity: 1;
+        }
+    }
+
+    /* Recherche infructueuse : « aucun résultat » — constat neutre, pas d'alarme. */
+    &.search {
+        & .la-empty-icon {
+            color: var(--la-text-muted);
+            opacity: 0.6;
+        }
+    }
+
+    /* Erreur : la couleur ne suffit pas, le titre doit dire ce qui s'est passé. */
+    &.error {
+        & .la-empty-icon {
+            color: var(--la-error);
+            opacity: 1;
+        }
+
+        & .la-empty-title { color: var(--la-text); }
+    }
+
+    /* --- Encadré ---------------------------------------------------------------- */
+    /* Posé dans un tableau ou une carte, le vide gagne à être délimité. */
+    &.boxed {
+        background: var(--la-surface-1);
+        border: 1px dashed var(--la-border);
+        border-radius: var(--la-radius-lg);
+    }
+}

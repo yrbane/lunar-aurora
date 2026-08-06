@@ -1,0 +1,163 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAGINATION — .la-pagination
+
+   S'applique à un <nav aria-label="…"> contenant une liste de liens ou de
+   boutons. La page courante se signale par aria-current="page" : c'est le
+   balisage qui porte l'information, le style ne fait que la rendre visible.
+   La découpe des pages et les ellipses restent à l'application.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.la-pagination {
+    /* Cible tactile minimale (WCAG 2.5.5 « Target Size »). */
+    --_size: 44px;
+    --_gap: var(--la-space-1);
+
+    display: flex;
+    align-items: center;
+    gap: var(--_gap);
+    font-size: var(--la-text-sm);
+
+    /* La liste n'apporte rien visuellement : on la neutralise sans la retirer
+       du balisage, qui reste utile aux lecteurs d'écran (« liste de N items »). */
+    & ul,
+    & ol {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--_gap);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    & li {
+        display: flex;
+    }
+
+    /* --- Éléments cliquables --------------------------------------------- */
+    & a,
+    & button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-inline-size: var(--_size);
+        min-block-size: var(--_size);
+        padding-inline: var(--la-space-2);
+        background: var(--la-surface-1);
+        color: var(--la-text);
+        border: 1px solid var(--la-border-subtle);
+        border-radius: var(--la-radius-md);
+        font: inherit;
+        /* Les numéros doivent s'aligner d'une page à l'autre. */
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+            background var(--la-duration-fast) var(--la-ease-out),
+            border-color var(--la-duration-fast) var(--la-ease-out),
+            color var(--la-duration-fast) var(--la-ease-out);
+
+        &:hover {
+            background: var(--la-surface-2);
+            border-color: var(--la-border);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--la-border-focus);
+            outline-offset: 2px;
+        }
+    }
+
+    /* --- Page courante ---------------------------------------------------- */
+    /* Sélecteur d'attribut, jamais de classe : si aria-current manque, le style
+       manque aussi — l'oubli d'accessibilité devient visible.
+       La graisse double la couleur : l'information ne tient pas au seul contraste. */
+    & [aria-current='page'] {
+        background: var(--la-primary);
+        color: var(--la-text-on-primary);
+        border-color: var(--la-primary);
+        font-weight: var(--la-weight-semibold);
+        cursor: default;
+        /* La page courante n'est pas une destination : on ne la clique pas. */
+        pointer-events: none;
+    }
+
+    /* --- Bornes atteintes -------------------------------------------------- */
+    /* « Précédent » sur la page 1 reste dans le DOM, inerte et visiblement éteint :
+       la structure de la barre ne saute pas d'une page à l'autre. */
+    & [aria-disabled='true'],
+    & :disabled {
+        background: var(--la-surface-1);
+        color: var(--la-text-muted);
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    /* --- Ellipse ----------------------------------------------------------- */
+    /* Marque la coupure d'une longue série : 1 … 7 8 [9] 10 11 … 42.
+       Non cliquable, alignée sur la même cadence que les pages. */
+    & .ellipsis {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-inline-size: var(--_size);
+        min-block-size: var(--_size);
+        color: var(--la-text-muted);
+        user-select: none;
+
+        /* Repli si l'élément est vide : le glyphe reste purement décoratif
+           (texte alternatif vide, donc jamais annoncé). */
+        &:empty::after {
+            content: '…' / '';
+        }
+    }
+
+    /* --- Variante compacte -------------------------------------------------- */
+    &.sm {
+        --_size: 36px;
+        --_gap: var(--la-space-0-5);
+
+        font-size: var(--la-text-xs);
+
+        & a,
+        & button {
+            padding-inline: var(--la-space-1-5);
+            border-radius: var(--la-radius-sm);
+        }
+    }
+
+    /* --- Variante minimale --------------------------------------------------- */
+    /* Deux bornes seulement (« Précédent » / « Suivant »), poussées aux extrémités.
+       Tout numéro laissé dans le balisage s'efface : c'est le propos de la variante. */
+    &.simple {
+        inline-size: 100%;
+
+        & ul,
+        & ol {
+            inline-size: 100%;
+            justify-content: space-between;
+        }
+
+        & li:not(.prev):not(.next) {
+            display: none;
+        }
+    }
+}
+
+/* Sur écran tactile, la variante compacte remonte à la cible de 44 px :
+   la densité est un confort de souris, jamais une régression d'accessibilité. */
+@media (pointer: coarse) {
+    .la-pagination.sm {
+        --_size: 44px;
+    }
+}
+
+/* Qui demande moins de mouvement n'a que faire des fondus de survol. */
+@media (prefers-reduced-motion: reduce) {
+    .la-pagination a,
+    .la-pagination button {
+        transition: none;
+    }
+}

@@ -1,0 +1,233 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   MENU DÉROULANT — .la-dropdown
+
+   Bâti sur `<details>/<summary>` natif : ouverture et fermeture au clavier comme
+   à la souris, sans une ligne de JS. La fermeture au clic extérieur et la
+   navigation aux flèches, elles, restent à l'application (voir la note plus bas).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/*
+   Emploi :
+
+       <details class="la-dropdown end">
+           <summary class="la-dropdown-toggle">Actions</summary>
+           <div class="la-dropdown-menu" role="menu">
+               <a class="la-dropdown-item" role="menuitem" href="/edit">Modifier</a>
+               <a class="la-dropdown-item" role="menuitem" href="/copy">Dupliquer</a>
+               <hr class="la-dropdown-divider">
+               <a class="la-dropdown-item" role="menuitem"
+                  aria-disabled="true" href="#">Archiver</a>
+           </div>
+       </details>
+
+   Ce que le CSS ne peut pas faire — à compléter côté application si besoin :
+     • fermer au clic extérieur → un écouteur `document` qui retire `open` ;
+     • fermer sur Échap → dans Chrome et Firefox, Échap referme déjà le <details>
+       quand le focus est dans le menu ; ailleurs, prévoir un écouteur ;
+     • flèches haut/bas entre les items → attendu d'un vrai `role="menu"`.
+   Sans ce complément, restez sur des liens et boutons ordinaires (sans `role`) :
+   la tabulation suffit alors, et rien ne promet un comportement non tenu.
+*/
+
+.la-dropdown {
+    /* Ancre du menu positionné en absolu. */
+    position: relative;
+    display: inline-block;
+
+    /* --- Le déclencheur --------------------------------------------------- */
+    & > summary {
+        /* Le triangle natif est remplacé par notre propre chevron. */
+        list-style: none;
+        cursor: pointer;
+        user-select: none;
+
+        display: inline-flex;
+        align-items: center;
+        gap: var(--la-space-2);
+        padding-block: var(--la-space-2);
+        padding-inline: var(--la-space-3);
+
+        font-size: var(--la-text-sm);
+        color: var(--la-text);
+        background: var(--la-surface-0);
+        border: 1px solid var(--la-border);
+        border-radius: var(--la-radius-md);
+        transition: background var(--la-duration-fast) var(--la-ease-out);
+
+        &::marker { content: ''; }
+        &::-webkit-details-marker { display: none; }
+
+        &:hover { background: var(--la-surface-2); }
+
+        &:focus-visible {
+            outline: 2px solid var(--la-border-focus);
+            outline-offset: 2px;
+        }
+
+        /* Chevron : indique l'état ouvert/fermé autrement que par la couleur. */
+        &::after {
+            content: '';
+            inline-size: 0.4em;
+            block-size: 0.4em;
+            border-inline-end: 2px solid currentColor;
+            border-block-end: 2px solid currentColor;
+            rotate: 45deg;
+            translate: 0 -0.15em;
+            opacity: 0.6;
+            transition: rotate var(--la-duration-fast) var(--la-ease-out);
+        }
+    }
+
+    &[open] > summary::after {
+        rotate: 225deg;
+        translate: 0 0.1em;
+    }
+
+    /* --- Alignements ------------------------------------------------------ */
+    /* `start` est le comportement par défaut ; la classe existe pour l'écrire. */
+    &.start > .la-dropdown-menu {
+        inset-inline-start: 0;
+        inset-inline-end: auto;
+    }
+
+    &.end > .la-dropdown-menu {
+        inset-inline-start: auto;
+        inset-inline-end: 0;
+    }
+
+    /* Ouverture vers le haut : à poser quand le déclencheur est en bas de page. */
+    &.up > .la-dropdown-menu {
+        inset-block-start: auto;
+        inset-block-end: calc(100% + var(--la-space-1));
+    }
+
+    /* --- Révélation ------------------------------------------------------- */
+    /* <details> masque déjà ses enfants ; ces règles ne font qu'ajouter le
+       fondu d'entrée quand l'attribut `open` apparaît. */
+    &[open] > .la-dropdown-menu {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
+/* --- Le panneau ----------------------------------------------------------- */
+.la-dropdown-menu {
+    position: absolute;
+    z-index: var(--la-z-dropdown);
+    inset-block-start: calc(100% + var(--la-space-1));
+    inset-inline-start: 0;
+
+    min-inline-size: var(--la-space-48);
+    /* Ne jamais déborder de l'écran sur un petit viewport. */
+    max-inline-size: min(20rem, calc(100vw - var(--la-space-8)));
+    /* Une longue liste défile au lieu de sortir de la fenêtre. */
+    max-block-size: 60vh;
+    overflow-y: auto;
+
+    padding-block: var(--la-space-1);
+    background: var(--la-surface-raised);
+    border: 1px solid var(--la-border);
+    border-radius: var(--la-radius-lg);
+    box-shadow: var(--la-shadow-lg);
+
+    opacity: 0;
+    translate: 0 calc(var(--la-space-1) * -1);
+    transition:
+        opacity var(--la-duration-fast) var(--la-ease-out),
+        translate var(--la-duration-fast) var(--la-ease-out);
+}
+
+/* --- Les entrées ---------------------------------------------------------- */
+.la-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: var(--la-space-2);
+    inline-size: 100%;
+    padding-block: var(--la-space-2);
+    padding-inline: var(--la-space-3);
+
+    font-size: var(--la-text-sm);
+    text-align: start;
+    text-decoration: none;
+    color: var(--la-text);
+    background: none;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background var(--la-duration-fast) var(--la-ease-out);
+
+    &:hover,
+    &:focus-visible {
+        background: var(--la-surface-2);
+        color: var(--la-text);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--la-border-focus);
+        outline-offset: -2px;
+    }
+
+    /* Entrée active : le liseré porte l'information autant que la couleur. */
+    &[aria-current='true'],
+    &.active {
+        color: var(--la-primary);
+        font-weight: 600;
+        box-shadow: inset 3px 0 0 var(--la-primary);
+    }
+
+    /* Entrée destructrice : le libellé doit le dire aussi (« Supprimer »). */
+    &.danger {
+        color: var(--la-error);
+
+        &:hover { background: var(--la-surface-2); }
+    }
+
+    /* Désactivée : `aria-disabled` la laisse atteignable au clavier, ce qui est
+       préférable à `disabled` pour un menu — l'utilisateur sait qu'elle existe. */
+    &[aria-disabled='true'] {
+        color: var(--la-text-disabled);
+        cursor: not-allowed;
+        pointer-events: none;
+
+        &:hover { background: none; }
+    }
+}
+
+/* --- Séparateur ----------------------------------------------------------- */
+/* Sur un <hr> comme sur un <div role="separator">. */
+.la-dropdown-divider {
+    block-size: 0;
+    margin-block: var(--la-space-1);
+    margin-inline: 0;
+    border: none;
+    border-block-start: 1px solid var(--la-border-subtle);
+}
+
+/* --- Intitulé de section -------------------------------------------------- */
+.la-dropdown-label {
+    display: block;
+    padding-block: var(--la-space-1);
+    padding-inline: var(--la-space-3);
+    font-size: var(--la-text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--la-text-muted);
+}
+
+/* Le fondu et la rotation du chevron sont décoratifs : l'attribut `open` reste
+   la seule source de vérité. */
+@media (prefers-reduced-motion: reduce) {
+    .la-dropdown > summary,
+    .la-dropdown > summary::after,
+    .la-dropdown-menu,
+    .la-dropdown-item {
+        transition: none;
+    }
+
+    .la-dropdown-menu {
+        translate: none;
+    }
+}

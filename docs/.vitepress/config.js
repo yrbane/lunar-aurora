@@ -29,6 +29,10 @@ export default defineConfig({
             { text: 'Cards', link: '/components/cards' },
             { text: 'Forms', link: '/components/forms' },
             { text: 'Tables', link: '/components/tables' },
+            { text: 'Données', link: '/components/data' },
+            { text: 'Navigation', link: '/components/navigation' },
+            { text: 'Retours utilisateur', link: '/components/feedback' },
+            { text: 'Surcouches', link: '/components/overlays' },
             { text: 'Interactive', link: '/components/interactive' }
           ]
         }

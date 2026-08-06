@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="aurora">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lunar Aurora — Composants</title>
+<link rel="stylesheet" href="../dist/aurora.min.css">
+<style>
+  .demo { margin-block: var(--la-space-10); }
+  .demo > h2 { margin-block-end: var(--la-space-2); }
+  .demo > .intro { color: var(--la-text-muted); margin-block-start: 0; }
+  .bac {
+    padding: var(--la-space-6);
+    background: var(--la-surface-1);
+    border: 1px solid var(--la-border-subtle);
+    border-radius: var(--la-radius-lg);
+  }
+</style>
+</head>
+<body>
+
+<header class="la-container" style="padding-block: var(--la-space-8) var(--la-space-4);">
+  <div class="la-flex-between" style="flex-wrap: wrap; gap: var(--la-space-3);">
+    <div>
+      <h1 style="margin:0;">Composants</h1>
+      <p class="intro" style="margin: var(--la-space-1) 0 0;">
+        Les onze composants CSS d'Aurora, sans une ligne de JavaScript.
+      </p>
+    </div>
+    <select class="la-select" id="theme" aria-label="Thème" style="width:auto;">
+      <option value="aurora">🌌 Aurora</option>
+      <option value="dark">🌙 Sombre</option>
+      <option value="light">☀️ Clair</option>
+      <option value="forest">🌲 Forêt</option>
+      <option value="cyberpunk">🌆 Cyberpunk</option>
+      <option value="galaxian">🚀 Galaxian</option>
+    </select>
+  </div>
+
+  <nav class="la-breadcrumb" aria-label="Fil d'Ariane" style="margin-block-start: var(--la-space-4);">
+    <ol>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="docs.html">Documentation</a></li>
+      <li aria-current="page">Composants</li>
+    </ol>
+  </nav>
+</header>
+
+<main class="la-container" style="padding-bottom: var(--la-space-16);">
+
+  <!-- ─── Statistiques ─────────────────────────────────────────────────── -->
+  <section class="demo">
+    <h2>Statistiques</h2>
+    <p class="intro">La rangée de chiffres clés qui ouvre tout tableau de bord.</p>
+    <div class="la-stat-group">
+      <div class="la-stat">
+        <div class="la-stat-value">852</div>
+        <div class="la-stat-label">Issues suivies</div>
+        <div class="la-stat-trend up">12 % ce mois</div>
+      </div>
+      <div class="la-stat">
+        <div class="la-stat-value">143</div>
+        <div class="la-stat-label">Ouvertes</div>
+        <div class="la-stat-trend down">8 % ce mois</div>
+      </div>
+      <div class="la-stat">
+        <div class="la-stat-value">23</div>
+        <div class="la-stat-label">Dépôts</div>
+        <div class="la-stat-trend flat">stable</div>
+      </div>
+      <div class="la-stat">
+        <div class="la-stat-value">99</div>
+        <div class="la-stat-label">Pull requests</div>
+        <div class="la-stat-trend up">4 cette semaine</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Cartes ───────────────────────────────────────────────────────── -->
+  <section class="demo">
+    <h2>Cartes</h2>
+    <p class="intro">Quatre variantes, combinables avec les densités.</p>
+    <div class="la-auto-grid la-gap-4">
+      <div class="la-card">
+        <div class="la-card-header"><strong>Carte simple</strong></div>
+        <div class="la-card-body">Surface, filet, rayon. Le socle de toute interface.</div>
+        <div class="la-card-footer"><span class="la-badge">défaut</span></div>
+      </div>
+      <div class="la-card elevated">
+        <div class="la-card-header"><strong>Élevée</strong></div>
+        <div class="la-card-body">Une ombre la détache du fond, sans filet.</div>
+        <div class="la-card-footer"><span class="la-badge secondary">elevated</span></div>
+      </div>
+      <div class="la-card outlined">
+        <div class="la-card-header"><strong>Contourée</strong></div>
+        <div class="la-card-body">Fond transparent, contour marqué : discrète sur fond chargé.</div>
+        <div class="la-card-footer"><span class="la-badge muted">outlined</span></div>
+      </div>
+      <a class="la-card interactive" href="#composants">
+        <div class="la-card-header"><strong>Cliquable</strong></div>
+        <div class="la-card-body">La carte entière mène quelque part. Essayez la tabulation.</div>
+        <div class="la-card-footer"><span class="la-badge success">interactive</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── Formulaires ──────────────────────────────────────────────────── -->
+  <section class="demo">
+    <h2>Contrôles de formulaire</h2>
+    <p class="intro">L'interrupteur rejoint les cases et les boutons radio.</p>
+    <div class="bac la-flex la-gap-6 la-wrap">
+      <div class="la-form-group" style="min-inline-size: 14rem;">
+        <label class="la-label" for="ex-nom">Nom du dépôt</label>
+        <input class="la-input" id="ex-nom" type="text" value="lunar-aurora">
+        <p class="la-help">Visible publiquement.</p>
+      </div>
+      <div class="la-form-group" style="min-inline-size: 12rem;">
+        <label class="la-label" for="ex-vis">Visibilité</label>
+        <select class="la-select" id="ex-vis">
+          <option>Public</option>
+          <option>Privé</option>
+        </select>
+      </div>
+      <div class="la-form-group">
+        <span class="la-label">Préférences</span>
+        <label class="la-switch-field">
+          <input class="la-switch" type="checkbox" role="switch" checked>
+          <span>Rondes nocturnes</span>
+        </label>
+        <label class="la-switch-field">
+          <input class="la-switch" type="checkbox" role="switch">
+          <span>Notifications par courriel</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Progression ──────────────────────────────────────────────────── -->
+  <section class="demo">
+    <h2>Progression</h2>
+    <p class="intro">Pour ce dont on connaît l'avancement — sinon, le spinner.</p>
+    <div class="bac la-flex la-flex-col la-gap-4">
+      <div>
+        <label class="la-label" for="p1">Couverture de tests — 82 %</label>
+        <progress class="la-progress success" id="p1" value="82" max="100">82 %</progress>
+      </div>
+      <div>
+        <label class="la-label" for="p2">Quota consommé — 68 %</label>
+        <progress class="la-progress warning" id="p2" value="68" max="100">68 %</progress>
+      </div>
+      <div>
+        <span class="la-label">Téléversement — 45 %</span>
+        <div class="la-progress striped" role="progressbar" aria-valuenow="45"
+             aria-valuemin="0" aria-valuemax="100" style="--la-progress-value: 45;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Tableau ──────────────────────────────────────────────────────── -->
+  <section class="demo">
+    <h2>Tableau</h2>
+    <p class="intro">Zébré, en-tête figé, colonnes triables — le tri reste à l'application.</p>
+    <div class="la-table-wrap">
+      <table class="la-table striped">
+        <caption>Trois dépôts récemment visités</caption>
+        <thead>
+          <tr>
+            <th data-sort aria-sort="ascending">Dépôt</th>
+            <th data-sort>Langage</th>
+            <th data-sort class="num">Issues</th>
+            <th>État</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>lunar-aurora</td><td>CSS</td><td class="num">11</td><td><span class="la-badge success">Actif</span></td></tr>
+          <tr><td>mystical-runic</td><td>Rust</td><td class="num">4</td><td><span class="la-badge success">Actif</span></td></tr>
+          <tr><td>vCard-parser</td><td>PHP</td><td class="num">0</td><td><span class="la-badge muted">Dormant</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <nav class="la-pagination" aria-label="Pages de résultats" style="margin-block-start: var(--la-space-4);">
+      <ul>
+        <li class="prev"><a href="#composants">Précédent</a></li>
+        <li><a href="#composants">1</a></li>
+        <li><a href="#composants" aria-current="page">2</a></li>
+        <li><a href="#composants">3</a></li>
+        <li class="ellipsis" aria-hidden="true"></li>
+        <li><a href="#composants">12</a></li>
+        <li class="next"><a href="#composants">Suivant</a></li>
+      </ul>
+    </nav>
+  </section>
+
+  <!-- ─── Surcouches ───────────────────────────────────────────────────── -->
+  <section class="demo">
+    <h2>Surcouches</h2>
+    <p class="intro">Infobulle au survol <em>et</em> au clavier ; menu bâti sur <code>&lt;details&gt;</code>.</p>
+    <div class="bac la-flex la-gap-6 la-wrap" style="align-items: flex-start;">
+      <button class="la-btn la-tooltip" data-tooltip="Visible aussi à la tabulation">
+        Survolez-moi
+      </button>
+      <button class="la-btn la-tooltip bottom" data-tooltip="Placement bas">Infobulle basse</button>
+
+      <details class="la-dropdown">
+        <summary class="la-btn la-dropdown-toggle">Actions</summary>
+        <div class="la-dropdown-menu">
+          <div class="la-dropdown-label">Sur ce dépôt</div>
+          <a class="la-dropdown-item" href="#composants">Ouvrir sur GitHub</a>
+          <a class="la-dropdown-item" href="#composants">Lancer une ronde</a>
+          <div class="la-dropdown-divider"></div>
+          <a class="la-dropdown-item danger" href="#composants">Geler le dépôt</a>
+          <span class="la-dropdown-item" aria-disabled="true">Supprimer (indisponible)</span>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ─── Retours ──────────────────────────────────────────────────────── -->
+  <section class="demo">
+    <h2>Notifications</h2>
+    <p class="intro">Le pendant éphémère de l'alerte. L'affichage est piloté par l'application.</p>
+    <div class="bac la-flex la-flex-col la-gap-3">
+      <div class="la-toast success" role="status">
+        <div class="la-toast-content">
+          <div class="la-toast-title">Ronde terminée</div>
+          <div class="la-toast-message">3 dépôts soignés, 2 pull requests à relire.</div>
+        </div>
+      </div>
+      <div class="la-toast warning" role="status">
+        <div class="la-toast-content">
+          <div class="la-toast-title">Quota bientôt atteint</div>
+          <div class="la-toast-message">68 % consommés sur la fenêtre en cours.</div>
+        </div>
+      </div>
+      <div class="la-toast error" role="alert">
+        <div class="la-toast-content">
+          <div class="la-toast-title">Secret détecté</div>
+          <div class="la-toast-message">Historique nettoyé — pensez à révoquer la clé.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── État vide ────────────────────────────────────────────────────── -->
+  <section class="demo">
+    <h2>État vide</h2>
+    <p class="intro">Ce qu'on affiche quand une recherche ne renvoie rien.</p>
+    <div class="bac">
+      <div class="la-empty search">
+        <div class="la-empty-icon">🔍</div>
+        <div class="la-empty-title">Aucun dépôt ne correspond</div>
+        <p class="la-empty-text">
+          Essayez un autre mot-clé, ou retirez le filtre « privé » pour élargir la recherche.
+        </p>
+        <div class="la-empty-action">
+          <button class="la-btn primary">Réinitialiser les filtres</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Le sélecteur de thème pilote data-theme, et le choix se retient.
+  const theme = document.querySelector('#theme');
+  theme.value = localStorage.getItem('aurora-demo-theme') || 'aurora';
+  document.documentElement.dataset.theme = theme.value;
+  theme.addEventListener('change', () => {
+    document.documentElement.dataset.theme = theme.value;
+    localStorage.setItem('aurora-demo-theme', theme.value);
+  });
+</script>
+</body>
+</html>
