@@ -6,11 +6,15 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/en/1.1.0
 
 > **Reconstruction note**: this file was created on 2026-08-22 from the Git log, since no changelog existed at the time of the 1.0.0 to 1.2.0 releases. Dates reflect the commit that bumped `package.json` to the matching version — they do not necessarily represent a separate release date.
 
+## 1.2.2 — 2026-08-22 · "First conventions"
+
+### Added
+- `docs/GUIDELINES.md`: first set of project conventions (runtime dependencies, `npm audit` security audit, CSS cascade layers architecture), now referenced from the README.
+
 ## 1.2.1 — 2026-08-22 · "Project memory"
 
 ### Added
 - Bilingual changelog (`CHANGELOG.md` / `CHANGELOG.en.md`) reconstructing the full history of previous versions.
-- `docs/GUIDELINES.md`: first set of project conventions (dependencies, security audit, CSS layers architecture).
 
 ## 1.2.0 — 2026-08-06
 

@@ -6,11 +6,15 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 
 > **Note de reconstitution** : ce fichier a été créé le 2026-08-22 à partir du journal Git, car aucun changelog n'existait au moment des publications 1.0.0 à 1.2.0. Les dates indiquées sont celles du commit qui a fait passer `package.json` à la version correspondante — elles ne reflètent pas nécessairement une date de publication distincte.
 
+## 1.2.2 — 2026-08-22 · « Premières conventions »
+
+### Ajouté
+- `docs/GUIDELINES.md` : premières règles de conventions du projet (dépendances runtime, audit de sécurité `npm audit`, architecture CSS en cascade layers), désormais référencé depuis le README.
+
 ## 1.2.1 — 2026-08-22 · « Mémoire du projet »
 
 ### Ajouté
 - Changelog bilingue (`CHANGELOG.md` / `CHANGELOG.en.md`) reconstituant l'historique complet des versions précédentes.
-- `docs/GUIDELINES.md` : premières règles de conventions du projet (dépendances, audit de sécurité, architecture CSS en layers).
 
 ## 1.2.0 — 2026-08-06
 

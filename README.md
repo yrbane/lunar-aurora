@@ -157,6 +157,11 @@ Lunar Aurora utilise des fonctionnalités CSS modernes (Layers, Nesting, OKLCH).
 | Safari     | 16.5+           |
 | Edge       | 112+            |
 
+## 📐 Conventions
+
+Les conventions du projet (dépendances, sécurité, architecture CSS) sont documentées dans
+[docs/GUIDELINES.md](docs/GUIDELINES.md).
+
 ## Licence
 
 MIT License - voir le fichier [LICENSE](LICENSE) pour plus de détails.
