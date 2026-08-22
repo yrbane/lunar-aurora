@@ -67,16 +67,24 @@ const LunarThemes = {
      * Initialize the theme switcher
      */
     init() {
+        // Initialize any switcher instance not yet bound (safe to call more than
+        // once: theme-switcher.js self-initializes when loaded standalone via
+        // <script src="theme-switcher.js">, and aurora.js also calls init()
+        // explicitly when the framework bundle is used — without the guards
+        // below, switchers ended up with duplicate click listeners that
+        // canceled each other out and the dropdown never opened).
+        document.querySelectorAll('.la-theme-switcher').forEach(switcher => {
+            this.initSwitcher(switcher);
+        });
+
+        if (this._documentListenersBound) return;
+        this._documentListenersBound = true;
+
         // Load saved theme or use default
         const savedTheme = localStorage.getItem(this.storageKey);
         if (savedTheme && this.themes[savedTheme]) {
             this.setTheme(savedTheme, false);
         }
-
-        // Initialize all switcher instances on the page
-        document.querySelectorAll('.la-theme-switcher').forEach(switcher => {
-            this.initSwitcher(switcher);
-        });
 
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
@@ -101,6 +109,8 @@ const LunarThemes = {
      * Initialize a single theme switcher instance
      */
     initSwitcher(container) {
+        if (container.dataset.laInitialized) return;
+
         const trigger = container.querySelector('.la-theme-trigger');
         const dropdown = container.querySelector('.la-theme-dropdown');
 
@@ -108,6 +118,8 @@ const LunarThemes = {
             console.warn('Theme switcher missing trigger or dropdown');
             return;
         }
+
+        container.dataset.laInitialized = 'true';
 
         // Toggle dropdown on trigger click
         trigger.addEventListener('click', (e) => {
