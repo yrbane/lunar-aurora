@@ -51,6 +51,8 @@
 
 /* Typography - fonts, headings, prose */
 @import url('./typography.css') layer(typography);
+/* Police d'icônes Material Symbols depuis Google Fonts — retirer cet import pour l'auto-héberger */
+@import url('./icons-font.css') layer(typography);
 
 /* Layout - grid, flexbox, containers */
 @import url('./layout.css') layer(layout);

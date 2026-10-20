@@ -59,11 +59,6 @@
     }
 }
 
-/* Shared dark mode styles - single source of truth */
-:is([data-theme="dark"], :root:not([data-theme="light"])):where(@media (prefers-color-scheme: dark) *) {
-    /* Applied by inheritance from below */
-}
-
 /* Dark mode variables — inlined for postcss-import compatibility */
 [data-theme="dark"] {
     /* Surfaces */

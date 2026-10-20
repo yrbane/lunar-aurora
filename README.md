@@ -58,6 +58,22 @@ import LunarAurora from 'lunar-aurora';
 LunarAurora.init();
 ```
 
+### Auto-héberger la police d'icônes
+
+`aurora.css` charge « Material Symbols Outlined » depuis Google Fonts via `src/icons-font.css`.
+Avec une CSP stricte ou pour éviter toute requête tierce, importez les couches sans ce fichier
+et déclarez votre propre `@font-face` (police auto-hébergée) :
+
+```css
+@import 'lunar-aurora/src/tokens.css' layer(tokens);
+@import 'lunar-aurora/src/themes.css' layer(themes);
+@import 'lunar-aurora/src/reset.css' layer(reset);
+@import 'lunar-aurora/src/typography.css' layer(typography);
+/* pas de icons-font.css : votre @font-face « Material Symbols Outlined » ici */
+@import 'lunar-aurora/src/layout.css' layer(layout);
+@import 'lunar-aurora/src/components.css' layer(components);
+```
+
 ### Utilisation via CDN (Prototypage)
 
 ```html

@@ -30,12 +30,12 @@
     &.md { max-width: var(--la-container-md); }
     &.lg { max-width: var(--la-container-lg); }
     &.xl { max-width: var(--la-container-xl); }
-    &.2xl { max-width: var(--la-container-2xl); }
-    &.3xl { max-width: var(--la-container-3xl); }
-    &.4xl { max-width: var(--la-container-4xl); }
-    &.5xl { max-width: var(--la-container-5xl); }
-    &.6xl { max-width: var(--la-container-6xl); }
-    &.7xl { max-width: var(--la-container-7xl); }
+    &.\32 xl { max-width: var(--la-container-2xl); }
+    &.\33 xl { max-width: var(--la-container-3xl); }
+    &.\34 xl { max-width: var(--la-container-4xl); }
+    &.\35 xl { max-width: var(--la-container-5xl); }
+    &.\36 xl { max-width: var(--la-container-6xl); }
+    &.\37 xl { max-width: var(--la-container-7xl); }
     &.full { max-width: 100%; }
     &.prose { max-width: var(--la-container-prose); }
 }
