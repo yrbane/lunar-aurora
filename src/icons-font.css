@@ -1,0 +1,15 @@
+/**
+ * Lunar Aurora — Police d'icônes Material Symbols (Google Fonts)
+ *
+ * Import optionnel : aurora.css l'inclut par défaut. Pour auto-héberger la police
+ * (CSP stricte, hors ligne, vie privée), importez les autres couches sans ce fichier
+ * et déclarez votre propre @font-face « Material Symbols Outlined ».
+ */
+
+@font-face {
+    font-family: 'Material Symbols Outlined';
+    font-style: normal;
+    font-weight: 100 700;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v237/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsI.woff2) format('woff2');
+}
